@@ -1,0 +1,19 @@
+body {
+  padding-top: 70px;
+  text-align: center;
+}
+
+
+/* Header */
+.title {
+  font-size: 2em;
+  padding-top: .15em;
+}
+
+
+/* Main Manu - navigation */
+.menu-main button {
+  padding-left: 2em;
+  padding-right: 2em;
+  font-size: 2em;
+}

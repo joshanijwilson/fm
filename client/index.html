@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html ng-app="fm">
+  <head>
+    <title>FleetManager</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./app.css">
+  </head>
+
+  <body ng-controller="App">
+
+
+  <!-- Sticky Header -->
+  <header class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container title">
+      FleetManager
+    </div>
+  </header>
+
+
+  <!-- The main menu -->
+  <nav class="menu-main btn-group-vertical">
+    <button type="button" class="btn btn-default">RESERVE</button>
+    <button type="button" class="btn btn-default">EXISTING</button>
+  </nav>
+
+
+  <!-- Libraries -->
+  <script src="/bower_components/angular/angular.js"></script>
+
+  <!-- minify:js -->
+  <script src="./app_controller.js"></script>
+  <script src="./app.js"></script>
+  <!-- end:js -->
+
+  </body>
+</html>
