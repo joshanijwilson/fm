@@ -21,18 +21,17 @@
     </div>
   </header>
 
-
-  <!-- The main menu -->
-  <nav class="menu-main btn-group-vertical">
-    <button type="button" class="btn btn-default">RESERVE</button>
-    <button type="button" class="btn btn-default">EXISTING</button>
-  </nav>
+  <!-- The Main Content -->
+  <div ng-view></div>
 
 
   <!-- Libraries -->
   <script src="/bower_components/angular/angular.js"></script>
+  <script src="/bower_components/angular-route/angular-route.js"></script>
 
   <!-- minify:js -->
+  <script src="./reserve_controller.js"></script>
+  <script src="./existing_controller.js"></script>
   <script src="./app_controller.js"></script>
   <script src="./app.js"></script>
   <!-- end:js -->
