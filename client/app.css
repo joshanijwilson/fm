@@ -17,3 +17,15 @@ body {
   padding-right: 2em;
   font-size: 2em;
 }
+
+
+
+/* Reserve */
+.car-option {
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.car-option.selected {
+  border: 1px solid yellow;
+}

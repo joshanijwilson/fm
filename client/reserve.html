@@ -1,1 +1,31 @@
-Make a reservation
+<form role="form">
+  <div class="form-group">
+    <label for="car-model-select">Car</label>
+    <select ng-model="selectedModel" ng-options="model.name for model in modelOptions"
+            class="form-control" id="car-model-select"></select>
+  </div>
+  <div class="form-group">
+    <div ng-repeat="car in carOptions" ng-click="selectCar(car)"
+         ng-class="{'selected': selectedCar === car}" class="car-option">
+      <strong>{{car.model}}</strong>
+      {{car.description}}
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="start-input">Start</label>
+    <input ng-model="start" type="date" class="form-control" id="start-input">
+  </div>
+  <div class="form-group">
+    <label for="end-input">End</label>
+    <input ng-model="end" type="date" class="form-control" id="end-input">
+  </div>
+  <div class="form-group">
+    <label for="customer-input">Customer</label>
+    <input ng-model="customer" type="text" id="customer-input" placeholder="Customer">
+  </div>
+  <div class="form-group">
+    <label for="reason-input">Reason</label>
+    <textarea ng-model="reason" class="form-control" rows="3" id="reason-input" placeholder="Reason"></textarea>
+  </div>
+  <button type="submit" class="btn btn-default">Reserve</button>
+</form>
