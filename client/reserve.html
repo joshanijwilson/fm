@@ -2,22 +2,25 @@
   <div class="form-group">
     <label for="car-model-select">Car</label>
     <select ng-model="selectedModel" ng-options="model.name for model in modelOptions"
+            ng-change="filterCarsByModel(selectedModel)"
             class="form-control" id="car-model-select"></select>
   </div>
   <div class="form-group">
     <div ng-repeat="car in carOptions" ng-click="selectCar(car)"
-         ng-class="{'selected': selectedCar === car}" class="car-option">
+         ng-class="{'selected': selectedCar === car, 'not-available': !car.available}" class="car-option">
       <strong>{{car.model}}</strong>
       {{car.description}}
     </div>
   </div>
   <div class="form-group">
     <label for="start-input">Start</label>
-    <input ng-model="start" type="date" class="form-control" id="start-input">
+    <input ng-model="startDate" ng-change="startDateChanged()" id="start-input"
+           type="text" class="form-control" min-date="{{TODAY}}" bs-datepicker>
   </div>
   <div class="form-group">
     <label for="end-input">End</label>
-    <input ng-model="end" type="date" class="form-control" id="end-input">
+    <input ng-model="endDate" ng-change="endDateChanged()" id="end-input"
+           type="text" class="form-control" min-date="{{startDate}}" bs-datepicker>
   </div>
   <div class="form-group">
     <label for="customer-input">Customer</label>

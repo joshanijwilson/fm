@@ -23,9 +23,13 @@ body {
 /* Reserve */
 .car-option {
   cursor: pointer;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
 }
 
 .car-option.selected {
-  border: 1px solid yellow;
+  border-color: yellow;
+}
+
+.car-option.not-available {
+  opacity: .4;
 }
