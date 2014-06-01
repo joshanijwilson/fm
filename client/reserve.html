@@ -13,22 +13,26 @@
     </div>
   </div>
   <div class="form-group">
-    <label for="start-input">Start</label>
+    <label for="start-input">Start of the Rental</label>
     <input ng-model="startDate" ng-change="startDateChanged()" id="start-input"
            type="text" class="form-control" min-date="{{TODAY}}" bs-datepicker>
   </div>
   <div class="form-group">
-    <label for="end-input">End</label>
+    <label for="end-input">Returning the car</label>
     <input ng-model="endDate" ng-change="endDateChanged()" id="end-input"
            type="text" class="form-control" min-date="{{startDate}}" bs-datepicker>
   </div>
   <div class="form-group">
     <label for="customer-input">Customer</label>
-    <input ng-model="customer" type="text" id="customer-input" placeholder="Customer">
+    <input ng-model="customer" class="form-control" type="text" id="customer-input" placeholder="Customer">
   </div>
   <div class="form-group">
     <label for="reason-input">Reason</label>
     <textarea ng-model="reason" class="form-control" rows="3" id="reason-input" placeholder="Reason"></textarea>
   </div>
-  <button type="submit" class="btn btn-default">Reserve</button>
+  <div class="form-group">
+    <label for="note-input">Note (optional)</label>
+    <textarea ng-model="note" class="form-control" rows="3" id="note-input" placeholder="Note"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary btn-lg">Reserve</button>
 </form>
