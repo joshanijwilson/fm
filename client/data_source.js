@@ -4,6 +4,12 @@ function dataFromResponse(response) {
   return response.data;
 }
 
+
+// copy-pasted from server, might be shared
+function formatDateToString(date) {
+  return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+}
+
 function DataSource($http) {
 
   this.getAllFutureReservations = function() {
@@ -14,6 +20,13 @@ function DataSource($http) {
       });
       return reservations;
     });
+  };
+
+  this.createReservation = function(reservation) {
+    reservation.start = formatDateToString(reservation.start);
+    reservation.end = formatDateToString(reservation.end);
+
+    return $http.post(API_URL + 'reservations', reservation);
   };
 
   this.getAllCars = function() {

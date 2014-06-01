@@ -40,7 +40,7 @@ function filterCarModelsFromCars(cars) {
 }
 
 
-function ReserveController($scope, dataSource, dataCars) {
+function ReserveController($scope, $location, dataSource, dataCars) {
   var allCarOptions = dataCars;
   var allModelOptions = filterCarModelsFromCars(dataCars);
   var futureReservationsByCar = {};
@@ -50,16 +50,27 @@ function ReserveController($scope, dataSource, dataCars) {
   };
 
   $scope.submitReservation = function() {
+    // validation
+    // - car selected
+    // - car available
+    // - start/end (now < start < end)
     var reservation = {
       car_id: $scope.selectedCar.id,
-      start: $scope.start,
-      end: $scope.end,
+      start: $scope.startDate,
+      end: $scope.endDate,
 
-      customer: $scope.customer,
-      reason: $scope.reason
+      // TODO(vojta): set proper id or inline (with email/phone)
+      customer_id: 1,
+      reason: $scope.reason,
+      note: $scope.note
     };
 
-    console.log(reservation);
+    dataSource.createReservation(reservation).then(function() {
+      // TODO(vojta): better to get just "redirect" service that understands routes (instead of hard-coded urls)
+      $location.path('/');
+    }, function() {
+      alert('ERROR');
+    });
   };
 
   $scope.filterCarsByModel = function(model) {
