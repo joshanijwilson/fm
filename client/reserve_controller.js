@@ -40,7 +40,7 @@ function filterCarModelsFromCars(cars) {
 }
 
 
-function ReserveController($scope, $location, dataSource, dataCars) {
+function ReserveController($scope, $location, dataSource, dataCars, loadingIndicator) {
   var allCarOptions = dataCars;
   var allModelOptions = filterCarModelsFromCars(dataCars);
   var futureReservationsByCar = {};
@@ -65,9 +65,11 @@ function ReserveController($scope, $location, dataSource, dataCars) {
       note: $scope.note
     };
 
+    loadingIndicator.show();
     dataSource.createReservation(reservation).then(function() {
       // TODO(vojta): better to get just "redirect" service that understands routes (instead of hard-coded urls)
       $location.path('/');
+      loadingIndicator.hide();
     }, function() {
       alert('ERROR');
     });

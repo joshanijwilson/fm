@@ -24,6 +24,11 @@
   <!-- The Main Content -->
   <div ng-view></div>
 
+  <!-- Loader Indicator -->
+  <div style="display:none;" id="loader-indicator" class="modal-backdrop">
+    <img src="./loading.gif" alt="Loading...">
+  </div>
+
 
   <!-- Libraries -->
   <script src="/bower_components/angular/angular.js"></script>
@@ -39,6 +44,7 @@
 
   <!-- minify:js -->
   <script src="./data_source.js"></script>
+  <script src="./loading_indicator.js"></script>
   <script src="./reserve_controller.js"></script>
   <script src="./existing_controller.js"></script>
   <script src="./app_controller.js"></script>
