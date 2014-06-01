@@ -1,4 +1,4 @@
-var DEFAULT_PAGE_TITLE = 'Fleet Manager';
+var DEFAULT_PAGE_TITLE = 'FleetManager';
 
 function AppController($scope) {
   $scope.pageTitle = DEFAULT_PAGE_TITLE;
