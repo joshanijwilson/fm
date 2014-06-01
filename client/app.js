@@ -7,8 +7,8 @@ fm.service('dataSource', DataSource);
 fm.config(function($routeProvider, $datepickerProvider) {
   $routeProvider
     .when('/',         {templateUrl: './menu.html'})
-    .when('/reserve',  {templateUrl: './reserve.html',  controller: ReserveController, resolve: ReserveController.resolve})
-    .when('/existing', {templateUrl: './existing.html', controller: ExistingController})
+    .when('/reserve',  {templateUrl: './reserve.html',  controller: ReserveController, resolve: ReserveController.resolve, title: 'Reserve Car'})
+    .when('/existing', {templateUrl: './existing.html', controller: ExistingController, title: 'Existing Reservations'})
 
   angular.extend($datepickerProvider.defaults, {
     dateFormat: 'dd.MM.yyyy',
