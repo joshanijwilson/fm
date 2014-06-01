@@ -20,32 +20,30 @@ function cloneDate(date) {
   return new Date(date);
 }
 
+function getTodayDate() {
+  var now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
+}
 
-function ReserveController($scope) {
-  var allModelOptions = [
-    {id: 1, name: 'S60', available: true},
-    {id: 2, name: 'S80', available: true},
-    {id: 3, name: 'V40', available: false},
-    {id: 4, name: 'V60', available: true},
-    {id: 5, name: 'V70', available: true},
-    {id: 6, name: 'XC60', available: true}
-  ];
+function filterCarModelsFromCars(cars) {
+  var models = [];
+  var alreadyIn = {};
 
-  var allCarOptions = [
-    {id: 1, model: 'S80', description: 'T6 AWD 304k', color: 'black'},
-    {id: 2, model: 'S60', description: 'T6 AWD 304k', color: 'red'},
-    {id: 3, model: 'S60', description: 'D3 136k',     color: 'blue'},
-    {id: 4, model: 'V60', description: 'D3 136k',     color: 'blue'},
-    {id: 5, model: 'XC60', description: 'T6 306k',    color: 'white'}
-  ];
+  cars.forEach(function(car) {
+    if (!alreadyIn[car.model_id]) {
+      alreadyIn[car.model_id] = true;
+      models.push({id: car.model_id, name: car.model_name});
+    }
+  });
 
-  var futureReservationsByCar = {
-    1: [{start: new Date(2014, 7, 1), end: new Date(2014, 7, 2)}],
-    2: [{start: new Date(2014, 7, 1), end: new Date(2014, 7, 30)}]
-  };
+  return models;
+}
 
-  $scope.modelOptions = allModelOptions;
-  $scope.carOptions = allCarOptions;
+
+function ReserveController($scope, dataSource, dataCars) {
+  var allCarOptions = dataCars;
+  var allModelOptions = filterCarModelsFromCars(dataCars);
+  var futureReservationsByCar = {};
 
   $scope.selectCar = function(car) {
     $scope.selectedCar = car;
@@ -66,7 +64,7 @@ function ReserveController($scope) {
 
   $scope.filterCarsByModel = function(model) {
     $scope.carOptions = allCarOptions.filter(function(car) {
-      return car.model === model.name;
+      return car.model_id === model.id;
     });
   };
 
@@ -86,9 +84,10 @@ function ReserveController($scope) {
 
   $scope.endDateChanged = updateCarsAvailability;
 
-  var NOW = new Date();
-  var TODAY = $scope.TODAY = new Date(NOW.getFullYear(), NOW.getMonth(), NOW.getDate(), 0, 0, 0);
+  var TODAY = $scope.TODAY = getTodayDate();
 
+  $scope.modelOptions = allModelOptions;
+  $scope.carOptions = allCarOptions;
   $scope.selectedModel = null;
   $scope.selectedCar = null;
   $scope.startDate = cloneDate(TODAY);
@@ -97,4 +96,20 @@ function ReserveController($scope) {
   $scope.reason = null;
 
   updateCarsAvailability();
+
+  dataSource.getAllFutureReservations().then(function(reservations) {
+    reservations.forEach(function(reservation) {
+      futureReservationsByCar[reservation.car_id] = futureReservationsByCar[reservation.car_id] || [];
+      futureReservationsByCar[reservation.car_id].push(reservation);
+    });
+
+    updateCarsAvailability();
+  });
 }
+
+
+ReserveController.resolve = {
+  dataCars: function(dataSource) {
+    return dataSource.getAllCars();
+  }
+};
