@@ -32,7 +32,7 @@ function formatDateToString(date) {
 // API
 var API_PREFIX = '/api/v1';
 app.get(API_PREFIX + '/reservations', function(req, res) {
-  pool.query('SELECT * FROM reservations WHERE start > NOW()', function(err, rows, fields) {
+  pool.query('SELECT * FROM reservations WHERE start >= DATE(NOW())', function(err, rows, fields) {
     if (err) throw err;
 
     // Normalize dates.
