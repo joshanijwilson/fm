@@ -1,5 +1,6 @@
 body {
   padding-top: 70px;
+  padding-bottom: 15px;
   text-align: center;
 }
 
@@ -9,6 +10,12 @@ body {
   font-size: 2em;
   padding-top: .15em;
 }
+
+.content {
+  max-width: 600px; /* Limit with for big screens (desktop) */
+  margin: 0 auto;
+}
+
 
 
 /* Main Manu - navigation */
