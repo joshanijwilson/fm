@@ -60,7 +60,7 @@ function ReserveController($scope, $location, dataSource, dataCars, loadingIndic
       end: $scope.endDate,
 
       // TODO(vojta): set proper id or inline (with email/phone)
-      customer_id: 1,
+      customer: $scope.customer,
       reason: $scope.reason,
       note: $scope.note
     };

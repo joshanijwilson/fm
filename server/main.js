@@ -45,17 +45,30 @@ app.get(API_PREFIX + '/reservations', function(req, res) {
   });
 });
 
+function insertReservation(res, reservation) {
+  pool.query('INSERT INTO reservations SET ?', reservation, function(err, result) {
+    if (err) throw err;
+    res.send('OK');
+  });
+}
+
 app.post(API_PREFIX + '/reservations', function(req, res) {
   var reservation = req.body;
 
   // TODO(vojta): read user_id from auth
   reservation.created_by = 1;
 
-  pool.query('INSERT INTO reservations SET ?', req.body, function(err, rows, fields) {
-    if (err) throw err;
-
-    res.send(rows);
-  });
+  if (reservation.customer) {
+    var names = reservation.customer.split(' ', 2);
+    pool.query('INSERT INTO customers SET ?', {first_name: names[0] || '', last_name: names[1] || ''}, function(err, result) {
+      if (err) throw err;
+      delete reservation.customer;
+      reservation.customer_id = result.insertId;
+      insertReservation(res, reservation);
+    });
+  } else {
+    insertReservation(res, reservation);
+  }
 });
 
 
