@@ -8,7 +8,7 @@
   <div class="form-group">
     <div ng-repeat="car in carOptions" ng-click="selectCar(car)"
          ng-class="{'selected': selectedCar === car, 'not-available': !car.available}" class="car-option">
-      <strong>{{car.model}}</strong>
+      <strong>{{car.model_name}}</strong>
       {{car.description}}
     </div>
   </div>
