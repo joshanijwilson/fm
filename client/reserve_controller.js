@@ -72,6 +72,7 @@ function ReserveController($scope, $location, dataSource, dataCars, loadingIndic
       loadingIndicator.hide();
     }, function() {
       alert('ERROR');
+      loadingIndicator.hide();
     });
   };
 
