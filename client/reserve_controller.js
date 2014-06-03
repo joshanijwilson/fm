@@ -25,6 +25,12 @@ function getTodayDate() {
   return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
 }
 
+function byName(a, b) {
+  if (a.name < b.name) return -1;
+  if (a.name > b.name) return 1;
+  return 0
+}
+
 function filterCarModelsFromCars(cars) {
   var models = [];
   var alreadyIn = {};
@@ -36,7 +42,7 @@ function filterCarModelsFromCars(cars) {
     }
   });
 
-  return models;
+  return models.sort(byName);
 }
 
 
