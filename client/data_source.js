@@ -26,7 +26,16 @@ function DataSource($http) {
     reservation.start = formatDateToString(reservation.start);
     reservation.end = formatDateToString(reservation.end);
 
-    return $http.post(API_URL + 'reservations', reservation);
+    return $http.post(API_URL + 'reservations', reservation).then(dataFromResponse);
+  };
+
+  this.getReservation = function(id) {
+    return $http.get(API_URL + 'reservations/' + id).then(dataFromResponse).then(function(reservation) {
+      reservation.start = new Date(reservation.start);
+      reservation.end = new Date(reservation.end);
+
+      return reservation;
+    });
   };
 
   this.getAllCars = function() {

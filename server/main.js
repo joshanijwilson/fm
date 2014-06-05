@@ -45,10 +45,24 @@ app.get(API_PREFIX + '/reservations', function(req, res) {
   });
 });
 
+app.get(API_PREFIX + '/reservations/:id', function(req, res) {
+  pool.query('SELECT reservations.*, cars.name AS car_name FROM reservations LEFT JOIN cars ON reservations.car_id = cars.id WHERE reservations.id = ?', req.params.id, function(err, rows, fields) {
+    if (err) throw err;
+
+    // Normalize dates.
+    rows.forEach(function(row) {
+      row.start = formatDateToString(row.start);
+      row.end = formatDateToString(row.end);
+    });
+
+    res.send(rows[0]);
+  });
+});
+
 function insertReservation(res, reservation) {
   pool.query('INSERT INTO reservations SET ?', reservation, function(err, result) {
     if (err) throw err;
-    res.send('OK');
+    res.send({id: result.insertId});
   });
 }
 
