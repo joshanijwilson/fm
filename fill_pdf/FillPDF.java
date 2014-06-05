@@ -1,5 +1,6 @@
 import java.util.Map;
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
@@ -7,7 +8,8 @@ import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 
-import com.json.parsers.JSONParser;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 // Takes an editable PDF document, fill in specified values and save as a new PDF document.
 public class FillPDF {
@@ -18,7 +20,8 @@ public class FillPDF {
     // --input inputFile.pdf
     // --output outputFile.pdf
     // --fields '{"field": "value"}'
-    JSONParser parser = new JSONParser();
+    Gson parser = new Gson();
+    Type mapType = new TypeToken<Map<String, String>>() {}.getType();
 
     String inputFile = null;
     String outputFile = null;
@@ -34,7 +37,7 @@ public class FillPDF {
         i = i + 2;
       }
       else if (args[i].equals("--fields")) {
-        fields = parser.parseJson(args[i + 1]);
+        fields = parser.fromJson(args[i + 1], mapType);
         i = i + 2;
       } else {
         System.out.println("Unknown argument: " + args[i]);
