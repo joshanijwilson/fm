@@ -1,4 +1,4 @@
-var fm = angular.module('fm', ['ngRoute', 'mgcrea.ngStrap.datepicker']);
+var fm = angular.module('fm', ['ngRoute', 'ngTouch', 'mgcrea.ngStrap.datepicker']);
 
 fm.controller('App', AppController);
 fm.service('dataSource', DataSource);
