@@ -65,9 +65,27 @@ app.get(API_PREFIX + '/reservations/:id', function(req, res) {
   });
 });
 
+
+var generateProtocolPdf = require('./reservation_protocol').generateProtocol;
+
 function insertReservation(res, reservation) {
   pool.query('INSERT INTO reservations SET ?', reservation, function(err, result) {
     if (err) throw err;
+
+    reservation.id = result.insertId;
+
+    pool.query('SELECT * FROM customers WHERE id = ?', reservation.customer_id, function(err, customer) {
+      if (err) throw err;
+      customer = customer[0];
+
+      pool.query('SELECT * FROM cars WHERE id = ?', reservation.car_id, function(err, car) {
+        if (err) throw err;
+        car = car[0];
+
+        generateProtocolPdf(reservation, car, customer);
+      });
+    });
+
     res.send({id: result.insertId});
   });
 }
