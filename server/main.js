@@ -1,19 +1,13 @@
 var mysql = require('mysql');
-var pool  = mysql.createPool({
-  debug: ['ComQueryPacket', 'RowDataPacket'],
-  connectionLimit : 10,
-  host            : 'localhost',
-  user            : 'api',
-  password        : 'api',
-  database: 'fleet_manager'
-});
+var config = require('./config');
+var pool  = mysql.createPool(config.mysql);
 
 
 var express = require('express');
 var bodyParser = require('body-parser');
+var send = require('send');
 var app = express();
 
-var send = require('send');
 
 // STATIC files.
 app.use('/', express.static(__dirname + '/../client'));

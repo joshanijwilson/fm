@@ -103,8 +103,9 @@ function getFields(reservation, car, customer) {
 exports.generateProtocol = function(reservation, car, customer) {
   var fields = getFields(reservation, car, customer);
   var cmd = 'mkdir ./storage/reservations/' + reservation.id + ' && cd ./fill_pdf && ./compile_run.sh --input reservation-protocol-empty.pdf --output ../storage/reservations/' + reservation.id + '/protocol.pdf --fields \'' + JSON.stringify(fields) + '\'';
+
   console.log('EXEC', cmd);
   exec(cmd, function() {
-      console.log('EXEC done', arguments);
-    });
+    console.log('EXEC done', arguments);
+  });
 };
