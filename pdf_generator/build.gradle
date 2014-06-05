@@ -1,0 +1,31 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'fillpdf.FillPDF'
+version = '0.1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    compile "com.google.code.gson:gson:2.2.4"
+    compile "org.apache.pdfbox:pdfbox:1.8.5"
+}
+
+
+
+jar {
+    version =  version
+    manifest {
+        attributes("Implementation-Title": "Fill PDF", "Implementation-Version": version, "Main-Class": mainClassName)
+    }
+}
+
+task fatJar(type: Jar) {
+    baseName = project.name + '-all'
+    version =  version
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}

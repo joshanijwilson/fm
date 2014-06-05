@@ -102,7 +102,7 @@ function getFields(reservation, car, customer) {
 
 exports.generateProtocol = function(reservation, car, customer) {
   var fields = getFields(reservation, car, customer);
-  var cmd = 'mkdir ./storage/reservations/' + reservation.id + ' && cd ./fill_pdf && ./compile_run.sh --input reservation-protocol-empty.pdf --output ../storage/reservations/' + reservation.id + '/protocol.pdf --fields \'' + JSON.stringify(fields) + '\'';
+  var cmd = 'mkdir ./storage/reservations/' + reservation.id + ' && java -jar ./pdf_generator/build/libs/pdf_generator-all-0.1.0.jar --input ./server/reservation-protocol-empty.pdf --output ./storage/reservations/' + reservation.id + '/protocol.pdf --fields \'' + JSON.stringify(fields) + '\'';
 
   console.log('EXEC', cmd);
   exec(cmd, function() {
