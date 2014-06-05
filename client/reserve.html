@@ -13,26 +13,26 @@
     </div>
   </div>
   <div class="form-group">
-    <label for="start-input">Start of the Rental</label>
+    <label for="start-input">Začátek výpůjčky - vyzvednutí vozu</label>
     <input ng-model="startDate" ng-change="startDateChanged()" id="start-input"
            type="text" class="form-control" min-date="{{TODAY}}" bs-datepicker>
   </div>
   <div class="form-group">
-    <label for="end-input">Returning the car</label>
+    <label for="end-input">Konec výpůjčky - vrácení vozu</label>
     <input ng-model="endDate" ng-change="endDateChanged()" id="end-input"
            type="text" class="form-control" min-date="{{startDate}}" bs-datepicker>
   </div>
   <div class="form-group">
-    <label for="customer-input">Customer</label>
-    <input ng-model="customer" class="form-control" type="text" id="customer-input" placeholder="Customer">
+    <label for="customer-input">Zákazník</label>
+    <input ng-model="customer" class="form-control" type="text" id="customer-input" placeholder="Jméno Příjmení">
   </div>
   <div class="form-group">
-    <label for="reason-input">Reason</label>
+    <label for="reason-input">Účel výpůjčky</label>
     <textarea ng-model="reason" class="form-control" rows="3" id="reason-input" placeholder="Reason"></textarea>
   </div>
   <div class="form-group">
-    <label for="note-input">Note (optional)</label>
-    <textarea ng-model="note" class="form-control" rows="3" id="note-input" placeholder="Note"></textarea>
+    <label for="note-input">Poznámka (nepovinné)</label>
+    <textarea ng-model="note" class="form-control" rows="3" id="note-input" placeholder="Poznámka k rezervaci..."></textarea>
   </div>
-  <button ng-click="submitReservation()" type="submit" class="btn btn-primary btn-lg">Reserve</button>
+  <button ng-click="submitReservation()" type="submit" class="btn btn-primary btn-lg">Rezervovat</button>
 </form>
