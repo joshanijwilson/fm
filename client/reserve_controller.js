@@ -48,7 +48,7 @@ function filterCarModelsFromCars(cars) {
 
 function ReserveController($scope, $location, dataSource, dataCars, loadingIndicator) {
   var allCarOptions = dataCars;
-  var allModelOptions = filterCarModelsFromCars(dataCars);
+  var allModelOptions = [{id: null, name: 'Zobrazit všechny modely'}].concat(filterCarModelsFromCars(dataCars));
   var futureReservationsByCar = {};
 
   $scope.selectCar = function(car) {
@@ -83,6 +83,11 @@ function ReserveController($scope, $location, dataSource, dataCars, loadingIndic
   };
 
   $scope.filterCarsByModel = function(model) {
+    if (model.id === null) {
+      $scope.carOptions = allCarOptions;
+      return;
+    }
+
     $scope.carOptions = allCarOptions.filter(function(car) {
       return car.model_id === model.id;
     });
@@ -108,7 +113,7 @@ function ReserveController($scope, $location, dataSource, dataCars, loadingIndic
 
   $scope.modelOptions = allModelOptions;
   $scope.carOptions = allCarOptions;
-  $scope.selectedModel = null;
+  $scope.selectedModel = allModelOptions[0];
   $scope.selectedCar = null;
   $scope.startDate = cloneDate(TODAY);
   $scope.endDate = cloneDate(TODAY);
