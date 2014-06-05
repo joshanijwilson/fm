@@ -83,7 +83,6 @@ function ReserveController($scope, $location, dataSource, dataCars, loadingIndic
     dataSource.createReservation(reservation).then(function(newReservation) {
       // TODO(vojta): better to get just "redirect" service that understands routes (instead of hard-coded urls)
       $location.path('/reserve/' + newReservation.id + '/success');
-      loadingIndicator.hide();
     }, function() {
       alert('ERROR');
       loadingIndicator.hide();
