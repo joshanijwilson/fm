@@ -1,5 +1,5 @@
 {
-  "name": "fleet-manager",
+  "name": "fleet-manager-client",
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
@@ -9,17 +9,10 @@
   "author": "Vojta Jina <vojta.jina@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "express": "~4.3.0",
-    "mysql": "~2.3.1",
-    "body-parser": "~1.2.2",
-    "send": "~0.4.1",
-    "moment": "~2.6.0"
   },
   "devDependencies": {
-    "gulp": "~3.6.2",
     "karma": "~0.12.16",
     "karma-jasmine": "~0.1.5",
-    "karma-chrome-launcher": "~0.1.4",
-    "csv-parse": "0.0.4"
+    "karma-chrome-launcher": "~0.1.4"
   }
 }

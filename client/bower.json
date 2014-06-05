@@ -1,5 +1,5 @@
 {
-  "name": "fleet-manager",
+  "name": "fleet-manager-client",
   "version": "0.0.0",
   "authors": [
     "Vojta Jina <vojta.jina@gmail.com>"
@@ -10,8 +10,7 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "test",
-    "tests"
+    "test"
   ],
   "dependencies": {
     "angular": "~1.2.16",

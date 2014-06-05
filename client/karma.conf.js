@@ -15,13 +15,13 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'client/**/*.js'
+      '*.js'
     ],
 
 
     // list of files to exclude
     exclude: [
-      'client/app.js'
+      'app.js'
     ],
 
 
