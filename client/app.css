@@ -1,9 +1,13 @@
 body {
   padding-top: 70px;
-  padding-bottom: 15px;
   text-align: center;
 }
 
+/* Avoid opening toolbar/address bar when clicking a button at the bottom of the page */
+.footer-ios-hack {
+  line-height: 15px;
+  height: 15px;
+}
 
 /* Header */
 .title {
