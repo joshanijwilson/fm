@@ -27,8 +27,9 @@
     <input ng-model="customer" class="form-control" type="text" id="customer-input" placeholder="Jméno Příjmení">
   </div>
   <div class="form-group">
-    <label for="reason-input">Účel výpůjčky</label>
-    <textarea ng-model="reason" class="form-control" rows="3" id="reason-input" placeholder="Reason"></textarea>
+    <label for="reason-select">Účel výpůjčky</label>
+    <select ng-model="selectedReason" ng-options="reason.title for reason in reasonOptions"
+            class="form-control" id="reason-select"></select>
   </div>
   <div class="form-group">
     <label for="note-input">Poznámka (nepovinné)</label>

@@ -46,6 +46,14 @@ function filterCarModelsFromCars(cars) {
 }
 
 
+var REASON_OPTIONS = [
+  {id: 1, title: 'Vyzkoušení vlastností modelu před koupí'},
+  {id: 2, title: 'Testovací jízdy za účelem zveřejnění výsledků testování'}, // Marketing
+  {id: 3, title: 'Náhradní vozidlo'},
+  {id: 4, title: 'Služební vozidlo, jiná zápůjčka'} // Jiny duvod.
+];
+
+
 function ReserveController($scope, $location, dataSource, dataCars, loadingIndicator) {
   var allCarOptions = dataCars;
   var allModelOptions = [{id: null, name: 'Zobrazit všechny modely'}].concat(filterCarModelsFromCars(dataCars));
@@ -67,7 +75,7 @@ function ReserveController($scope, $location, dataSource, dataCars, loadingIndic
 
       // TODO(vojta): set proper id or inline (with email/phone)
       customer: $scope.customer,
-      reason: $scope.reason,
+      reason: $scope.selectedReason.id,
       note: $scope.note
     };
 
@@ -118,7 +126,8 @@ function ReserveController($scope, $location, dataSource, dataCars, loadingIndic
   $scope.startDate = cloneDate(TODAY);
   $scope.endDate = cloneDate(TODAY);
   $scope.customer = null;
-  $scope.reason = null;
+  $scope.reasonOptions = REASON_OPTIONS;
+  $scope.selectedReason = REASON_OPTIONS[0];
 
   updateCarsAvailability();
 

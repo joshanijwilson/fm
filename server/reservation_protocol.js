@@ -55,16 +55,16 @@ function getFields(reservation, car, customer) {
 
     // Reason
     // Vyzkouseni pred koupi
-    // 'untitled25': 'Yes',
+    'untitled25': reservation.reason === 1 ? 'Yes' : 'No',
 
     // Testovani za ucelem zverejneni vysledku testovani
-    // 'untitled26': 'Yes',
+    'untitled26':  reservation.reason === 2 ? 'Yes' : 'No',
 
     // Nahradni vozidlo
-    // 'untitled27': 'Yes',
+    'untitled27':  reservation.reason === 3 ? 'Yes' : 'No',
 
     // Sluzebni vozidlo, jina zapujcka
-    // 'untitled28': 'Yes',
+    'untitled28':  reservation.reason === 4 ? 'Yes' : 'No',
 
     // Dlohodoba (od-do)
     // 'untitled29': 'Yes',
