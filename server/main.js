@@ -13,6 +13,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 
+var send = require('send');
 
 // STATIC files.
 app.use('/client', express.static(__dirname + '/../client'));
@@ -27,6 +28,11 @@ app.use(bodyParser.json());
 function formatDateToString(date) {
   return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 }
+
+
+app.get('/storage/reservations/:id/protocol.pdf', function(req, res, next) {
+  send(req, '/' + req.params.id + '/protocol.pdf', {root: __dirname + '/../storage/reservations'}).pipe(res);
+});
 
 
 // API
