@@ -22,8 +22,8 @@ function formatDateToString(date) {
 }
 
 
-app.get('/storage/reservations/:id/protocol.pdf', function(req, res, next) {
-  send(req, '/' + req.params.id + '/protocol.pdf', {root: __dirname + '/../storage/reservations'}).pipe(res);
+app.get('/storage/reservations/:id/:document.pdf', function(req, res, next) {
+  send(req, '/' + req.params.id + '/' + req.params.document + '.pdf', {root: __dirname + '/../storage/reservations'}).pipe(res);
 });
 
 
@@ -58,7 +58,7 @@ app.get(API_PREFIX + '/reservations/:id', function(req, res) {
 });
 
 
-var generateProtocolPdf = require('./reservation_protocol').generateProtocol;
+var pdfForms = require('./pdf_forms');
 
 function insertReservation(res, reservation) {
   pool.query('INSERT INTO reservations SET ?', reservation, function(err, result) {
@@ -70,11 +70,12 @@ function insertReservation(res, reservation) {
       if (err) throw err;
       customer = customer[0];
 
-      pool.query('SELECT * FROM cars WHERE id = ?', reservation.car_id, function(err, car) {
+      pool.query('SELECT cars.*, car_models.name AS model_name FROM cars LEFT JOIN car_models ON cars.model_id = car_models.id WHERE cars.id = ?', reservation.car_id, function(err, car) {
         if (err) throw err;
         car = car[0];
 
-        generateProtocolPdf(reservation, car, customer);
+        pdfForms.generateProtocol(reservation, car, customer);
+        pdfForms.generateSurvey(reservation, car);
       });
     });
 

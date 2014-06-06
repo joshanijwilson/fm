@@ -2,7 +2,26 @@ var exec = require('child_process').exec;
 var moment = require('moment');
 
 
-function getFields(reservation, car, customer) {
+function getSurveyFields(car) {
+  return {
+    // Model
+    'Text1': car.model_name,
+
+    // Equipment
+    // 'Text2': car.equipment,
+
+    // Engine
+    // 'Text3': car.engine,
+
+    // Model Year
+    'Text4': car.model_year,
+
+    // Transmission
+    'Text5': car.transmission,
+  };
+}
+
+function getReservationProtocolFields(reservation, car, customer) {
   return {
     // Typ vozidla.
     'untitled3': car.name,
@@ -100,12 +119,24 @@ function getFields(reservation, car, customer) {
   };
 }
 
-exports.generateProtocol = function(reservation, car, customer) {
-  var fields = getFields(reservation, car, customer);
-  var cmd = 'mkdir ./storage/reservations/' + reservation.id + ' && java -jar ./pdf_generator/build/libs/pdf_generator-all-0.1.0.jar --input ./server/reservation-protocol-empty.pdf --output ./storage/reservations/' + reservation.id + '/protocol.pdf --fields \'' + JSON.stringify(fields) + '\'';
+var FILL_PDF_CMD = 'java -jar ./pdf_generator/build/libs/pdf_generator-all-0.1.0.jar';
 
-  console.log('EXEC', cmd);
-  exec(cmd, function() {
+exports.generateProtocol = function(reservation, car, customer) {
+  // // TODO(vojta): super lame, fix it.
+  exec('mkdir -p ./storage/reservations/' + reservation.id);
+
+  var fields = getReservationProtocolFields(reservation, car, customer);
+
+  exec(FILL_PDF_CMD + ' --input ./server/reservation-protocol-empty.pdf --output ./storage/reservations/' + reservation.id + '/protocol.pdf --fields \'' + JSON.stringify(fields) + '\'', function() {
+    console.log('EXEC done', arguments);
+  });
+};
+
+
+exports.generateSurvey = function(reservation, car) {
+  var fields = getSurveyFields(car);
+
+  exec(FILL_PDF_CMD + ' --input ./server/survey-empty.pdf --output ./storage/reservations/' + reservation.id + '/survey.pdf --fields \'' + JSON.stringify(fields) + '\'', function() {
     console.log('EXEC done', arguments);
   });
 };

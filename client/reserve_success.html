@@ -3,7 +3,8 @@
 <p>od {{reservation.start | date}} do {{reservation.end | date}}</p>
 
 <div class="btn-group-vertical">
-  <a ng-href="/storage/reservations/{{reservation.id}}/protocol.pdf" class="btn btn-lg">Stáhnout protokol</a>
+  <a ng-href="/storage/reservations/{{reservation.id}}/protocol.pdf" download="protocol.pdf" class="btn btn-lg">Stáhnout protokol</a>
+  <a ng-href="/storage/reservations/{{reservation.id}}/survey.pdf" download="survey.pdf" class="btn btn-lg">Stáhnout dotazník</a>
   <a ng-href="#/reserve" class="btn btn-lg">Rezervovat další</a>
 </div>
 </div>
