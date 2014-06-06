@@ -1,17 +1,16 @@
 package fillpdf;
 
-import java.util.Map;
-import java.io.IOException;
-import java.lang.reflect.Type;
-
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
-import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.Map;
 
 // Takes an editable PDF document, fill in specified values and save as a new PDF document.
 public class FillPDF {
