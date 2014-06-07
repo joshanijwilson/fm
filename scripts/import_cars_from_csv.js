@@ -14,17 +14,26 @@ var pool  = mysql.createPool({
 });
 
 var input = fs.createReadStream(process.argv[2]);
-var parser = parse({delimiter: ',', columns: [undefined, undefined, 'description', 'engine_displacement', 'vin', 'spz', undefined, 'model', undefined, undefined, 'color']}, function(err, cars) {
+// var COLUMNS = [undefined, undefined, 'name', 'engine_displacement', 'vin', 'spz', undefined, 'model', undefined, undefined, 'color'];
+var COLUMNS = ['model', 'model_year', 'name', 'spz', 'equipment', 'transmission'];
+var parser = parse({delimiter: ',', columns: COLUMNS}, function(err, cars) {
 
   // Filter out invalid cars.
   cars = cars.filter(function(car) {
-    return car.description && car.model;
+    return car.name && car.model;
   });
 
   var normalizeModels = {
     'S60 R - D': 'S60',
     'XC70 D5 AWD': 'XC70',
     'XC 60': 'XC60'
+  };
+
+  var equipmentMap = {
+    'Kinetic':  1,
+    'Momentum': 2,
+    'Summum':   3,
+    'R-Design': 4
   };
 
   // Insert models.
@@ -40,6 +49,7 @@ var parser = parse({delimiter: ',', columns: [undefined, undefined, 'description
       pending++;
       modelIdFor[car.model] = true;
 
+      // TODO(vojta): insert if not exist
       pool.query('INSERT INTO car_models SET ?', {name: car.model}, function(err, result) {
         if (err) {
           throw err;
@@ -52,9 +62,10 @@ var parser = parse({delimiter: ',', columns: [undefined, undefined, 'description
           // Insert all cars.
           cars.forEach(function(car) {
             car.model_id = modelIdFor[car.model];
-            car.engine_displacement = parseInt(car.engine_displacement, 10);
+            car.engine_displacement = car.engine_displacement && parseInt(car.engine_displacement, 10) || 0;
             car.spz = car.spz.replace(/\s/, '').substr(0, 7);
-            car.vin = car.vin.trim();
+            car.vin = car.vin && car.vin.trim() || 0;
+            car.equipment = equipmentMap[car.equipment] || 0;
             delete car.model;
             delete car.undefined;
 
