@@ -1,4 +1,4 @@
-<form role="form">
+<form role="form" name="form" novalidate>
   <div class="form-group">
     <label for="car-model-select">Car</label>
     <select ng-model="selectedModel" ng-options="model.name for model in modelOptions"
@@ -24,7 +24,7 @@
   </div>
   <div class="form-group">
     <label for="customer-input">Zákazník</label>
-    <input ng-model="customer" class="form-control" type="text" id="customer-input" placeholder="Jméno Příjmení">
+    <input ng-model="customer" required class="form-control" type="text" id="customer-input" placeholder="Jméno Příjmení">
   </div>
   <div class="form-group">
     <label for="reason-select">Účel výpůjčky</label>
@@ -35,5 +35,5 @@
     <label for="note-input">Poznámka (nepovinné)</label>
     <textarea ng-model="note" class="form-control" rows="3" id="note-input" placeholder="Poznámka k rezervaci..."></textarea>
   </div>
-  <button ng-click="submitReservation()" type="submit" class="btn btn-primary btn-lg">Rezervovat</button>
+  <button ng-click="submitReservation()" ng-disabled="form.$invalid" type="submit" class="btn btn-primary btn-lg">Rezervovat</button>
 </form>
