@@ -59,6 +59,23 @@ var REASON_OPTIONS = [
   {id: 4, title: 'Služební vozidlo, jiná zápůjčka'} // Jiny duvod.
 ];
 
+var ONE_DAY = 1000 * 60 * 60 * 24;
+
+function findAvailableDateAfter(date, reservations) {
+  // Skip all the reservations that happened before current start date to find the blocking one.
+  var idx = 0;
+  while (reservations[idx] && reservations[idx].end < date) {
+    idx++;
+  }
+
+  // Skip all the reservations immediately afterwards (when there is no empty day between them).
+  while (reservations[idx + 1] && reservations[idx].end.getTime() + ONE_DAY === reservations[idx + 1].start.getTime()) {
+    idx++;
+  }
+
+  return new Date(reservations[idx].end.getTime() + ONE_DAY);
+};
+
 
 function ReserveController($scope, $location, dataSource, dataCars, loadingIndicator) {
   var allCarOptions = dataCars;
@@ -66,8 +83,17 @@ function ReserveController($scope, $location, dataSource, dataCars, loadingIndic
   var futureReservationsByCar = {};
 
   $scope.selectCar = function(car) {
+    var reservationsForSelectedCar = futureReservationsByCar[car.id];
+
     $scope.selectedCar = car;
-    $scope.unavailableDates = futureReservationsByCar[car.id];
+    $scope.unavailableDates = reservationsForSelectedCar;
+
+    if (!car.available) {
+      $scope.startDate = findAvailableDateAfter($scope.startDate, reservationsForSelectedCar);
+      $scope.endDate = cloneDate($scope.startDate);
+
+      updateCarsAvailability();
+    }
   };
 
   $scope.submitReservation = function() {
