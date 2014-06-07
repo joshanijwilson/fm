@@ -31,6 +31,12 @@ function byName(a, b) {
   return 0
 }
 
+function byStart(a, b) {
+  if (a.start < b.start) return -1;
+  if (a.start > b.start) return 1;
+  return 0;
+}
+
 function filterCarModelsFromCars(cars) {
   var models = [];
   var alreadyIn = {};
@@ -61,6 +67,7 @@ function ReserveController($scope, $location, dataSource, dataCars, loadingIndic
 
   $scope.selectCar = function(car) {
     $scope.selectedCar = car;
+    $scope.unavailableDates = futureReservationsByCar[car.id];
   };
 
   $scope.submitReservation = function() {
@@ -124,6 +131,7 @@ function ReserveController($scope, $location, dataSource, dataCars, loadingIndic
   $scope.selectedCar = null;
   $scope.startDate = cloneDate(TODAY);
   $scope.endDate = cloneDate(TODAY);
+  $scope.unavailableDates = null;
   $scope.customer = null;
   $scope.reasonOptions = REASON_OPTIONS;
   $scope.selectedReason = REASON_OPTIONS[0];
@@ -134,6 +142,11 @@ function ReserveController($scope, $location, dataSource, dataCars, loadingIndic
     reservations.forEach(function(reservation) {
       futureReservationsByCar[reservation.car_id] = futureReservationsByCar[reservation.car_id] || [];
       futureReservationsByCar[reservation.car_id].push(reservation);
+    });
+
+    // Sort reservations by start date (bs-datepicker expects sorted ranges).
+    angular.forEach(futureReservationsByCar, function(reservations, carId) {
+      reservations.sort(byStart);
     });
 
     updateCarsAvailability();
