@@ -128,6 +128,10 @@ function ReserveController($scope, $location, dataSource, dataCars, loadingIndic
     });
   };
 
+  $scope.isValid = function() {
+    return $scope.form.$valid && $scope.selectedCar  && $scope.selectedCar.available;
+  };
+
   $scope.filterCarsByModel = function(model) {
     if (model.id === null) {
       $scope.carOptions = allCarOptions;

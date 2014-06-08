@@ -35,5 +35,5 @@
     <label for="note-input">Poznámka (nepovinné)</label>
     <textarea ng-model="note" class="form-control" rows="3" id="note-input" placeholder="Poznámka k rezervaci..."></textarea>
   </div>
-  <button ng-click="submitReservation()" ng-disabled="form.$invalid" type="submit" class="btn btn-primary btn-lg">Rezervovat</button>
+  <button ng-click="submitReservation()" ng-disabled="!isValid()" type="submit" class="btn btn-primary btn-lg">Rezervovat</button>
 </form>
