@@ -17,6 +17,9 @@ function dataFromResponse(response) {
   return response.data;
 }
 
+function parseDate(string) {
+  return new Date(string.replace(/-/g, '/'));
+}
 
 // copy-pasted from server, might be shared
 function formatDateToString(date) {
@@ -28,8 +31,8 @@ function DataSource($http) {
   this.getAllFutureReservations = function() {
     return $http.get(API_URL + 'reservations?start_gt=now').then(dataFromResponse).then(function(reservations) {
       reservations.forEach(function(reservation) {
-        reservation.start = new Date(reservation.start);
-        reservation.end = new Date(reservation.end);
+        reservation.start = parseDate(reservation.start);
+        reservation.end = parseDate(reservation.end);
       });
       return reservations;
     });
@@ -44,8 +47,8 @@ function DataSource($http) {
 
   this.getReservation = function(id) {
     return $http.get(API_URL + 'reservations/' + id).then(dataFromResponse).then(function(reservation) {
-      reservation.start = new Date(reservation.start);
-      reservation.end = new Date(reservation.end);
+      reservation.start = parseDate(reservation.start);
+      reservation.end = parseDate(reservation.end);
 
       return reservation;
     });
