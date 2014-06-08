@@ -60,6 +60,10 @@ body {
   width: 100%;
 }
 
+.car-label {
+  padding: 0 5px;
+}
+
 .btn-lg {
   padding-right: 30px;
   padding-left: 30px;

@@ -1,6 +1,5 @@
 <form role="form" name="form" novalidate>
   <div class="form-group">
-    <label for="car-model-select">Vůz</label>
     <select ng-model="selectedModel" ng-options="model.name for model in modelOptions"
             ng-change="filterCarsByModel(selectedModel)"
             class="form-control" id="car-model-select"></select>
@@ -8,8 +7,10 @@
   <div class="form-group">
     <div ng-repeat="car in carOptions" ng-click="selectCar(car)"
          ng-class="{'selected': selectedCar === car, 'not-available': !car.available}" class="car-option">
-         <img ng-src="./cars/{{pictureFor(car.model_name)}}" alt="{{car.name}}">
-         <strong>{{car.name}} ({{car.model_year}})</strong>, výbava: {{car.equipment}}, {{car.transmission}}
+      <img ng-src="./cars/{{pictureFor(car.model_name)}}" alt="{{car.name}}">
+      <div class="car-label">
+        <strong>{{car.name}} ({{car.model_year}})</strong>, {{car.equipment}}, {{car.transmission}}
+      </div>
     </div>
   </div>
   <div class="form-group">
