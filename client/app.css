@@ -57,6 +57,11 @@ body {
   width: 100%;
 }
 
+.btn-lg {
+  padding-right: 30px;
+  padding-left: 30px;
+}
+
 
 
 /* Loader Indicator */
