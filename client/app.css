@@ -34,15 +34,27 @@ body {
 /* Reserve */
 .car-option {
   cursor: pointer;
-  border: 2px solid transparent;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  background-color: #DDD;
+}
+
+.car-option:hover {
+  background-color: #B2D7F8;
 }
 
 .car-option.selected {
-  border-color: yellow;
+  background-color: #428bca;
+  color: white;
 }
 
 .car-option.not-available {
   opacity: .4;
+}
+
+.car-option img {
+  width: 100%;
 }
 
 

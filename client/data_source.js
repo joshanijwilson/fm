@@ -1,5 +1,18 @@
 var API_URL = '/api/v1/';
 
+var CAR_EQUIPMENT = {
+  1: 'Kinetic',
+  2: 'Momentum',
+  3: 'Summum',
+  4: 'R-Design'
+};
+
+var CAR_TRANSMISSION = {
+  'AUTO': 'automat',
+  'MANUAL': 'manuál'
+};
+
+
 function dataFromResponse(response) {
   return response.data;
 }
@@ -39,6 +52,13 @@ function DataSource($http) {
   };
 
   this.getAllCars = function() {
-    return $http.get(API_URL + 'cars').then(dataFromResponse);
+    return $http.get(API_URL + 'cars').then(dataFromResponse).then(function(cars) {
+      cars.forEach(function(car) {
+        car.equipment = CAR_EQUIPMENT[car.equipment];
+        car.transmission = CAR_TRANSMISSION[car.transmission];
+      });
+
+      return cars;
+    });
   };
 }
