@@ -1,15 +1,21 @@
 function isCarAvailable(reservations, startDate, endDate) {
-  if (!reservations) {
+  if (!reservations || !reservations.length) {
     return true;
   }
 
   for (var i = 0; i < reservations.length; i++) {
-    if (endDate < reservations[i].start || startDate > reservations[i].end) {
-      // Requested interval is before given reservation or after.
+    if (reservations[i].end < startDate) {
+      // This reservation is before the requested interval.
       continue;
-    } else {
-      return false;
     }
+
+    if (endDate < reservations[i].start) {
+      // This reservation is after the requested interval.
+      // Because the reservations are sorted, we can end the loop.
+      return true;
+    }
+
+    return false;
   }
 
   return true;
@@ -134,9 +140,11 @@ function ReserveController($scope, $location, dataSource, dataCars, loadingIndic
   };
 
   var updateCarsAvailability = function() {
+    console.time('updateCarsAvailability');
     angular.forEach(allCarOptions, function(car) {
       car.available = isCarAvailable(futureReservationsByCar[car.id], $scope.startDate, $scope.endDate);
     });
+    console.timeEnd('updateCarsAvailability');
   };
 
   $scope.startDateChanged = function() {
