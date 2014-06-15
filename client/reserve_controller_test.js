@@ -1,3 +1,17 @@
+var isCarAvailable = require('./utils').isCarAvailable;
+var ReserveController = require('./reserve_controller');
+var DataSource = require('./data_source');
+
+var module = angular.mock.module;
+
+// TODO(vojta): duplicate from data_service.js
+var API_URL = '/api/v1/';
+
+// TODO(vojta): duplicate from reserve_controller.js
+function cloneDate(date) {
+  return new Date(date);
+}
+
 var MOCK_CARS = [
    {
       "id":10,
