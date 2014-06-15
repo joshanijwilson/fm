@@ -33,6 +33,16 @@ var paths = {
     'bower_components/angular-strap/dist/modules/tooltip.js',
     'hacked-datepicker.js',
     'bower_components/angular-strap/dist/modules/datepicker.tpl.js'
+  ],
+  angular: [
+    'bower_components/angular/angular.js',
+    'bower_components/angular-route/angular-route.js',
+    'bower_components/angular-touch/angular-touch.js'
+  ],
+  angularMinified: [
+    'bower_components/angular/angular.min.js',
+    'bower_components/angular-route/angular-route.min.js',
+    'bower_components/angular-touch/angular-touch.min.js'
   ]
 };
 
@@ -65,6 +75,24 @@ gulp.task('build/datepicker.js', function() {
 
 
 
+// Concat Angular bundle.
+gulp.task('build/angular-bundle.js', function() {
+  return gulp.src(paths.angular)
+    .pipe(concat('angular-bundle.js'))
+    .pipe(gulp.dest('build'));
+});
+
+
+
+// Concat Angular bundle - minified.
+gulp.task('build/angular-bundle.min.js', function() {
+  return gulp.src(paths.angularMinified)
+    .pipe(concat('angular-bundle.min.js'))
+    .pipe(gulp.dest('build'));
+});
+
+
+
 // The entire app bundle.
 gulp.task('build/fm.js', ['build/templates.js', 'build/datepicker.js'], function() {
   return multipleSrc(
@@ -92,8 +120,9 @@ gulp.task('build/fm.min.js', ['build/fm.js'], function() {
 gulp.task('build/index', function() {
   return gulp.src('index.html')
     .pipe(htmlreplace({
-      'css': '../app.css',
-      'js' : './fm.js'
+      'css'    : '../app.css',
+      'js'     : './fm.js',
+      'angular': './angular-bundle.js'
     }))
     .pipe(gulp.dest('build'));
 });
@@ -104,8 +133,9 @@ gulp.task('build/index', function() {
 gulp.task('build/index.min', function() {
   return gulp.src('index.html')
     .pipe(htmlreplace({
-        'css': '../app.css',
-        'js': './fm.min.js'
+        'css'    : '../app.css',
+        'js'     : './fm.min.js',
+        'angular': './angular-bundle.min.js'
     }))
     .pipe(concat('index.min.html'))
     .pipe(gulp.dest('build'));
