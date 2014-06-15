@@ -10,3 +10,5 @@ function AppController($scope, loadingIndicator) {
 }
 
 AppController.$inject = ['$scope', 'loadingIndicator'];
+
+module.exports = AppController;

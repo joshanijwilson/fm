@@ -1,3 +1,7 @@
+var ReserveController        = require('./reserve_controller');
+var ReserveSuccessController = require('./reserve_success_controller');
+var ExistingController       = require('./existing_controller');
+
 function configure($routeProvider, $datepickerProvider) {
   $routeProvider
     .when('/',         {templateUrl: 'menu.html'})
@@ -16,3 +20,5 @@ function configure($routeProvider, $datepickerProvider) {
 }
 
 configure.$inject = ['$routeProvider', '$datepickerProvider'];
+
+module.exports = configure;

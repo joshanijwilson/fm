@@ -12,14 +12,12 @@ var streamqueue = require('streamqueue');
 var htmlreplace = require('gulp-html-replace');
 var clean = require('gulp-clean');
 var ngmin = require('gulp-ngmin');
+var browserify = require('gulp-browserify');
+var insert = require('gulp-insert');
 
 
-function multipleSrc() {
+function merge() {
   var args = Array.prototype.slice.call(arguments, 0)
-      .map(function(pattern) {
-        return gulp.src(pattern);
-      });
-
   return streamqueue.apply(null, [{objectMode: true}].concat(args));
 }
 
@@ -59,7 +57,7 @@ gulp.task('clean', function () {
 // Compile Angular templates into a single JS file.
 gulp.task('build/templates.js', function () {
   return gulp.src(paths.templates)
-    .pipe(templateCache({module: 'fm'}))
+    .pipe(templateCache({module: 'fm.templates', standalone: true}))
     .pipe(gulp.dest('build'));
 });
 
@@ -95,13 +93,14 @@ gulp.task('build/angular-bundle.min.js', function() {
 
 // The entire app bundle.
 gulp.task('build/fm.js', ['build/templates.js', 'build/datepicker.js'], function() {
-  return multipleSrc(
-    paths.scripts,
-    'build/datepicker.js',
-    'app.js',
-    'build/templates.js'
-  ).pipe(concat('fm.js'))
-   .pipe(gulp.dest('build'));
+  return merge(
+      gulp.src('build/templates.js'),
+      gulp.src('build/datepicker.js'),
+      gulp.src('index.js').pipe(browserify())
+    )
+    .pipe(concat('fm.js'))
+    .pipe(insert.prepend('window.FM_BUNDLED = true;'))
+    .pipe(gulp.dest('build'))
 });
 
 

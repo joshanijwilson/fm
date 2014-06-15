@@ -10,3 +10,5 @@ ReserveSuccessController.resolve = {
 
 ReserveSuccessController.$inject = ['$scope', 'dataReservation'];
 ReserveSuccessController.resolve.dataReservation.$inject = ['dataSource', '$route'];
+
+module.exports = ReserveSuccessController;

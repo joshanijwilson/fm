@@ -14,3 +14,5 @@ function LoadingIndicator() {
 }
 
 LoadingIndicator.$inject = [];
+
+module.exports = LoadingIndicator;

@@ -68,3 +68,5 @@ function DataSource($http) {
 }
 
 DataSource.$inject = ['$http'];
+
+module.exports = DataSource;

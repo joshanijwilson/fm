@@ -204,3 +204,5 @@ ReserveController.resolve = {
 
 ReserveController.$inject = ['$scope', '$location', 'dataSource', 'dataCars', 'loadingIndicator'];
 ReserveController.resolve.dataCars.$inject = ['dataSource'];
+
+module.exports = ReserveController;
