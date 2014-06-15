@@ -26,6 +26,7 @@ function formatDateToString(date) {
   return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 }
 
+
 function DataSource($http) {
 
   this.getAllFutureReservations = function() {
@@ -65,3 +66,5 @@ function DataSource($http) {
     });
   };
 }
+
+DataSource.$inject = ['$http'];

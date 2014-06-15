@@ -19,6 +19,7 @@
     "gulp-concat": "~2.2.0",
     "streamqueue": "~0.1.1",
     "gulp-html-replace": "~1.1.0",
-    "gulp-clean": "~0.3.0"
+    "gulp-clean": "~0.3.0",
+    "gulp-ngmin": "~0.3.0"
   }
 }

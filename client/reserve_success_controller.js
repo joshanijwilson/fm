@@ -1,5 +1,3 @@
-
-
 function ReserveSuccessController($scope, dataReservation) {
   $scope.reservation = dataReservation;
 }
@@ -9,3 +7,6 @@ ReserveSuccessController.resolve = {
     return dataSource.getReservation($route.current.params.id);
   }
 };
+
+ReserveSuccessController.$inject = ['$scope', 'dataReservation'];
+ReserveSuccessController.resolve.dataReservation.$inject = ['dataSource', '$route'];

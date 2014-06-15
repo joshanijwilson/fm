@@ -8,3 +8,5 @@ function AppController($scope, loadingIndicator) {
     loadingIndicator.hide();
   });
 }
+
+AppController.$inject = ['$scope', 'loadingIndicator'];

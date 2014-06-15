@@ -11,6 +11,8 @@ var templateCache = require('gulp-angular-templatecache');
 var streamqueue = require('streamqueue');
 var htmlreplace = require('gulp-html-replace');
 var clean = require('gulp-clean');
+var ngmin = require('gulp-ngmin');
+
 
 function multipleSrc() {
   var args = Array.prototype.slice.call(arguments, 0)
@@ -56,6 +58,7 @@ gulp.task('build/templates.js', function () {
 // Concat datepicker.
 gulp.task('build/datepicker.js', function() {
   return gulp.src(paths.datepicker)
+    .pipe(ngmin())
     .pipe(concat('datepicker.js'))
     .pipe(gulp.dest('build'));
 });
@@ -118,4 +121,5 @@ gulp.task('copy/assets', function() {
 
 
 
-gulp.task('build', ['build/fm.js', 'build/index', 'copy/assets']);
+gulp.task('build', ['build/fm.js', 'build/angular-bundle.js', 'build/index', 'copy/assets']);
+gulp.task('build.min', ['build/fm.min.js', 'build/angular-bundle.min.js', 'build/index.min', 'copy/assets']);

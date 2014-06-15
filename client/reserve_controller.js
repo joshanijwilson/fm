@@ -195,9 +195,12 @@ function ReserveController($scope, $location, dataSource, dataCars, loadingIndic
   });
 }
 
-
 ReserveController.resolve = {
   dataCars: function(dataSource) {
     return dataSource.getAllCars();
   }
 };
+
+
+ReserveController.$inject = ['$scope', '$location', 'dataSource', 'dataCars', 'loadingIndicator'];
+ReserveController.resolve.dataCars.$inject = ['dataSource'];

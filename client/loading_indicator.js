@@ -12,3 +12,5 @@ function LoadingIndicator() {
     body.removeClass('modal-open');
   };
 }
+
+LoadingIndicator.$inject = [];
