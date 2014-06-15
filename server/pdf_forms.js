@@ -2,6 +2,7 @@ var exec = require('child_process').exec;
 var moment = require('moment');
 
 
+// Mapping values from model to survey-empty.pdf form.
 function getSurveyFields(car) {
   return {
     // Model
@@ -21,6 +22,7 @@ function getSurveyFields(car) {
   };
 }
 
+// Mapping values from model to reservation-protocol-empty.pdf
 function getReservationProtocolFields(reservation, car, customer) {
   return {
     // Typ vozidla.
@@ -121,22 +123,21 @@ function getReservationProtocolFields(reservation, car, customer) {
 
 var FILL_PDF_CMD = 'java -jar ./pdf_generator/build/libs/pdf_generator-all-0.1.0.jar';
 
+
+function generatePdf(inputFile, outputFile, fields) {
+  exec(FILL_PDF_CMD + ' --input ' + inputFile + ' --output ' + outputFile + ' --fields \'' + JSON.stringify(fields) + '\'', function() {
+    console.log('EXEC done', arguments);
+  });
+}
+
 exports.generateProtocol = function(reservation, car, customer) {
   // // TODO(vojta): super lame, fix it.
   exec('mkdir -p ./storage/reservations/' + reservation.id);
 
-  var fields = getReservationProtocolFields(reservation, car, customer);
-
-  exec(FILL_PDF_CMD + ' --input ./server/reservation-protocol-empty.pdf --output ./storage/reservations/' + reservation.id + '/protocol.pdf --fields \'' + JSON.stringify(fields) + '\'', function() {
-    console.log('EXEC done', arguments);
-  });
+  generatePdf('./server/reservation-protocol-empty.pdf', './storage/reservations/' + reservation.id + '/protocol.pdf', getReservationProtocolFields(reservation, car, customer));
 };
 
 
 exports.generateSurvey = function(reservation, car) {
-  var fields = getSurveyFields(car);
-
-  exec(FILL_PDF_CMD + ' --input ./server/survey-empty.pdf --output ./storage/reservations/' + reservation.id + '/survey.pdf --fields \'' + JSON.stringify(fields) + '\'', function() {
-    console.log('EXEC done', arguments);
-  });
+  generatePdf('./server/survey-empty.pdf', './storage/reservations/' + reservation.id + '/survey.pdf', getSurveyFields(car));
 };
