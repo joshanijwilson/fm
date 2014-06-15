@@ -8,11 +8,17 @@
   },
   "author": "Vojta Jina <vojta.jina@gmail.com>",
   "license": "MIT",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "karma": "~0.12.16",
     "karma-jasmine": "~0.1.5",
-    "karma-chrome-launcher": "~0.1.4"
+    "karma-chrome-launcher": "~0.1.4",
+    "gulp": "~3.7.0",
+    "gulp-angular-templatecache": "~1.2.0",
+    "gulp-uglify": "~0.3.0",
+    "gulp-concat": "~2.2.0",
+    "streamqueue": "~0.1.1",
+    "gulp-html-replace": "~1.1.0",
+    "gulp-clean": "~0.3.0"
   }
 }
