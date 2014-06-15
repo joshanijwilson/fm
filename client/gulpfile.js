@@ -115,7 +115,7 @@ gulp.task('build/index.min', function() {
 
 // Copy all the assets.
 gulp.task('copy/assets', function() {
-  return gulp.src(['cars/*.jpg', 'loading.gif'], {base: '.'})
+  return gulp.src(['cars/*_600.jpg', 'loading.gif'], {base: '.'})
   .pipe(gulp.dest('build'));
 })
 
