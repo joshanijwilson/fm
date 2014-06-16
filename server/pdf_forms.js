@@ -1,5 +1,6 @@
 var exec = require('child_process').exec;
 var moment = require('moment');
+var q = require('q');
 
 
 // Mapping values from model to survey-empty.pdf form.
@@ -125,19 +126,47 @@ var FILL_PDF_CMD = 'java -jar ./pdf_generator/build/libs/pdf_generator-all-0.1.0
 
 
 function generatePdf(inputFile, outputFile, fields) {
-  exec(FILL_PDF_CMD + ' --input ' + inputFile + ' --output ' + outputFile + ' --fields \'' + JSON.stringify(fields) + '\'', function() {
+  var deferred = q.defer();
+
+  // console.log(FILL_PDF_CMD + ' --input ' + inputFile + ' --output ' + outputFile + ' --fields \'' + JSON.stringify(fields) + '\'')
+  exec(FILL_PDF_CMD + ' --input ' + inputFile + ' --output ' + outputFile + ' --fields \'' + JSON.stringify(fields) + '\'', function(err) {
+    if (err) {
+      return deferred.reject(err);
+    }
+
+    deferred.resolve(outputFile);
     console.log('EXEC done', arguments);
   });
+
+  return deferred.promise;
 }
 
-exports.generateProtocol = function(reservation, car, customer) {
+function generateProtocol(reservation, car, customer) {
   // // TODO(vojta): super lame, fix it.
   exec('mkdir -p ./storage/reservations/' + reservation.id);
 
-  generatePdf('./server/reservation-protocol-empty.pdf', './storage/reservations/' + reservation.id + '/protocol.pdf', getReservationProtocolFields(reservation, car, customer));
+  return generatePdf('./server/reservation-protocol-empty.pdf', './storage/reservations/' + reservation.id + '/protocol.pdf', getReservationProtocolFields(reservation, car, customer));
 };
 
 
-exports.generateSurvey = function(reservation, car) {
-  generatePdf('./server/survey-empty.pdf', './storage/reservations/' + reservation.id + '/survey.pdf', getSurveyFields(car));
+function generateSurvey(reservation, car) {
+  return generatePdf('./server/survey-empty.pdf', './storage/reservations/' + reservation.id + '/survey.pdf', getSurveyFields(car));
 };
+
+
+exports.scheduleGeneratingPdfForReservation = function(query, id) {
+  return query({sql: 'SELECT * FROM reservations LEFT JOIN customers ON reservations.customer_id = customers.id LEFT JOIN cars ON reservations.car_id = cars.id LEFT JOIN car_models ON cars.model_id = car_models.id WHERE reservations.id = ?', values: id, nestTables: true}).then(function(rows) {
+    var result = rows[0];
+
+    // console.log('RESULT', result)
+    result.cars.model_name = result.car_models.name;
+
+    console.log('GENERATING');
+    return q.all([
+      generateProtocol(result.reservations, result.cars, result.customers),
+      generateSurvey(result.reservations, result.cars)
+    ]);
+  }, function() {
+    console.log('err', arguments)
+  });
+}
