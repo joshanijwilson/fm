@@ -14,6 +14,7 @@ var clean = require('gulp-clean');
 var ngmin = require('gulp-ngmin');
 var browserify = require('gulp-browserify');
 var insert = require('gulp-insert');
+var less = require('gulp-less');
 
 
 function merge() {
@@ -115,11 +116,21 @@ gulp.task('build/fm.min.js', ['build/fm.js'], function() {
 
 
 
+// LESS -> CSS.
+gulp.task('build/fm.css', function () {
+  return gulp.src('*.less')
+    .pipe(less({}))
+    .pipe(concat('fm.css'))
+    .pipe(gulp.dest('build'));
+});
+
+
+
 // The index.html with JS/CSS replaced.
 gulp.task('build/index', function() {
   return gulp.src('index.html')
     .pipe(htmlreplace({
-      'css'    : '../app.css',
+      'css'    : './fm.css',
       'js'     : './fm.js',
       'angular': './angular-bundle.js'
     }))
@@ -132,7 +143,7 @@ gulp.task('build/index', function() {
 gulp.task('build/index.min', function() {
   return gulp.src('index.html')
     .pipe(htmlreplace({
-        'css'    : '../app.css',
+        'css'    : './fm.css',
         'js'     : './fm.min.js',
         'angular': './angular-bundle.min.js'
     }))
@@ -150,5 +161,5 @@ gulp.task('copy/assets', function() {
 
 
 
-gulp.task('build', ['build/fm.js', 'build/angular-bundle.js', 'build/index', 'copy/assets']);
+gulp.task('build', ['build/fm.js', 'build/fm.css', 'build/angular-bundle.js', 'build/index', 'copy/assets']);
 gulp.task('build.min', ['build/fm.min.js', 'build/angular-bundle.min.js', 'build/index.min', 'copy/assets']);
