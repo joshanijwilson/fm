@@ -1,0 +1,41 @@
+body {
+  padding-top: 70px;
+  text-align: center;
+}
+
+/* Avoid opening toolbar/address bar when clicking a button at the bottom of the page */
+.footer-ios-hack {
+  line-height: 15px;
+  height: 15px;
+}
+
+/* Header */
+.title {
+  font-size: 2em;
+  padding-top: .15em;
+}
+
+.content {
+  max-width: 600px; /* Limit with for big screens (desktop) */
+  margin: 0 auto;
+}
+
+
+/* Loader Indicator */
+#loader-indicator img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  margin-left: -8px;
+}
+
+#loader-indicator.fade.in {
+  display: block !important;
+}
+
+
+@import "menu";
+@import "reserve/reserve";

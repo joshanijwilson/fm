@@ -65,7 +65,7 @@ function DataSource($http) {
       return cars;
     });
   };
-}
+};
 
 DataSource.$inject = ['$http'];
 

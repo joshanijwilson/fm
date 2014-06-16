@@ -24,14 +24,13 @@ function merge() {
 }
 
 var paths = {
-  scripts: ['*.js', '!*_test.js', '!app.js', '!gulpfile.js', '!karma.conf.js', '!hacked-datapicker.js'],
-  templates: ['./*.html', '!index.html'],
-  init: ['app.js'],
+  templates: ['src/**/*.html', '!src/index.html'],
+  styles: ['src/index.less'],
   datepicker: [
     'bower_components/angular-strap/src/helpers/date-parser.js',
     'bower_components/angular-strap/src/helpers/dimensions.js',
     'bower_components/angular-strap/dist/modules/tooltip.js',
-    'hacked-datepicker.js',
+    'lib/hacked-datepicker.js',
     'bower_components/angular-strap/dist/modules/datepicker.tpl.js'
   ],
   angular: [
@@ -98,7 +97,7 @@ gulp.task('build/fm.js', ['build/templates.js', 'build/datepicker.js'], function
   return merge(
       gulp.src('build/templates.js'),
       gulp.src('build/datepicker.js'),
-      gulp.src('index.js').pipe(browserify())
+      gulp.src('src/index.js').pipe(browserify())
     )
     .pipe(concat('fm.js'))
     .pipe(insert.prepend('window.FM_BUNDLED = true;'))
@@ -119,7 +118,7 @@ gulp.task('build/fm.min.js', ['build/fm.js'], function() {
 
 // LESS -> CSS.
 gulp.task('build/fm.css', function () {
-  return gulp.src('*.less')
+  return gulp.src(paths.styles)
     .pipe(less({}))
     .pipe(concat('fm.css'))
     .pipe(gulp.dest('build'));
@@ -139,7 +138,7 @@ gulp.task('build/fm.min.css', ['build/fm.css'], function() {
 
 // The index.html with JS/CSS replaced.
 gulp.task('build/index', function() {
-  return gulp.src('index.html')
+  return gulp.src('src/index.html')
     .pipe(htmlreplace({
       'css'    : './fm.css',
       'js'     : './fm.js',
@@ -152,7 +151,7 @@ gulp.task('build/index', function() {
 
 // The index.html with minified JS/CSS.
 gulp.task('build/index.min', function() {
-  return gulp.src('index.html')
+  return gulp.src('src/index.html')
     .pipe(htmlreplace({
         'css'    : './fm.min.css',
         'js'     : './fm.min.js',
@@ -165,12 +164,17 @@ gulp.task('build/index.min', function() {
 
 
 // Copy all the assets.
+gulp.task('copy/cars', function() {
+  return gulp.src(['cars/*_600.jpg'], {base: '.'})
+    .pipe(gulp.dest('build'));
+})
+
 gulp.task('copy/assets', function() {
-  return gulp.src(['cars/*_600.jpg', 'loading.gif'], {base: '.'})
-  .pipe(gulp.dest('build'));
+  return gulp.src(['src/loading.gif'])
+    .pipe(gulp.dest('build'));
 })
 
 
 
-gulp.task('build', ['build/fm.js', 'build/fm.css', 'build/angular-bundle.js', 'build/index', 'copy/assets']);
-gulp.task('build.min', ['build/fm.min.js', 'build/fm.min.css', 'build/angular-bundle.min.js', 'build/index.min', 'copy/assets']);
+gulp.task('build', ['build/fm.js', 'build/fm.css', 'build/angular-bundle.js', 'build/index', 'copy/assets', 'copy/cars']);
+gulp.task('build.min', ['build/fm.min.js', 'build/fm.min.css', 'build/angular-bundle.min.js', 'build/index.min', 'copy/assets', 'copy/cars']);
