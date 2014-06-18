@@ -1,4 +1,5 @@
 var scheduleGeneratingPdfForReservation = require('./pdf_forms').scheduleGeneratingPdfForReservation;
+var scheduleSendingReservationEmail = require('./send_mail').scheduleSendingEmailAfterRegistration;
 
 var DbQuery = require('./di-express').DbQuery;
 var RequestBody = require('./di-express').RequestBody;
@@ -51,7 +52,11 @@ exports.routes = {
         function insertReservation(reservation) {
           return dbQuery('INSERT INTO reservations SET ?', reservation).then(function(result) {
             scheduleGeneratingPdfForReservation(dbQuery, result.insertId).done();
-
+            scheduleSendingReservationEmail().then(function() {
+              console.log('EMAIL SENT OK');
+            }, function(err) {
+              console.log('email fail', err)
+            }).done();
             return {
               id:result.insertId
             };
