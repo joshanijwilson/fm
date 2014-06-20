@@ -4,7 +4,14 @@ function AppController($scope, loadingIndicator) {
   $scope.pageTitle = DEFAULT_PAGE_TITLE;
 
   $scope.$on('$routeChangeSuccess', function(e, current) {
-    $scope.pageTitle = current.$$route.title || DEFAULT_PAGE_TITLE;
+    if (!current) {
+      $scope.pageTitle = DEFAULT_PAGE_TITLE;
+      $scope.showMenuButton = true;
+    } else {
+      $scope.pageTitle = current.$$route.title || DEFAULT_PAGE_TITLE;
+      $scope.showMenuButton = angular.isDefined(current.$$route.showMenuButton) ? current.$$route.showMenuButton : true;
+    }
+
     loadingIndicator.hide();
   });
 }

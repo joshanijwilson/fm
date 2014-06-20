@@ -4,10 +4,10 @@ var ExistingController       = require('./existing/existing_controller');
 
 function configure($routeProvider, $datepickerProvider) {
   $routeProvider
-    .when('/',         {templateUrl: 'menu.html'})
+    .when('/',         {templateUrl: 'menu.html', showMenuButton: false})
     .when('/reserve',  {templateUrl: 'reserve/reserve.html',  controller: ReserveController, resolve: ReserveController.resolve, title: 'Rezervace'})
-    .when('/reserve/:id/success',  {templateUrl: 'reserve/reserve_success.html',  controller: ReserveSuccessController, resolve: ReserveSuccessController.resolve, title: 'Úspěšně zarezervováno'})
-    .when('/reserve/:id/canceled',  {templateUrl: 'reserve/reserve_canceled.html',  title: 'Rezervace zrušena'})
+    .when('/reserve/:id/success',  {templateUrl: 'reserve/reserve_success.html',  controller: ReserveSuccessController, resolve: ReserveSuccessController.resolve, title: 'Úspěšně zarezervováno', showMenuButton: false})
+    .when('/reserve/:id/canceled',  {templateUrl: 'reserve/reserve_canceled.html',  title: 'Rezervace zrušena', showMenuButton: false})
     .when('/existing', {templateUrl: 'existing/existing.html', controller: ExistingController, title: 'Stávající rezervace'})
 
   angular.extend($datepickerProvider.defaults, {

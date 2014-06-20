@@ -9,6 +9,7 @@ angular.module('fm', deps)
   .service(   'dataSource',       require('./data_source'))
   .service(   'loadingIndicator', require('./loading_indicator'))
   .config(                        require('./configure'))
+  .directive('isVisible',         require('./is_visible_directive'))
 ;
 
 angular.bootstrap(document, ['fm']);

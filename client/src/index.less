@@ -13,11 +13,32 @@ body {
 .title {
   font-size: 2em;
   padding-top: .15em;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .content {
-  max-width: 600px; /* Limit with for big screens (desktop) */
+  max-width: 600px; /* Limit witdh for big screens (desktop) */
   margin: 0 auto;
+}
+
+.btn-home {
+  float: left;
+  padding-top: .18em;
+}
+
+.btn-settings {
+  float: right;
+  padding-top: .15em;
+}
+
+.btn-settings, .btn-home {
+  color: #444;
+  visibility: hidden;
+
+  &:hover {
+    color: black;
+  }
 }
 
 
