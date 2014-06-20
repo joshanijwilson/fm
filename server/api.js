@@ -85,7 +85,6 @@ exports.routes = {
     'GET': {
       inject:          [DbQuery, PathParam('id')],
       handler: function(dbQuery, id) {
-        console.log(id)
         return dbQuery('SELECT reservations.*, cars.name AS car_name FROM reservations LEFT JOIN cars ON reservations.car_id = cars.id WHERE reservations.id = ?', id)
           .then(takeOneRow).then(formatReservationDates);
       }
