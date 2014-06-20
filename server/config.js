@@ -17,6 +17,7 @@ module.exports = {
   },
 
   emailNotifications: {
+    enabled: false,
     from: 'Fleet Manager <fleetmanager.volvo@gmail.com>',
     to: 'vojta.jina@gmail.com'
   }

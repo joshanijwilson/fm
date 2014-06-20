@@ -40,6 +40,10 @@ var emailTemplates = {
 
 
 exports.scheduleSendingEmailAfterRegistration = function() {
+  if (!config.emailNotifications.enabled) {
+    return q();
+  }
+
   var replacements = {
     car: {
       name: 'S60 T6 AWD Polestar'
