@@ -1,5 +1,14 @@
-function ReserveSuccessController($scope, dataReservation) {
-  $scope.reservation = dataReservation;
+function ReserveSuccessController($scope, reservation, loadingIndicator, dataSource, $location) {
+  $scope.reservation = reservation;
+
+  $scope.cancelReservation = function() {
+
+    loadingIndicator.show();
+
+    dataSource.deleteReservation(reservation.id).then(function() {
+      $location.path('/reserve/' + reservation.id + '/canceled');
+    });
+  };
 }
 
 ReserveSuccessController.resolve = {
@@ -8,7 +17,7 @@ ReserveSuccessController.resolve = {
   }
 };
 
-ReserveSuccessController.$inject = ['$scope', 'dataReservation'];
+ReserveSuccessController.$inject = ['$scope', 'dataReservation', 'loadingIndicator', 'dataSource', '$location'];
 ReserveSuccessController.resolve.dataReservation.$inject = ['dataSource', '$route'];
 
 module.exports = ReserveSuccessController;

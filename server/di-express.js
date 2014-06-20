@@ -79,7 +79,7 @@ function PathParam(paramName) {
 
 function registerRoutes(injector, app, routes) {
   Object.keys(routes).forEach(function(url) {
-    ['GET', 'POST'].forEach(function(method) {
+    ['GET', 'POST', 'PUT', 'DELETE'].forEach(function(method) {
       var route = routes[url][method];
 
       if (route) {

@@ -46,6 +46,10 @@ function DataSource($http) {
     return $http.post(API_URL + 'reservations', reservation).then(dataFromResponse);
   };
 
+  this.deleteReservation = function(id) {
+    return $http.delete(API_URL + 'reservations/' + id).then(dataFromResponse);
+  };
+
   this.getReservation = function(id) {
     return $http.get(API_URL + 'reservations/' + id).then(dataFromResponse).then(function(reservation) {
       reservation.start = parseDate(reservation.start);

@@ -37,5 +37,22 @@ body {
 }
 
 
+/* Reservation success */
+// TODO(vojta): Use from bootstrap.
+@border-radius-base:        4px;
+
+.btn-group-vertical.first-standalone > .btn {
+  &:first-child {
+    border-radius: @border-radius-base;
+    margin-bottom: 12px;
+  }
+
+  &:nth-child(2) {
+    border-top-left-radius: @border-radius-base;
+    border-top-right-radius: @border-radius-base;
+  }
+}
+
+
 @import "menu";
 @import "reserve/reserve";

@@ -89,6 +89,13 @@ exports.routes = {
         return dbQuery('SELECT reservations.*, cars.name AS car_name FROM reservations LEFT JOIN cars ON reservations.car_id = cars.id WHERE reservations.id = ?', id)
           .then(takeOneRow).then(formatReservationDates);
       }
+    },
+
+    'DELETE': {
+      inject:          [DbQuery, PathParam('id')],
+      handler: function(dbQuery, id) {
+        return dbQuery('DELETE FROM reservations WHERE id = ?', id);
+      }
     }
   },
 
