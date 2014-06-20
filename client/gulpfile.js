@@ -97,6 +97,7 @@ gulp.task('build/fm.js', ['build/templates.js', 'build/datepicker.js'], function
   return merge(
       gulp.src('build/templates.js'),
       gulp.src('build/datepicker.js'),
+      gulp.src('lib/angular-locale_cs-cz.js'),
       gulp.src('src/index.js').pipe(browserify())
     )
     .pipe(concat('fm.js'))
