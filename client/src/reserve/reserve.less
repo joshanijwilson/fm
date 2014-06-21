@@ -25,6 +25,12 @@
 
 .car-option img {
   width: 100%;
+
+  /* Set exact size for common screen sizes to avoid layouting while loading images */
+  @media only screen and (min-width : 600px) {
+    width: 596px;
+    height: 298px;
+  }
 }
 
 .car-label {
