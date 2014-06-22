@@ -1,12 +1,11 @@
 var config = require('../config').forCurrentEnvironment();
-var mysqlConfig = config.mysql;
 
 module.exports = {
   "dev": {
     "driver"   : "mysql",
-    "user"     : mysql.user,
-    "password" : mysql.password,
-    "host"     : mysql.host,
-    "database" : mysql.database
+    "user"     : config.mysql.user,
+    "password" : config.mysql.password,
+    "host"     : config.mysql.host,
+    "database" : config.mysql.database
   }
 };
