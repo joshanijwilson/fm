@@ -64,9 +64,7 @@ exports.routes = {
         }
 
         if (reservation.customer) {
-          var names = reservation.customer.split(' ', 2);
-
-          return dbQuery('INSERT INTO customers SET ?', {first_name: names[0] || '', last_name: names[1] || ''}).then(function(result) {
+          return dbQuery('INSERT INTO customers SET ?', reservation.customer).then(function(result) {
             reservation.customer_id = result.insertId;
             delete reservation.customer;
 

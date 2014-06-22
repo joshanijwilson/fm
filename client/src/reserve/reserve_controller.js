@@ -87,17 +87,20 @@ function ReserveController($scope, $location, dataSource, dataCars, loadingIndic
   };
 
   $scope.submitReservation = function() {
-    // validation
-    // - car selected
-    // - car available
-    // - start/end (now < start < end)
+    var customerNames = $scope.customer.name.split(' ');
+    var customer = {
+      first_name: customerNames[0],
+      last_name: customerNames[1],
+      phone: $scope.customer.phone,
+      address: $scope.customer.address,
+      company: $scope.customer.company
+    };
+
     var reservation = {
       car_id: $scope.selectedCar.id,
       start: $scope.startDate,
       end: $scope.endDate,
-
-      // TODO(vojta): set proper id or inline (with email/phone)
-      customer: $scope.customer,
+      customer: customer,
       reason: $scope.selectedReason.id,
       note: $scope.note
     };

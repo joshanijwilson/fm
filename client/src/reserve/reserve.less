@@ -41,3 +41,22 @@
   padding-right: 30px;
   padding-left: 30px;
 }
+
+
+.has-feedback.no-label .form-control-feedback {
+  top: 0;
+}
+
+.has-error .form-control {
+  background-color: #fdf7f7;
+}
+
+
+// Only show the feedback icon when invalid.
+.has-feedback .form-control-feedback {
+  display: none;
+}
+
+.has-error .form-control-feedback {
+  display: block;
+}

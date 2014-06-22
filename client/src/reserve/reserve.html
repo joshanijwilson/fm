@@ -1,4 +1,4 @@
-<form role="form" name="form" novalidate>
+<form name="form" novalidate>
   <div class="form-group">
     <select ng-model="selectedModel" ng-options="model.name for model in modelOptions"
             ng-change="filterCarsByModel(selectedModel)"
@@ -13,20 +13,36 @@
       </div>
     </div>
   </div>
-  <div class="form-group">
+  <div class="form-group has-feedback" ng-class="{'has-error': form.startDate.$dirty && form.startDate.$invalid}">
     <label for="start-input">Začátek výpůjčky - vyzvednutí vozu</label>
     <input ng-model="startDate" ng-change="startDateChanged()" disabled-dates="unavailableDates"
-           type="text" id="start-input" class="form-control" min-date="{{TODAY}}" bs-datepicker>
+           type="text" name="startDate" id="start-input" class="form-control" min-date="{{TODAY}}" bs-datepicker>
+    <span class="glyphicon glyphicon-remove form-control-feedback"></span>
   </div>
-  <div class="form-group">
+  <div class="form-group has-feedback" ng-class="{'has-error': form.endDate.$dirty && form.endDate.$invalid}">
     <label for="end-input">Konec výpůjčky - vrácení vozu</label>
     <input ng-model="endDate" ng-change="endDateChanged()" disabled-dates="unavailableDates"
-           type="text" id="end-input" class="form-control" min-date="{{startDate}}" bs-datepicker>
+           type="text" name="endDate" id="end-input" class="form-control" min-date="{{startDate}}" bs-datepicker>
+    <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+  </div>
+  <!-- TODO(vojta): encapsulate the has-error class into a directive -->
+  <div class="form-group has-feedback" ng-class="{'has-error': form.customerName.$dirty && form.customerName.$invalid}">
+    <label for="customer-input">Zákazník</label>
+    <input ng-model="customer.name" required class="form-control" type="text" name="customerName" id="customer-input" placeholder="Jméno Příjmení">
+    <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+  </div>
+  <div class="form-group has-feedback no-label" ng-class="{'has-error': form.customerPhone.$dirty && form.customerPhone.$invalid}">
+    <input ng-model="customer.phone" required class="form-control" type="tel" name="customerPhone" inputmode="tel" placeholder="Telefon">
+    <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+  </div>
+  <div class="form-group has-feedback no-label" ng-class="{'has-error': form.customerAddress.$dirty && form.customerAddress.$invalid}">
+    <input ng-model="customer.address" required class="form-control" type="text" name="customerAddress" placeholder="Adresa">
+    <span class="glyphicon glyphicon-remove form-control-feedback"></span>
   </div>
   <div class="form-group">
-    <label for="customer-input">Zákazník</label>
-    <input ng-model="customer" required class="form-control" type="text" id="customer-input" placeholder="Jméno Příjmení">
+    <input ng-model="customer.company" class="form-control" type="text" placeholder="Firma">
   </div>
+
   <div class="form-group">
     <label for="reason-select">Účel výpůjčky</label>
     <select ng-model="selectedReason" ng-options="reason.title for reason in reasonOptions"
