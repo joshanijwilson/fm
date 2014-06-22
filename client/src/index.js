@@ -11,6 +11,7 @@ angular.module('fm', deps)
   .config(                        require('./configure'))
   .directive('isVisible',         require('./is_visible_directive'))
   .directive('markDirtyOnBlur',   require('./mark_dirty_on_blur_directive'))
+  .directive('errorClassFor',     require('./error_class_for_directive'))
 ;
 
 angular.bootstrap(document, ['fm']);
