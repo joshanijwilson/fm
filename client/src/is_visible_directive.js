@@ -4,7 +4,7 @@ module.exports = function isVisibleDirectiveFactory() {
       if (isVisible === previousIsVisible) {
         return;
       }
-      console.log('visibility', isVisible ? 'visible' : 'hidden')
+
       elm.css('visibility', isVisible ? 'visible' : 'hidden');
     });
   };
