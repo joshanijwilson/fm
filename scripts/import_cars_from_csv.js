@@ -3,15 +3,9 @@
 var fs = require('fs');
 var parse = require('csv-parse');
 
+var config = require('../config').forCurrentEnvironment();
 var mysql = require('mysql');
-var pool  = mysql.createPool({
-  debug: ['ComQueryPacket', 'RowDataPacket'],
-  connectionLimit : 10,
-  host            : 'localhost',
-  user            : 'api',
-  password        : 'api',
-  database: 'fleet_manager'
-});
+var pool  = mysql.createPool(config.mysql);
 
 var input = fs.createReadStream(process.argv[2]);
 // var COLUMNS = [undefined, undefined, 'name', 'engine_displacement', 'vin', 'spz', undefined, 'model', undefined, undefined, 'color'];

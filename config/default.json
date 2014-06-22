@@ -1,0 +1,24 @@
+{
+  "mysql": {
+    "debug"           : [],
+    "connectionLimit" : 10,
+    "host"            : "localhost",
+    "user"            : null,
+    "password"        : null,
+    "database"        : "fleet_manager"
+  },
+
+  "smtpTransport": {
+    "service": "Gmail",
+    "auth": {
+      "user": null,
+      "pass": null
+    }
+  },
+
+  "emailNotifications": {
+    "enabled": true,
+    "from": "Fleet Manager <fleetmanager.volvo@gmail.com>",
+    "to": "vojta.jina@gmail.com"
+  }
+}

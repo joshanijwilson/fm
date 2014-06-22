@@ -1,5 +1,5 @@
 var nodemailer = require('nodemailer');
-var config = require('./config');
+var config = require('../config').forCurrentEnvironment();
 var q = require('q');
 var hogan = require('hogan.js');
 
