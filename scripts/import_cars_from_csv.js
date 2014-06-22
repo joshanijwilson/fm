@@ -84,4 +84,4 @@ var parser = parse({delimiter: ',', columns: COLUMNS}, function(err, cars) {
   });
 });
 
-input.pipe(parser)
+input.pipe(parser);
