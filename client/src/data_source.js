@@ -60,7 +60,7 @@ function DataSource($http) {
   };
 
   this.getAllCars = function() {
-    return $http.get(API_URL + 'cars').then(dataFromResponse).then(function(cars) {
+    return $http.get(API_URL + 'cars', {cache: true}).then(dataFromResponse).then(function(cars) {
       cars.forEach(function(car) {
         car.equipment = CAR_EQUIPMENT[car.equipment];
         car.transmission = CAR_TRANSMISSION[car.transmission];
