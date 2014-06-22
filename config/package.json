@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "xtend": "~3.0.0"
+    "node.extend": "~1.0.10"
   },
   "devDependencies": {},
   "scripts": {
