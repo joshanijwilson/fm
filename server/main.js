@@ -30,4 +30,4 @@ diExpress.registerRoutes(injector, router, api.routes);
 
 app.use('/api/v1', router);
 
-app.listen(3000);
+app.listen(config.port);
