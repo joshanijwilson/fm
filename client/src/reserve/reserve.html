@@ -28,15 +28,15 @@
   <!-- TODO(vojta): encapsulate the has-error class into a directive -->
   <div class="form-group has-feedback" ng-class="{'has-error': form.customerName.$dirty && form.customerName.$invalid}">
     <label for="customer-input">Zákazník</label>
-    <input ng-model="customer.name" required class="form-control" type="text" name="customerName" id="customer-input" placeholder="Jméno Příjmení">
+    <input ng-model="customer.name" required class="form-control" type="text" name="customerName" id="customer-input" placeholder="Jméno Příjmení" mark-dirty-on-blur>
     <span class="glyphicon glyphicon-remove form-control-feedback"></span>
   </div>
   <div class="form-group has-feedback no-label" ng-class="{'has-error': form.customerPhone.$dirty && form.customerPhone.$invalid}">
-    <input ng-model="customer.phone" required class="form-control" type="tel" name="customerPhone" inputmode="tel" placeholder="Telefon">
+    <input ng-model="customer.phone" required class="form-control" type="tel" name="customerPhone" inputmode="tel" placeholder="Telefon" mark-dirty-on-blur>
     <span class="glyphicon glyphicon-remove form-control-feedback"></span>
   </div>
   <div class="form-group has-feedback no-label" ng-class="{'has-error': form.customerAddress.$dirty && form.customerAddress.$invalid}">
-    <input ng-model="customer.address" required class="form-control" type="text" name="customerAddress" placeholder="Adresa">
+    <input ng-model="customer.address" required class="form-control" type="text" name="customerAddress" placeholder="Adresa" mark-dirty-on-blur>
     <span class="glyphicon glyphicon-remove form-control-feedback"></span>
   </div>
   <div class="form-group">

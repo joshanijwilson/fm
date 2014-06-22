@@ -10,6 +10,7 @@ angular.module('fm', deps)
   .service(   'loadingIndicator', require('./loading_indicator'))
   .config(                        require('./configure'))
   .directive('isVisible',         require('./is_visible_directive'))
+  .directive('markDirtyOnBlur',   require('./mark_dirty_on_blur_directive'))
 ;
 
 angular.bootstrap(document, ['fm']);
