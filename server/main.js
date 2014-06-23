@@ -9,7 +9,7 @@ var app = express();
 
 
 // WEB CLIENT - static files.
-app.use('/', express.static(__dirname + '/../client'));
+app.use('/', express.static(config.clientWebRoot));
 
 // STORAGE - static files.
 app.get('/storage/reservations/:id/:document.pdf', function(req, res, next) {
