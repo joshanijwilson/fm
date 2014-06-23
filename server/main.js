@@ -32,3 +32,11 @@ diExpress.registerRoutes(injector, router, api.routes);
 app.use('/api/v1', router);
 
 app.listen(config.port);
+
+function closeMySqlConnectionPool() {
+  pool.end();
+  process.exit(0);
+}
+
+process.on('SIGINT', closeMySqlConnectionPool);
+process.on('SIGTERM', closeMySqlConnectionPool);
