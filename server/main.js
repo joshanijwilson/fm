@@ -8,11 +8,12 @@ var send = require('send');
 var app = express();
 
 
-// STATIC files - serve the web client.
+// WEB CLIENT - static files.
 app.use('/', express.static(__dirname + '/../client'));
 
+// STORAGE - static files.
 app.get('/storage/reservations/:id/:document.pdf', function(req, res, next) {
-  send(req, '/' + req.params.id + '/' + req.params.document + '.pdf', {root: __dirname + '/../storage/reservations'}).pipe(res);
+  send(req, '/' + req.params.id + '-' + req.params.document + '.pdf', {root: __dirname + '/../storage/reservations'}).pipe(res);
 });
 
 

@@ -142,15 +142,12 @@ function generatePdf(inputFile, outputFile, fields) {
 }
 
 function generateProtocol(reservation, car, customer) {
-  // // TODO(vojta): super lame, fix it.
-  exec('mkdir -p ./storage/reservations/' + reservation.id);
-
-  return generatePdf('./server/reservation-protocol-empty.pdf', './storage/reservations/' + reservation.id + '/protocol.pdf', getReservationProtocolFields(reservation, car, customer));
+  return generatePdf('./server/reservation-protocol-empty.pdf', './storage/reservations/' + reservation.id + '-protocol.pdf', getReservationProtocolFields(reservation, car, customer));
 };
 
 
 function generateSurvey(reservation, car) {
-  return generatePdf('./server/survey-empty.pdf', './storage/reservations/' + reservation.id + '/survey.pdf', getSurveyFields(car));
+  return generatePdf('./server/survey-empty.pdf', './storage/reservations/' + reservation.id + '-survey.pdf', getSurveyFields(car));
 };
 
 
