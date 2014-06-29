@@ -14,7 +14,7 @@ app.use('/', express.static(config.clientWebRoot, {
 }));
 
 // STORAGE - static files.
-app.get('/storage/reservations/:id/:document.pdf', function(req, res, next) {
+app.get('/storage/reservations/:id-:document.pdf', function(req, res, next) {
   send(req, '/' + req.params.id + '-' + req.params.document + '.pdf', {root: __dirname + '/../storage/reservations'}).pipe(res);
 });
 
