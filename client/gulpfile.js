@@ -175,6 +175,10 @@ gulp.task('copy/assets', function() {
     .pipe(gulp.dest('build'));
 })
 
+gulp.task('copy/bootstrap-fonts', function() {
+  return gulp.src('bower_components/bootstrap/fonts/*', {base: '.'})
+    .pipe(gulp.dest('build'));
+});
 
 
 gulp.task('build', ['build/fm.js', 'build/fm.css', 'build/angular-bundle.js', 'build/index', 'copy/assets', 'copy/cars']);

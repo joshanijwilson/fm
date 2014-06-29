@@ -1,6 +1,7 @@
 {
   "port": 80,
   "clientWebRoot": "./client/",
+  "clientIndex": "index.html",
 
   "mysql": {
     "debug"           : [],
