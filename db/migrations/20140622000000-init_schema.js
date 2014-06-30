@@ -17,8 +17,16 @@ function runMultipleStatements(db, sql, callback) {
   var pending = 0;
 
   queries.forEach(function(query) {
+    if (!query.trim()) {
+      return;
+    }
+
     pending++;
-    db.runSql(query, function() {
+    db.runSql(query, function(err) {
+      if (err) {
+        throw err;
+      }
+
       if (--pending === 0) {
         callback();
       }
