@@ -30,7 +30,7 @@ function getSurveyFields(car) {
     'Text4': car.model_year,
 
     // Transmission
-    'Text5': car.transmission,
+    'Text5': car.transmission.substring(0, 3)
   };
 }
 
