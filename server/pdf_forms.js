@@ -2,6 +2,17 @@ var exec = require('child_process').exec;
 var moment = require('moment');
 var q = require('q');
 
+// TODO(vojta): This is copied like three times ;-)
+var equipmentMap = {
+  1: 'Kinetic',
+  2: 'Momentum',
+  3: 'Summum',
+  4: 'R-Design'
+};
+
+function carEngineFromName(name) {
+  return (name.match(/\w+\s([TD]\d)/) || [])[1] || '';
+}
 
 // Mapping values from model to survey-empty.pdf form.
 function getSurveyFields(car) {
@@ -10,10 +21,10 @@ function getSurveyFields(car) {
     'Text1': car.model_name,
 
     // Equipment
-    // 'Text2': car.equipment,
+    'Text2': equipmentMap[car.equipment],
 
     // Engine
-    // 'Text3': car.engine,
+    'Text3': carEngineFromName(car.name),
 
     // Model Year
     'Text4': car.model_year,
