@@ -107,7 +107,7 @@ CREATE TABLE `reservations` (
   `note` text,
   `created_at` timestamp NOT NULL,
   `created_by` int(11) unsigned NOT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `reservations_car_id` (`car_id`),
   KEY `reservations_created_by` (`created_by`),
