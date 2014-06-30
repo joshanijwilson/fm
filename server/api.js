@@ -55,7 +55,7 @@ exports.routes = {
         reservation.created_by = 1;
 
         function insertReservation(reservation) {
-          return dbQuery('INSERT INTO reservations SET ?', reservation).then(function(result) {
+          return dbQuery('INSERT INTO reservations SET ?, created_at = NOW()', reservation).then(function(result) {
             scheduleGeneratingPdfForReservation(dbQuery, result.insertId).done();
             scheduleSendingReservationEmail().then(function() {
               console.log('EMAIL SENT OK');
