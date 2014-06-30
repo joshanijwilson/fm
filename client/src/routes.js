@@ -14,20 +14,20 @@ module.exports = {
   },
 
   '/reserve/:id/success': {
-    title: 'Úspěšně zarezervováno',
+    title: 'Úspěšně Zarezervováno',
     templateUrl: 'reserve/reserve_success.html',
     controller: ReserveSuccessController,
     showMenuButton: false
   },
 
   '/reserve/:id/canceled': {
-    title: 'Rezervace zrušena',
+    title: 'Rezervace Zrušena',
     templateUrl: 'reserve/reserve_canceled.html',
     showMenuButton: false
   },
 
   '/existing': {
-    title: 'Stávající rezervace',
+    title: 'Stávající Rezervace',
     templateUrl: 'existing/existing.html',
     controller: ExistingController
   }
