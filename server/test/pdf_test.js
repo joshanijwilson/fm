@@ -19,9 +19,9 @@ describe('pdf', function() {
     var query = diExpress.DbQuery(pool);
     var spec = this;
 
-    pdfForms.scheduleGeneratingPdfForReservation(query, 74).then(function() {
-      expect(fs.existsSync('./storage/reservations/74/protocol.pdf')).toBe(true);
-      expect(fs.existsSync('./storage/reservations/74/survey.pdf')).toBe(true);
+    pdfForms.scheduleGeneratingPdfForReservation(query, 1).then(function() {
+      expect(fs.existsSync('./storage/reservations/1-protocol.pdf')).toBe(true);
+      expect(fs.existsSync('./storage/reservations/1-survey.pdf')).toBe(true);
     }, function(err) {
       spec.fail(err);
     }).done(function() {
