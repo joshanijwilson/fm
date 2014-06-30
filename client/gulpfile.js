@@ -181,5 +181,5 @@ gulp.task('copy/bootstrap-fonts', function() {
 });
 
 
-gulp.task('build', ['build/fm.js', 'build/fm.css', 'build/angular-bundle.js', 'build/index', 'copy/assets', 'copy/cars']);
-gulp.task('build.min', ['build/fm.min.js', 'build/fm.min.css', 'build/angular-bundle.min.js', 'build/index.min', 'copy/assets', 'copy/cars']);
+gulp.task('build', ['build/fm.js', 'build/fm.css', 'build/angular-bundle.js', 'build/index', 'copy/assets', 'copy/cars', 'copy/bootstrap-fonts']);
+gulp.task('build.min', ['build/fm.min.js', 'build/fm.min.css', 'build/angular-bundle.min.js', 'build/index.min', 'copy/assets', 'copy/cars', 'copy/bootstrap-fonts']);
