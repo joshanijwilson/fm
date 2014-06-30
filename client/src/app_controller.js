@@ -6,9 +6,11 @@ function AppController($scope, loadingIndicator) {
   $scope.$on('$routeChangeSuccess', function(e, current) {
     if (!current) {
       $scope.pageTitle = DEFAULT_PAGE_TITLE;
+      $scope.pageHeader = DEFAULT_PAGE_TITLE;
       $scope.showMenuButton = true;
     } else {
-      $scope.pageTitle = current.$$route.title || DEFAULT_PAGE_TITLE;
+      $scope.pageTitle = current.$$route.title ? DEFAULT_PAGE_TITLE + ': ' + current.$$route.title : DEFAULT_PAGE_TITLE;
+      $scope.pageHeader = current.$$route.title || DEFAULT_PAGE_TITLE;
       $scope.showMenuButton = angular.isDefined(current.$$route.showMenuButton) ? current.$$route.showMenuButton : true;
     }
 
