@@ -17,7 +17,7 @@
   <div class="form-group has-feedback" error-class-for="form.startDate">
     <label for="start-input">Začátek výpůjčky - vyzvednutí vozu</label>
     <input ng-model="startDate" ng-change="startDateChanged()" disabled-dates="unavailableDates"
-           type="text" name="startDate" id="start-input" class="form-control" min-date="{{TODAY}}" bs-datepicker>
+           type="text" name="startDate" id="start-input" class="form-control" min-date="{{MIN_DATE}}" bs-datepicker>
     <span class="glyphicon glyphicon-remove form-control-feedback"></span>
   </div>
   <div class="form-group has-feedback" error-class-for="form.endDate">

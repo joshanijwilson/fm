@@ -6,9 +6,10 @@ function cloneDate(date) {
   return new Date(date);
 }
 
-function getTodayDate() {
+function getDayAfterTomorrow() {
   var now = new Date();
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
+  var nowAfterTomorrow = new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000);
+  return new Date(nowAfterTomorrow.getFullYear(), nowAfterTomorrow.getMonth(), nowAfterTomorrow.getDate(), 0, 0, 0);
 }
 
 function byName(a, b) {
@@ -148,14 +149,13 @@ function ReserveController($scope, $location, dataSource, dataCars, loadingIndic
 
   $scope.endDateChanged = updateCarsAvailability;
 
-  var TODAY = $scope.TODAY = getTodayDate();
-
+  $scope.MIN_DATE = getDayAfterTomorrow();
   $scope.modelOptions = allModelOptions;
   $scope.carOptions = allCarOptions;
   $scope.selectedModel = allModelOptions[0];
   $scope.selectedCar = null;
-  $scope.startDate = cloneDate(TODAY);
-  $scope.endDate = cloneDate(TODAY);
+  $scope.startDate = cloneDate($scope.MIN_DATE);
+  $scope.endDate = cloneDate($scope.MIN_DATE);
   $scope.unavailableDates = null;
   $scope.customer = null;
   $scope.reasonOptions = REASON_OPTIONS;
