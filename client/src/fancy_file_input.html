@@ -1,0 +1,8 @@
+<label for="{{id}}" class="fake-label btn btn-default" ng-show="!isLoaded && !isLoading">
+  <input type="file" nv-file-select uploader="uploader" name="fileProtocol" id="{{id}}">
+  <span>Nahrát dokument</span>
+</label>
+
+<div class="progress progress-striped" ng-show="isLoading || isLoaded" ng-class="{active: isLoading}">
+  <div class="progress-bar" role="progressbar"style="width: {{uploader.progress}}%;"></div>
+</div>

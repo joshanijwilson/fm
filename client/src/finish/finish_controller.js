@@ -28,40 +28,6 @@ function FinishController($scope, reservation, FileUploader, dataSource, loading
   $scope.identityDocumentUrl = null;
   $scope.protocolDocumentUrl = null;
   $scope.surveyDocumentUrl = null;
-
-  $scope.identityUploader = new FileUploader({
-    url: '/storage/upload',
-    autoUpload: true,
-    onSuccessItem: function(item, response, status, headers) {
-      $scope.identityDocumentUrl = headers['location'];
-
-      while ($scope.identityUploader.queue.length > 1) {
-        $scope.identityUploader.removeFromQueue(0);
-      }
-    }
-  });
-  $scope.protocolUploader = new FileUploader({
-    url: '/storage/upload',
-    autoUpload: true,
-    onSuccessItem: function(item, response, status, headers) {
-      $scope.protocolDocumentUrl = headers['location'];
-
-      while ($scope.protocolUploader.queue.length > 1) {
-        $scope.protocolUploader.removeFromQueue(0);
-      }
-    }
-  });
-  $scope.surveyUploader = new FileUploader({
-    url: '/storage/upload',
-    autoUpload: true,
-    onSuccessItem: function(item, response, status, headers) {
-      $scope.surveyDocumentUrl = headers['location'];
-
-      while ($scope.surveyUploader.queue.length > 1) {
-        $scope.surveyUploader.removeFromQueue(0);
-      }
-    }
-  });
 }
 
 FinishController.resolve = {

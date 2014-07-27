@@ -14,21 +14,24 @@
   <div class="form-group">
     <label for="identity-file">Doklad totožnosti</label>
     <span class="help-block">Zde prosím nahrajte naskenovaný doklad totožnosti řidiče, tj. řidičský nebo občanský průkaz.</span>
-    <input type="file" nv-file-select uploader="identityUploader" name="fileIdentity" id="identity-file">
+
+    <fancy-file-input url="identityDocumentUrl" data-id="identity-file"></fancy-file-input>
   </div>
 
   <div class="form-group">
     <label for="protocol-file">Vyplněný protokol</label>
     <span class="help-block">Zde prosím nahrajte vyplněný a podepsaný předávací protokol.<br>
     Předvyplněný protokol můžete stáhnout <a ng-href="/storage/reservations/{{reservation.id}}-protocol.pdf" download="protocol.pdf">zde</a>.</span>
-    <input type="file" nv-file-select uploader="protocolUploader" name="fileProtocol" id="protocol-file">
+
+    <fancy-file-input url="protocolDocumentUrl" data-id="protocol-file"></fancy-file-input>
   </div>
 
   <div class="form-group">
     <label for="survey-file">Vyplněný dotazník</label>
     <span class="help-block">Zde prosím nahrajte vyplněný dotazník spokojenosti.<br>
     Předvyplněný dotazník můžete stáhnout <a ng-href="/storage/reservations/{{reservation.id}}-survey.pdf" download="survey.pdf">zde</a>.</span>
-    <input type="file" nv-file-select uploader="surveyUploader" name="fileSurvey" id="survey-file">
+
+    <fancy-file-input url="surveyDocumentUrl" data-id="survey-file"></fancy-file-input>
   </div>
 
   <button ng-click="finishReservation()" ng-disabled="!isValid()" type="submit" class="btn btn-primary btn-lg">Ukončit</button>

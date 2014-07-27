@@ -13,6 +13,7 @@ angular.module('fm', deps)
   .directive('markDirtyOnBlur',   require('./mark_dirty_on_blur_directive'))
   .directive('errorClassFor',     require('./error_class_for_directive'))
   .directive('phoneValidator',    require('./phone_validator_directive'))
+  .directive('fancyFileInput',    require('./fancy_file_input_directive'))
   .filter('phoneNumber',          require('./phone_number_filter'))
 ;
 
