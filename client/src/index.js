@@ -1,4 +1,4 @@
-var deps = ['ngRoute', 'ngTouch', 'mgcrea.ngStrap.datepicker'];
+var deps = ['ngRoute', 'ngTouch', 'mgcrea.ngStrap.datepicker', 'angularFileUpload'];
 
 if (window.FM_BUNDLED) {
   deps.push('fm.templates');

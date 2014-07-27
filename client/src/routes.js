@@ -1,6 +1,8 @@
 var ReserveController        = require('./reserve/reserve_controller');
 var ReserveSuccessController = require('./reserve/reserve_success_controller');
 var ExistingController       = require('./existing/existing_controller');
+var FinishController         = require('./finish/finish_controller');
+var FinishSuccessController  = require('./finish/finish_success_controller');
 
 module.exports = {
   '/': {
@@ -30,5 +32,17 @@ module.exports = {
     title: 'Stávající Rezervace',
     templateUrl: 'existing/existing.html',
     controller: ExistingController
+  },
+
+  '/finish/:id': {
+    title: 'Ukončit rezervaci',
+    templateUrl: 'finish/finish.html',
+    controller: FinishController
+  },
+
+  '/finish/:id/success': {
+    title: 'Rezervace ukončena',
+    templateUrl: 'finish/finish_success.html',
+    controller: FinishSuccessController
   }
 };

@@ -46,6 +46,10 @@ function DataSource($http) {
     return $http.post(API_URL + 'reservations', reservation).then(dataFromResponse);
   };
 
+  this.updateReservation = function(reservation) {
+    return $http.put(API_URL + 'reservations/' + reservation.id, reservation).then(dataFromResponse);
+  };
+
   this.deleteReservation = function(id) {
     return $http.delete(API_URL + 'reservations/' + id).then(dataFromResponse);
   };
