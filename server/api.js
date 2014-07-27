@@ -98,6 +98,13 @@ exports.routes = {
       handler: function(dbQuery, id) {
         return dbQuery('DELETE FROM reservations WHERE id = ?', id);
       }
+    },
+
+    'PUT': {
+      inject: [DbQuery, RequestBody],
+      handler: function(dbQuery, reservation) {
+        return dbQuery('UPDATE reservations SET ? WHERE id = ?', [reservation, reservation.id]);
+      }
     }
   },
 
