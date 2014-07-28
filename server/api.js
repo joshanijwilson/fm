@@ -103,6 +103,10 @@ exports.routes = {
     'PUT': {
       inject: [DbQuery, RequestBody],
       handler: function(dbQuery, reservation) {
+        if (reservation.finished_at === 'NOW') {
+          reservation.finished_at = new Date();
+        }
+
         return dbQuery('UPDATE reservations SET ? WHERE id = ?', [reservation, reservation.id]);
       }
     }

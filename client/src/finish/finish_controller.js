@@ -8,6 +8,7 @@ function FinishController($scope, reservation, FileUploader, dataSource, loading
 
     var updatedReservation = {
       id: reservation.id,
+      finished_at: 'NOW',
       tachometer_end: $scope.tachometerState,
       fuel_end: $scope.fuelState,
       identity_doc_url: $scope.identityDocumentUrl,
