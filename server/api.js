@@ -37,7 +37,7 @@ exports.routes = {
     'GET': {
       inject:          [DbQuery],
       handler: function(dbQuery) {
-        return dbQuery({sql: 'SELECT * FROM reservations LEFT JOIN customers ON reservations.customer_id = customers.id LEFT JOIN cars ON reservations.car_id = cars.id WHERE reservations.start >= DATE(NOW())', nestTables: true}).then(function(rows) {
+        return dbQuery({sql: 'SELECT * FROM reservations LEFT JOIN customers ON reservations.customer_id = customers.id LEFT JOIN cars ON reservations.car_id = cars.id WHERE reservations.start >= DATE(NOW()) AND reservations.finished_at IS NULL', nestTables: true}).then(function(rows) {
           return rows.map(function(row) {
             row.reservations.customer = row.customers;
             row.reservations.car = row.cars;
