@@ -7,7 +7,7 @@
 <form name="form" novalidate>
   <div class="form-group has-feedback" error-class-for="form.tachometerState">
     <label for="tachometer-input">Stav tachometru</label>
-    <input ng-model="tachometerState" required class="form-control" min="0" type="number" name="tachometerState" id="tachometer-input" mark-dirty-on-blur>
+    <input ng-model="tachometerState" inputmode="numeric" required class="form-control" min="0" type="number" name="tachometerState" id="tachometer-input" mark-dirty-on-blur>
     <span class="glyphicon glyphicon-remove form-control-feedback"></span>
   </div>
 
