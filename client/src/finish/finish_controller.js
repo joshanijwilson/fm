@@ -1,5 +1,7 @@
 function FinishController($scope, reservation, FileUploader, dataSource, loadingIndicator, $location) {
   $scope.reservation = reservation;
+  $scope.tachometerState = null;
+  $scope.fuelState = 50;
 
   $scope.finishReservation = function() {
     loadingIndicator.show();
@@ -7,6 +9,7 @@ function FinishController($scope, reservation, FileUploader, dataSource, loading
     var updatedReservation = {
       id: reservation.id,
       tachometer_end: $scope.tachometerState,
+      fuel_end: $scope.fuelState,
       identity_doc_url: $scope.identityDocumentUrl,
       protocol_doc_url: $scope.protocolDocumentUrl,
       survey_doc_url:  $scope.surveyDocumentUrl
