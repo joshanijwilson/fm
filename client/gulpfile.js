@@ -95,6 +95,9 @@ gulp.task('build/angular-bundle.min.js', function() {
 // The entire app bundle.
 gulp.task('build/fm.js', ['build/templates.js', 'build/datepicker.js'], function() {
   return merge(
+      gulp.src('bower_components/angular-file-upload/angular-file-upload.js'),
+      gulp.src('bower_components/seiyria-bootstrap-slider/js/bootstrap-slider.js'),
+      gulp.src('bower_components/angular-bootstrap-slider/slider.js'),
       gulp.src('build/templates.js'),
       gulp.src('build/datepicker.js'),
       gulp.src('lib/angular-locale_cs-cz.js'),
