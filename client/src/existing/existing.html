@@ -10,3 +10,7 @@
     <a ng-href="#/finish/{{reservation.id}}" class="btn btn-default">ukončit</a>
   </li>
 </ul>
+
+<div ng-show="!reservations.length">
+  Žádná aktivní rezervace.
+</div>
