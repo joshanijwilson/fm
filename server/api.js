@@ -88,8 +88,13 @@ exports.routes = {
     'GET': {
       inject:          [DbQuery, PathParam('id')],
       handler: function(dbQuery, id) {
-        return dbQuery('SELECT reservations.*, cars.name AS car_name FROM reservations LEFT JOIN cars ON reservations.car_id = cars.id WHERE reservations.id = ?', id)
-          .then(takeOneRow).then(formatReservationDates);
+        return dbQuery({sql: 'SELECT * FROM reservations LEFT JOIN cars ON reservations.car_id = cars.id LEFT JOIN customers ON reservations.customer_id = customers.id WHERE reservations.id = ?', nestTables: true, values: id})
+          .then(takeOneRow).then(function(row) {
+            var reservation = row.reservations;
+            reservation.car = row.cars;
+            reservation.customer = row.customers;
+            return reservation;
+          }).then(formatReservationDates);
       }
     },
 
