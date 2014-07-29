@@ -7,7 +7,7 @@ module.exports = function phoneNumberFilterProvider() {
     }
 
     if (!cache[number]) {
-      cache[number] = number.substr(0, 3) + ' ' + number.substr(3, 3) + ' ' + number.substr(6);
+      cache[number] = number.substr(4, 3) + ' ' + number.substr(7, 3) + ' ' + number.substr(10);
     }
 
     return cache[number];
