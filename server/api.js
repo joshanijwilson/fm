@@ -30,6 +30,13 @@ function formatReservationDates(reservation) {
   return reservation;
 }
 
+function mergeCustomerAndCarIntoReservation(row) {
+  row.reservations.car = row.cars;
+  row.reservations.customer = row.customers;
+
+  return row.reservations;
+}
+
 
 exports.routes = {
   '/reservations': {
@@ -38,12 +45,7 @@ exports.routes = {
       inject:          [DbQuery],
       handler: function(dbQuery) {
         return dbQuery({sql: 'SELECT * FROM reservations LEFT JOIN customers ON reservations.customer_id = customers.id LEFT JOIN cars ON reservations.car_id = cars.id WHERE reservations.start >= DATE(NOW()) AND reservations.finished_at IS NULL', nestTables: true}).then(function(rows) {
-          return rows.map(function(row) {
-            row.reservations.customer = row.customers;
-            row.reservations.car = row.cars;
-
-            return row.reservations;
-          }).map(formatReservationDates);
+          return rows.map(mergeCustomerAndCarIntoReservation).map(formatReservationDates);
         });
       }
     },
@@ -89,12 +91,7 @@ exports.routes = {
       inject:          [DbQuery, PathParam('id')],
       handler: function(dbQuery, id) {
         return dbQuery({sql: 'SELECT * FROM reservations LEFT JOIN cars ON reservations.car_id = cars.id LEFT JOIN customers ON reservations.customer_id = customers.id WHERE reservations.id = ?', nestTables: true, values: id})
-          .then(takeOneRow).then(function(row) {
-            var reservation = row.reservations;
-            reservation.car = row.cars;
-            reservation.customer = row.customers;
-            return reservation;
-          }).then(formatReservationDates);
+          .then(takeOneRow).then(mergeCustomerAndCarIntoReservation).then(formatReservationDates);
       }
     },
 
