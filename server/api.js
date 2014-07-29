@@ -1,5 +1,6 @@
 var scheduleGeneratingPdfForReservation = require('./pdf_forms').scheduleGeneratingPdfForReservation;
 var scheduleSendingReservationEmail = require('./send_mail').scheduleSendingEmailAfterRegistration;
+var scheduleSendingEmailAfterRegistrationFinished = require('./send_mail').scheduleSendingEmailAfterRegistrationFinished;
 
 var DbQuery = require('./di-express').DbQuery;
 var RequestBody = require('./di-express').RequestBody;
@@ -109,7 +110,9 @@ exports.routes = {
           reservation.finished_at = new Date();
         }
 
-        return dbQuery('UPDATE reservations SET ? WHERE id = ?', [reservation, reservation.id]);
+        return dbQuery('UPDATE reservations SET ? WHERE id = ?', [reservation, reservation.id]).then(function() {
+          scheduleSendingEmailAfterRegistrationFinished();
+        });
       }
     }
   },

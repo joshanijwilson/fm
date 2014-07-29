@@ -35,6 +35,10 @@ var emailTemplates = {
   reservationCreated: {
     subject: hogan.compile('Nová rezervace: {{car.name}}'),
     message: hogan.compile('Je tu. Šmudlo.')
+  },
+  reservationFinished: {
+    subject: hogan.compile('Rezervace ukončena'),
+    message: hogan.compile('Tady bude něco chytrýho...')
   }
 };
 
@@ -54,6 +58,20 @@ exports.scheduleSendingEmailAfterRegistration = function() {
     config.emailNotifications.from, config.emailNotifications.to,
     emailTemplates.reservationCreated.subject.render(replacements),
     emailTemplates.reservationCreated.message.render(replacements)
+  );
+};
+
+exports.scheduleSendingEmailAfterRegistrationFinished = function() {
+  if (!config.emailNotifications.enabled) {
+    return q();
+  }
+
+  var replacements = {};
+
+  return send(
+    config.emailNotifications.from, config.emailNotifications.to,
+    emailTemplates.reservationFinished.subject.render(replacements),
+    emailTemplates.reservationFinished.message.render(replacements)
   );
 };
 
