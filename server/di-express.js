@@ -128,3 +128,6 @@ exports.DbQuery = DbQuery;
 exports.RequestBody = RequestBody;
 exports.PathParams = PathParams;
 exports.PathParam = PathParam;
+
+// Annotation helpers
+exports.inject = inject;

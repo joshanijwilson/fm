@@ -1,6 +1,5 @@
 var scheduleGeneratingPdfForReservation = require('./pdf_forms').scheduleGeneratingPdfForReservation;
-var scheduleSendingReservationEmail = require('./send_mail').scheduleSendingEmailAfterRegistration;
-var scheduleSendingEmailAfterRegistrationFinished = require('./send_mail').scheduleSendingEmailAfterRegistrationFinished;
+var EmailScheduler = require('./email_scheduler');
 
 var DbQuery = require('./di-express').DbQuery;
 var RequestBody = require('./di-express').RequestBody;
@@ -52,19 +51,16 @@ exports.routes = {
     },
 
     'POST': {
-      inject:          [DbQuery, RequestBody],
-      handler: function(dbQuery, reservation) {
+      inject:          [DbQuery, RequestBody, EmailScheduler],
+      handler: function(dbQuery, reservation, scheduleEmail) {
         // TODO(vojta): read user_id from auth
         reservation.created_by = 1;
 
         function insertReservation(reservation) {
           return dbQuery('INSERT INTO reservations SET ?, created_at = NOW(), updated_at = NOW()', reservation).then(function(result) {
             scheduleGeneratingPdfForReservation(dbQuery, result.insertId).done();
-            scheduleSendingReservationEmail().then(function() {
-              console.log('EMAIL SENT OK');
-            }, function(err) {
-              console.log('email fail', err)
-            }).done();
+            scheduleEmail.reservationCreated(result.insertId);
+
             return {
               id:result.insertId
             };
@@ -104,14 +100,14 @@ exports.routes = {
     },
 
     'PUT': {
-      inject: [DbQuery, RequestBody],
-      handler: function(dbQuery, reservation) {
+      inject: [DbQuery, RequestBody, EmailScheduler],
+      handler: function(dbQuery, reservation, scheduleEmail) {
         if (reservation.finished_at === 'NOW') {
           reservation.finished_at = new Date();
         }
 
         return dbQuery('UPDATE reservations SET ? WHERE id = ?', [reservation, reservation.id]).then(function() {
-          scheduleSendingEmailAfterRegistrationFinished();
+          scheduleEmail.reservationFinished(reservation.id);
         });
       }
     }
