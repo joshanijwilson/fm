@@ -20,6 +20,8 @@
     }
   },
 
+  "authSecret": "whateva",
+
   "emailNotifications": {
     "enabled": true,
     "from": "Fleet Manager <fleetmanager.volvo@gmail.com>",

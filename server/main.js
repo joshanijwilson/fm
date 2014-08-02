@@ -65,6 +65,8 @@ var injector = new di.Injector([
 var router = new express.Router();
 diExpress.registerRoutes(injector, router, api.routes);
 
+var jwt = require('express-jwt');
+app.use('/api/v1', jwt({secret: config.authSecret}));
 app.use('/api/v1', router);
 
 

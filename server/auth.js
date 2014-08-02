@@ -2,11 +2,13 @@ var bcrypt = require('bcrypt');
 var q = require('q');
 var jwt = require('jsonwebtoken');
 
+var config = require('../config').forCurrentEnvironment();
 var diExpress = require('./di-express');
 var DbQuery = diExpress.DbQuery;
 var RequestBody = diExpress.RequestBody;
-
-var AUTH_TOKEN_SECRET = 'fuck';
+var Request = diExpress.Request;
+var inject = diExpress.inject;
+var providePromise = diExpress.providePromise;
 
 var hashPassword = q.nbind(bcrypt.hash, bcrypt);
 var checkPassword = q.nbind(bcrypt.compare, bcrypt);
@@ -25,7 +27,7 @@ exports.routes = {
           var user = rows[0];
           var generateToken = function() {
             return {
-              token: jwt.sign({id: user.id}, AUTH_TOKEN_SECRET, { expiresInMinutes: 60*24*7 })
+              token: jwt.sign({id: user.id}, config.authSecret, { expiresInMinutes: 60*24*7 })
             };
           };
 
@@ -50,3 +52,24 @@ exports.routes = {
     }
   }
 };
+
+inject(AuthenticatedUser, DbQuery, getAuthenticatedUserId);
+providePromise(AuthenticatedUser, AuthenticatedUser);
+function AuthenticatedUser(dbQuery, id) {
+  return dbQuery('SELECT * FROM users WHERE id = ?', id);
+}
+
+// This function name starts lowercase to trick the DI to call it as a factory
+// (instead of constructor with new).
+// The req.user is parsed from the authorization token by express-jwt middleware.
+inject(getAuthenticatedUserId, Request);
+function getAuthenticatedUserId(req) {
+  if (!req.user) {
+    throw new Error('Not authenticated.');
+  }
+
+  return req.user.id;
+}
+
+exports.AuthenticatedUser = AuthenticatedUser;
+exports.AuthenticatedUserId = getAuthenticatedUserId;

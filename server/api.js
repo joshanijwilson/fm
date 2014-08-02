@@ -37,6 +37,8 @@ function mergeCustomerAndCarIntoReservation(row) {
   return row.reservations;
 }
 
+var auth = require('./auth');
+var UserId = auth.AuthenticatedUserId;
 
 exports.routes = {
   '/reservations': {
@@ -51,10 +53,9 @@ exports.routes = {
     },
 
     'POST': {
-      inject:          [DbQuery, RequestBody, EmailScheduler],
-      handler: function(dbQuery, reservation, scheduleEmail) {
-        // TODO(vojta): read user_id from auth
-        reservation.created_by = 1;
+      inject:          [DbQuery, RequestBody, UserId, EmailScheduler],
+      handler: function(dbQuery, reservation, userId, scheduleEmail) {
+        reservation.created_by = userId;
 
         function insertReservation(reservation) {
           return dbQuery('INSERT INTO reservations SET ?, created_at = NOW(), updated_at = NOW()', reservation).then(function(result) {
@@ -92,6 +93,7 @@ exports.routes = {
       }
     },
 
+    // TODO(vojta): only allow user's reservation or if admin
     'DELETE': {
       inject:          [DbQuery, PathParam('id')],
       handler: function(dbQuery, id) {
@@ -99,6 +101,7 @@ exports.routes = {
       }
     },
 
+    // TODO(vojta): only allow user's reservation or if admin
     'PUT': {
       inject: [DbQuery, RequestBody, EmailScheduler],
       handler: function(dbQuery, reservation, scheduleEmail) {

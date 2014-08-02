@@ -131,3 +131,4 @@ exports.PathParam = PathParam;
 
 // Annotation helpers
 exports.inject = inject;
+exports.providePromise = providePromise;
