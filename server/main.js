@@ -67,6 +67,12 @@ diExpress.registerRoutes(injector, router, api.routes);
 
 app.use('/api/v1', router);
 
+
+// Authentication routes, using DI.
+var auth = require('./auth');
+diExpress.registerRoutes(injector, app, auth.routes);
+
+
 app.listen(config.port);
 console.log('port', config.port)
 function closeMySqlConnectionPool() {
