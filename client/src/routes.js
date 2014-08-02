@@ -1,3 +1,4 @@
+var LoginController          = require('./login/login_controller');
 var ReserveController        = require('./reserve/reserve_controller');
 var ReserveSuccessController = require('./reserve/reserve_success_controller');
 var ExistingController       = require('./existing/existing_controller');
@@ -7,6 +8,11 @@ var FinishSuccessController  = require('./finish/finish_success_controller');
 module.exports = {
   '/': {
     templateUrl: 'menu.html', showMenuButton: false
+  },
+
+  '/login': {
+    templateUrl: 'login/login.html', showMenuButton: false,
+    controller: LoginController
   },
 
   '/reserve': {

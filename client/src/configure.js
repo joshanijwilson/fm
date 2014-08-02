@@ -1,6 +1,6 @@
 var routes = require('./routes');
 
-function configure($routeProvider, $datepickerProvider) {
+function configure($routeProvider, $datepickerProvider, $httpProvider) {
   angular.forEach(routes, function(route, pattern) {
     if (route.controller && route.controller.resolve) {
       route.resolve = route.controller.resolve;
@@ -17,8 +17,10 @@ function configure($routeProvider, $datepickerProvider) {
       hide: 0
     }
   });
+
+  $httpProvider.interceptors.push('authInterceptor');
 }
 
-configure.$inject = ['$routeProvider', '$datepickerProvider'];
+configure.$inject = ['$routeProvider', '$datepickerProvider', '$httpProvider'];
 
 module.exports = configure;

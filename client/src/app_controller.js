@@ -1,8 +1,9 @@
 var DEFAULT_PAGE_TITLE = 'FleetManager';
 
-function AppController($scope, loadingIndicator) {
+function AppController($scope, loadingIndicator, $location, localStorage) {
   $scope.pageTitle = DEFAULT_PAGE_TITLE;
 
+  // Update page title and hide loading indicator.
   $scope.$on('$routeChangeSuccess', function(e, current) {
     if (!current) {
       $scope.pageTitle = DEFAULT_PAGE_TITLE;
@@ -16,8 +17,13 @@ function AppController($scope, loadingIndicator) {
 
     loadingIndicator.hide();
   });
+
+  // Show login form if the user is not authenticated.
+  if (!localStorage.get('token')) {
+    $location.path('/login');
+  }
 }
 
-AppController.$inject = ['$scope', 'loadingIndicator'];
+AppController.$inject = ['$scope', 'loadingIndicator', '$location', 'localStorage'];
 
 module.exports = AppController;
