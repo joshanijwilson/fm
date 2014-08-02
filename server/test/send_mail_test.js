@@ -3,7 +3,7 @@ var mysql = require('mysql');
 // TODO(vojta): Use testing db instead.
 var config = require('../../config').forCurrentEnvironment();
 var pool  = mysql.createPool(config.mysql);
-var diExpress = require('../di-express');
+var diExpress = require('../di_express');
 
 var EmailScheduler = require('../email_scheduler');
 

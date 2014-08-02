@@ -3,7 +3,7 @@ var q = require('q');
 var jwt = require('jsonwebtoken');
 
 var config = require('../config').forCurrentEnvironment();
-var diExpress = require('./di-express');
+var diExpress = require('./di_express');
 var DbQuery = diExpress.DbQuery;
 var RequestBody = diExpress.RequestBody;
 var Request = diExpress.Request;

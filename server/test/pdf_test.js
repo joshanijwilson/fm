@@ -7,7 +7,7 @@ var mysql = require('mysql');
 // TODO(vojta): Use testing db instead.
 var config = require('../../config').forCurrentEnvironment();
 var pool  = mysql.createPool(config.mysql);
-var diExpress = require('../di-express');
+var diExpress = require('../di_express');
 
 
 // We pretend to run these tests in the root directory.

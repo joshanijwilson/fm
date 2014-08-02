@@ -44,7 +44,7 @@ var REASON_OPTIONS = {
 
 
 var moment = require('moment');
-var diExpress = require('./di-express');
+var diExpress = require('./di_express');
 var inject = diExpress.inject;
 var DbQuery = diExpress.DbQuery;
 

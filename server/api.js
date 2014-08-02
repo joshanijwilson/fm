@@ -1,9 +1,10 @@
 var scheduleGeneratingPdfForReservation = require('./pdf_forms').scheduleGeneratingPdfForReservation;
 var EmailScheduler = require('./email_scheduler');
 
-var DbQuery = require('./di-express').DbQuery;
-var RequestBody = require('./di-express').RequestBody;
-var PathParam = require('./di-express').PathParam;
+var diExpress = require('./di_express');
+var DbQuery = diExpress.DbQuery;
+var RequestBody = diExpress.RequestBody;
+var PathParam = diExpress.PathParam;
 
 
 function Error404(msg) {

@@ -55,7 +55,7 @@ app.get('/storage/uploads/:file', function(req, res, next) {
 
 // API routes, using DI.
 var api = require('./api');
-var diExpress = require('./di-express');
+var diExpress = require('./di_express');
 var di = require('di');
 
 var injector = new di.Injector([
