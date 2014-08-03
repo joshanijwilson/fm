@@ -98,13 +98,13 @@ function registerRoutes(injector, app, routes) {
             response.send(value);
           }, function(err) {
             console.log(err);
-            if (err.statusCode) {
-              response.status(err.statusCode);
-              response.send(err.message);
+            if (err.status) {
+              response.status(err.status);
+              response.send(err);
               return;
             }
 
-            if (200 <= response.statusCode && response.statusCode < 400) {
+            if (200 <= response.status && response.status < 400) {
               response.status(500);
             }
 

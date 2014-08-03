@@ -8,9 +8,11 @@ var PathParam = diExpress.PathParam;
 
 
 function Error404(msg) {
-  this.statusCode = 404;
+  this.status = 404;
+  this.code = null;
   this.message = msg;
 }
+
 
 function takeOneRow(rows) {
   if (rows.length === 0) {
