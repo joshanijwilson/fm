@@ -18,8 +18,16 @@ function AppController($scope, loadingIndicator, $location, localStorage) {
     loadingIndicator.hide();
   });
 
+  // Initial page.
   // Show login form if the user is not authenticated.
-  if (!localStorage.get('token')) {
+  var initiallyRequestedPath = $location.path();
+
+  if (!localStorage.get('token') && initiallyRequestedPath !== '/login') {
+    var removeOnAuthListener = $scope.$on('auth', function() {
+      $location.path(initiallyRequestedPath);
+      removeOnAuthListener();
+    });
+
     $location.path('/login');
   }
 }

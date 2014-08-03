@@ -9,7 +9,7 @@ function LoginController($scope, $http, $location, loadingIndicator, localStorag
 
     $http.post('/auth/local', {email: $scope.email, password: $scope.password}).then(function(response) {
       localStorage.set('token', response.data.token);
-      $location.path('/');
+      $scope.$root.$broadcast('auth');
     }, function(err) {
       loadingIndicator.hide();
 
