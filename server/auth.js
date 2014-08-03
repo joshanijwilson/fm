@@ -13,6 +13,26 @@ var providePromise = diExpress.providePromise;
 var hashPassword = q.nbind(bcrypt.hash, bcrypt);
 var checkPassword = q.nbind(bcrypt.compare, bcrypt);
 
+function InvalidEmailError(message) {
+  Error.call(this);
+
+  this.status = 404;
+  this.code = 'invalid_email';
+  this.message = message || null;
+}
+
+InvalidEmailError.prototype = Object.create(Error.prototype);
+
+function IncorrectPasswordError(message) {
+  Error.call(this);
+
+  this.status = 404;
+  this.code = 'incorrect_password';
+  this.message = message || null;
+}
+
+IncorrectPasswordError.prototype = Object.create(Error.prototype);
+
 exports.routes = {
   '/auth/local': {
     'POST': {
@@ -20,8 +40,7 @@ exports.routes = {
       handler: function(dbQuery, input) {
         return dbQuery('SELECT * FROM users WHERE email = ?', input.email).then(function(rows) {
           if (rows.length === 0) {
-            // TODO(vojta): set proper status code.
-            throw new Error('Invalid email. User is not allowed to register.');
+            throw new InvalidEmailError('Invalid email. User is not allowed to register.');
           }
 
           var user = rows[0];
@@ -42,7 +61,7 @@ exports.routes = {
           // Check if the password is correct.
           return checkPassword(input.password, user.password_hash).then(function(match) {
             if (!match) {
-              throw new Error('Incorrect password.');
+              throw new IncorrectPasswordError();
             }
 
             return generateToken();
