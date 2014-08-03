@@ -3,17 +3,19 @@
 
   <div class="form-group has-feedback" error-class-for="form.email">
     <label for="email-input">Email</label>
-    <input ng-model="email" required class="form-control" type="email" inputmode="email" name="email" id="email-input" placeholder="Email" mark-dirty-on-blur>
+    <input ng-model="email" required class="form-control" type="email" inputmode="email" name="email" id="email-input" placeholder="Email" mark-dirty-on-blur autofocus ng-change="emailChanged()">
     <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+    <p ng-show="form.email.$error.server" class="help-block">Zadaný email není platný. Pouze vybraní uživatelé mohou používat aplikaci.</p>
   </div>
 
   <div class="form-group has-feedback" error-class-for="form.password">
     <label for="password-input">Heslo</label>
-    <input ng-model="password" required class="form-control" type="password" name="password" id="password-input" placeholder="Heslo" mark-dirty-on-blur>
+    <input ng-model="password" required class="form-control" type="password" name="password" id="password-input" placeholder="Heslo" mark-dirty-on-blur ng-change="passwordChanged()">
     <span class="glyphicon glyphicon-remove form-control-feedback"></span>
     <p ng-show="maybeFirstTime" class="help-block">
       Pokud se přihlašujete poprvé a nemáte tedy ještě heslo, vymyslete si heslo jaké chcete.
     </p>
+    <p ng-show="form.password.$error.server" class="help-block">Zadané heslo není platné.</p>
   </div>
 
   <button ng-click="submit()" ng-disabled="!form.$valid" type="submit" class="btn btn-primary btn-lg">Přihásit</button>

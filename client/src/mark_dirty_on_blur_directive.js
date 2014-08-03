@@ -7,6 +7,11 @@ module.exports = function markDirtyOnBlurDirectiveFactory() {
           return;
         }
 
+        if (ngModel.__IGNORE_NEXT_BLUR) {
+          ngModel.__IGNORE_NEXT_BLUR = false;
+          return;
+        }
+
         scope.$apply(function() {
           // To be correct, we should also set $dirty on parent form and update ng-dirty/ng-pristine
           // classes, but we are not using it, so who cares.
