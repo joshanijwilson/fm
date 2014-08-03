@@ -1,14 +1,19 @@
 <form name="form" novalidate>
+  <p>Pro správu rezervací je potřeba se přihásit. Zadejte prosím Váš e-mail a heslo.</p>
+
   <div class="form-group has-feedback" error-class-for="form.email">
     <label for="email-input">Email</label>
-    <input ng-model="email" required class="form-control" type="text" name="email" id="email-input" placeholder="Email">
+    <input ng-model="email" required class="form-control" type="email" inputmode="email" name="email" id="email-input" placeholder="Email" mark-dirty-on-blur>
     <span class="glyphicon glyphicon-remove form-control-feedback"></span>
   </div>
 
   <div class="form-group has-feedback" error-class-for="form.password">
     <label for="password-input">Heslo</label>
-    <input ng-model="password" required class="form-control" type="password" name="password" id="password-input" placeholder="Heslo">
+    <input ng-model="password" required class="form-control" type="password" name="password" id="password-input" placeholder="Heslo" mark-dirty-on-blur>
     <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+    <p ng-show="maybeFirstTime" class="help-block">
+      Pokud se přihlašujete poprvé a nemáte tedy ještě heslo, vymyslete si heslo jaké chcete.
+    </p>
   </div>
 
   <button ng-click="submit()" ng-disabled="!form.$valid" type="submit" class="btn btn-primary btn-lg">Přihásit</button>

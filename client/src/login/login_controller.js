@@ -1,4 +1,7 @@
 function LoginController($scope, $http, $location, loadingIndicator, localStorage) {
+
+  $scope.maybeFirstTime = !localStorage.get('token');
+
   $scope.submit = function() {
     loadingIndicator.show();
 
