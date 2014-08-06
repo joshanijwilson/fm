@@ -1,14 +1,14 @@
-function LoginController($scope, $http, $location, loadingIndicator, localStorage, focus) {
+function LoginController($scope, $http, $location, loadingIndicator, authUser, focus) {
 
   $scope.email = '';
   $scope.password = '';
-  $scope.maybeFirstTime = !localStorage.get('token');
+  $scope.maybeFirstTime = !authUser.token;
 
   $scope.submit = function() {
     loadingIndicator.show();
 
     $http.post('/auth/local', {email: $scope.email, password: $scope.password}).then(function(response) {
-      localStorage.set('token', response.data.token);
+      authUser.update(response.data);
       $scope.$root.$broadcast('auth');
     }, function(err) {
       loadingIndicator.hide();
@@ -42,6 +42,6 @@ function LoginController($scope, $http, $location, loadingIndicator, localStorag
   };
 }
 
-LoginController.$inject = ['$scope', '$http', '$location', 'loadingIndicator', 'localStorage', 'focus'];
+LoginController.$inject = ['$scope', '$http', '$location', 'loadingIndicator', 'authUser', 'focus'];
 
 module.exports = LoginController;

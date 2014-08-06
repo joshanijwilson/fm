@@ -46,6 +46,8 @@ exports.routes = {
           var user = rows[0];
           var generateToken = function() {
             return {
+              id: user.id,
+              is_admin: !!user.is_admin,
               token: jwt.sign({id: user.id}, config.authSecret, { expiresInMinutes: 60*24*7 })
             };
           };

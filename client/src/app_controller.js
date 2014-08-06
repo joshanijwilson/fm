@@ -1,6 +1,6 @@
 var DEFAULT_PAGE_TITLE = 'FleetManager';
 
-function AppController($scope, loadingIndicator, $location, localStorage) {
+function AppController($scope, loadingIndicator, $location, authUser) {
   $scope.pageTitle = DEFAULT_PAGE_TITLE;
 
   // Update page title and hide loading indicator.
@@ -22,7 +22,7 @@ function AppController($scope, loadingIndicator, $location, localStorage) {
   // Show login form if the user is not authenticated.
   var initiallyRequestedPath = $location.path();
 
-  if (!localStorage.get('token') && initiallyRequestedPath !== '/login') {
+  if (!authUser.token && initiallyRequestedPath !== '/login') {
     var removeOnAuthListener = $scope.$on('auth', function() {
       $location.path(initiallyRequestedPath);
       removeOnAuthListener();
@@ -32,6 +32,6 @@ function AppController($scope, loadingIndicator, $location, localStorage) {
   }
 }
 
-AppController.$inject = ['$scope', 'loadingIndicator', '$location', 'localStorage'];
+AppController.$inject = ['$scope', 'loadingIndicator', '$location', 'authUser'];
 
 module.exports = AppController;

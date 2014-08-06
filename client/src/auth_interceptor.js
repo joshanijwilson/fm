@@ -1,4 +1,4 @@
-module.exports = function AuthInterceptor(localStorage, $q, $location, $rootScope, $injector) {
+module.exports = function AuthInterceptor(authUser, $q, $location, $rootScope, $injector) {
   var $http = null;
   var $route = null;
 
@@ -47,10 +47,8 @@ module.exports = function AuthInterceptor(localStorage, $q, $location, $rootScop
   })
 
   this.request = function(config) {
-    var token = localStorage.get('token');
-
-    if (token) {
-      config.headers.Authorization = 'Bearer ' + token;
+    if (authUser.token) {
+      config.headers.Authorization = 'Bearer ' + authUser.token;
     }
 
     return config;
@@ -72,4 +70,4 @@ module.exports = function AuthInterceptor(localStorage, $q, $location, $rootScop
   };
 };
 
-module.exports.$inject = ['localStorage', '$q', '$location', '$rootScope', '$injector'];
+module.exports.$inject = ['authUser', '$q', '$location', '$rootScope', '$injector'];
