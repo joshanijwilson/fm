@@ -123,16 +123,25 @@ exports.routes = {
       }
     },
 
-    // TODO(vojta): only allow user's reservation or if admin
     'PUT': {
-      inject: [DbQuery, RequestBody, EmailScheduler],
-      handler: function(dbQuery, reservation, scheduleEmail) {
-        if (reservation.finished_at === 'NOW') {
-          reservation.finished_at = new Date();
-        }
+      inject: [DbQuery, PathParam('id'), RequestBody, EmailScheduler, AuthUser],
+      handler: function(dbQuery, id, reservation, scheduleEmail, user) {
+        return dbQuery('SELECT created_by FROM reservations WHERE id = ?', id).then(function(rows) {
+          if (!rows.length) {
+            throw new Error404('Record does not exist.');
+          }
 
-        return dbQuery('UPDATE reservations SET ? WHERE id = ?', [reservation, reservation.id]).then(function() {
-          scheduleEmail.reservationFinished(reservation.id);
+          if (user.is_admin || user.id === rows[0].created_by) {
+            if (reservation.finished_at === 'NOW') {
+              reservation.finished_at = new Date();
+            }
+            console.log(reservation)
+            return dbQuery('UPDATE reservations SET ? WHERE id = ?', [reservation, id]).then(function() {
+              scheduleEmail.reservationFinished(id);
+            });
+          }
+
+          throw new ForbiddenError('Insufficient permissions.');
         });
       }
     }
