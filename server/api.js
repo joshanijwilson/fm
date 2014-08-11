@@ -2,9 +2,13 @@ var scheduleGeneratingPdfForReservation = require('./pdf_forms').scheduleGenerat
 var EmailScheduler = require('./email_scheduler');
 
 var diExpress = require('./di_express');
+var inject = diExpress.inject;
 var DbQuery = diExpress.DbQuery;
 var RequestBody = diExpress.RequestBody;
 var PathParam = diExpress.PathParam;
+
+var auth = require('./auth');
+var AuthUser = auth.AuthenticatedUser;
 
 
 function Error404(msg) {
@@ -50,8 +54,15 @@ function mergeCustomerAndCarIntoReservation(row) {
   return row.reservations;
 }
 
-var auth = require('./auth');
-var AuthUser = auth.AuthenticatedUser;
+inject(CheckUserHasPermissions, AuthUser);
+function CheckUserHasPermissions(user) {
+  return function checkUserPermission(reservation) {
+    if (!user.is_admin && user.id !== reservation.created_by) {
+      throw new ForbiddenError('Insufficient permissions.');
+    }
+  };
+}
+
 
 exports.routes = {
   '/reservations': {
@@ -102,46 +113,38 @@ exports.routes = {
       inject:          [DbQuery, PathParam('id')],
       handler: function(dbQuery, id) {
         return dbQuery({sql: 'SELECT * FROM reservations LEFT JOIN cars ON reservations.car_id = cars.id LEFT JOIN customers ON reservations.customer_id = customers.id WHERE reservations.id = ?', nestTables: true, values: id})
-          .then(takeOneRow).then(mergeCustomerAndCarIntoReservation).then(formatReservationDates);
+          .then(takeOneRow)
+          .then(mergeCustomerAndCarIntoReservation)
+          .then(formatReservationDates);
       }
     },
 
     'DELETE': {
-      inject:          [DbQuery, PathParam('id'), AuthUser],
-      handler: function(dbQuery, id, user) {
-        return dbQuery('SELECT created_by FROM reservations WHERE id = ?', id).then(function(rows) {
-          if (!rows.length) {
-            throw new Error404('Record does not exist.');
-          }
-
-          if (user.is_admin || user.id === rows[0].created_by) {
+      inject:          [DbQuery, PathParam('id'), CheckUserHasPermissions],
+      handler: function(dbQuery, id, checkUserHasPermissions) {
+        return dbQuery('SELECT created_by FROM reservations WHERE id = ?', id)
+          .then(takeOneRow)
+          .then(checkUserHasPermissions)
+          .then(function() {
             return dbQuery('DELETE FROM reservations WHERE id = ?', id);
-          }
-
-          throw new ForbiddenError('Insufficient permissions.');
         });
       }
     },
 
     'PUT': {
-      inject: [DbQuery, PathParam('id'), RequestBody, EmailScheduler, AuthUser],
-      handler: function(dbQuery, id, reservation, scheduleEmail, user) {
-        return dbQuery('SELECT created_by FROM reservations WHERE id = ?', id).then(function(rows) {
-          if (!rows.length) {
-            throw new Error404('Record does not exist.');
-          }
-
-          if (user.is_admin || user.id === rows[0].created_by) {
+      inject: [DbQuery, PathParam('id'), RequestBody, EmailScheduler],
+      handler: function(dbQuery, id, reservation, scheduleEmail) {
+        return dbQuery('SELECT created_by FROM reservations WHERE id = ?', id)
+          .then(takeOneRow)
+          .then(checkUserHasPermissions)
+          .then(function(reservation) {
             if (reservation.finished_at === 'NOW') {
               reservation.finished_at = new Date();
             }
-            console.log(reservation)
+
             return dbQuery('UPDATE reservations SET ? WHERE id = ?', [reservation, id]).then(function() {
               scheduleEmail.reservationFinished(id);
             });
-          }
-
-          throw new ForbiddenError('Insufficient permissions.');
         });
       }
     }
