@@ -29,13 +29,23 @@ function formatDateToString(date) {
 
 function DataSource($http) {
 
-  this.getAllFutureReservations = function() {
-    return $http.get(API_URL + 'reservations?start_gt=now').then(dataFromResponse).then(function(reservations) {
+  this.getAllReservations = function() {
+    return $http.get(API_URL + 'reservations').then(dataFromResponse).then(function(reservations) {
       reservations.forEach(function(reservation) {
         reservation.start = parseDate(reservation.start);
         reservation.end = parseDate(reservation.end);
       });
       return reservations;
+    });
+  };
+
+  this.getAllFutureReservations = function() {
+    var now = new Date();
+
+    return this.getAllReservations().then(function(reservations) {
+      return reservations.filter(function(reservation) {
+        return reservation.end > now;
+      });
     });
   };
 

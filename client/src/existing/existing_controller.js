@@ -10,7 +10,7 @@ function ExistingController($scope, reservations, authUser) {
 
 ExistingController.resolve = {
   dataReservations: function(dataSource) {
-    return dataSource.getAllFutureReservations();
+    return dataSource.getAllReservations();
   }
 };
 
