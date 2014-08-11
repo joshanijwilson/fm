@@ -22,7 +22,7 @@ module.exports = {
   },
 
   '/reserve/:id/success': {
-    title: 'Úspěšně Zarezervováno',
+    title: 'Zarezervováno',
     templateUrl: 'reserve/reserve_success.html',
     controller: ReserveSuccessController,
     showMenuButton: false
@@ -41,7 +41,7 @@ module.exports = {
   },
 
   '/finish/:id': {
-    title: 'Ukončit rezervaci',
+    title: 'Ukončení Rezervace',
     templateUrl: 'finish/finish.html',
     controller: FinishController
   },
