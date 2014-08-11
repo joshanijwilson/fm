@@ -7,6 +7,9 @@ function ReserveSuccessController($scope, reservation, loadingIndicator, dataSou
 
     dataSource.deleteReservation(reservation.id).then(function() {
       $location.path('/reserve/' + reservation.id + '/canceled');
+    }, function(response) {
+      alert('ERROR ' + response.status);
+      loadingIndicator.hide();
     });
   };
 }

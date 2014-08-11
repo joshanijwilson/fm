@@ -19,8 +19,8 @@ function FinishController($scope, reservation, FileUploader, dataSource, loading
     dataSource.updateReservation(updatedReservation).then(function(newReservation) {
       // TODO(vojta): better to get just "redirect" service that understands routes (instead of hard-coded urls)
       $location.path('/finish/' + reservation.id + '/success');
-    }, function() {
-      alert('ERROR');
+    }, function(response) {
+      alert('ERROR ' + response.status);
       loadingIndicator.hide();
     });
   };
