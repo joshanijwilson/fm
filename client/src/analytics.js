@@ -11,6 +11,14 @@ function GoogleAnalytics($window) {
     ga('set', 'userId', id);
   };
 
+  this.login = function(id) {
+    ga('send', 'event', 'user', 'login', null, id);
+  };
+
+  this.loginFailed = function(error, email) {
+    ga('send', 'event', 'user', 'loginFailed', error, email);
+  };
+
   this.reservationCreated = function(id) {
     ga('send', 'event', 'reservation', 'created', null, id);
   };
