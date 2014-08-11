@@ -33,6 +33,16 @@ function IncorrectPasswordError(message) {
 
 IncorrectPasswordError.prototype = Object.create(Error.prototype);
 
+function UnauthorizedError(message) {
+  Error.call(this);
+
+  this.status = 401;
+  this.code = 'unauthorized';
+  this.message = message || null;
+}
+
+UnauthorizedError.prototype = Object.create(Error.prototype);
+
 exports.routes = {
   '/auth/local': {
     'POST': {
@@ -74,23 +84,15 @@ exports.routes = {
   }
 };
 
-inject(AuthenticatedUser, DbQuery, getAuthenticatedUserId);
-providePromise(AuthenticatedUser, AuthenticatedUser);
-function AuthenticatedUser(dbQuery, id) {
-  return dbQuery('SELECT * FROM users WHERE id = ?', id);
-}
 
-// This function name starts lowercase to trick the DI to call it as a factory
-// (instead of constructor with new).
 // The req.user is parsed from the authorization token by express-jwt middleware.
-inject(getAuthenticatedUserId, Request);
-function getAuthenticatedUserId(req) {
+inject(AuthenticatedUser, Request);
+function AuthenticatedUser(req) {
   if (!req.user) {
-    throw new Error('Not authenticated.');
+    throw new UnauthorizedError('Not authenticated.');
   }
 
-  return req.user.id;
+  return req.user;
 }
 
 exports.AuthenticatedUser = AuthenticatedUser;
-exports.AuthenticatedUserId = getAuthenticatedUserId;

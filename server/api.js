@@ -41,7 +41,7 @@ function mergeCustomerAndCarIntoReservation(row) {
 }
 
 var auth = require('./auth');
-var UserId = auth.AuthenticatedUserId;
+var AuthUser = auth.AuthenticatedUser;
 
 exports.routes = {
   '/reservations': {
@@ -56,9 +56,9 @@ exports.routes = {
     },
 
     'POST': {
-      inject:          [DbQuery, RequestBody, UserId, EmailScheduler],
-      handler: function(dbQuery, reservation, userId, scheduleEmail) {
-        reservation.created_by = userId;
+      inject:          [DbQuery, RequestBody, AuthUser, EmailScheduler],
+      handler: function(dbQuery, reservation, user, scheduleEmail) {
+        reservation.created_by = user.id;
 
         function insertReservation(reservation) {
           return dbQuery('INSERT INTO reservations SET ?, created_at = NOW(), updated_at = NOW()', reservation).then(function(result) {
