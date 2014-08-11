@@ -104,7 +104,7 @@ function registerRoutes(injector, app, routes) {
               return;
             }
 
-            if (200 <= response.status && response.status < 400) {
+            if (200 <= response.statusCode && response.statusCode < 400) {
               response.status(500);
             }
 
