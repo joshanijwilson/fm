@@ -64,7 +64,7 @@ function findAvailableDateAfter(date, reservations) {
 };
 
 
-function ReserveController($scope, $location, dataSource, dataCars, loadingIndicator) {
+function ReserveController($scope, $location, dataSource, dataCars, loadingIndicator, track) {
   var allCarOptions = dataCars;
   var allModelOptions = [{id: null, name: 'Zobrazit všechny modely'}].concat(filterCarModelsFromCars(dataCars));
   var futureReservationsByCar = {};
@@ -108,6 +108,7 @@ function ReserveController($scope, $location, dataSource, dataCars, loadingIndic
 
     loadingIndicator.show();
     dataSource.createReservation(reservation).then(function(newReservation) {
+      track.reservationCreated(newReservation.id);
       // TODO(vojta): better to get just "redirect" service that understands routes (instead of hard-coded urls)
       $location.path('/reserve/' + newReservation.id + '/success');
     }, function(response) {
@@ -185,7 +186,7 @@ ReserveController.resolve = {
 };
 
 
-ReserveController.$inject = ['$scope', '$location', 'dataSource', 'dataCars', 'loadingIndicator'];
+ReserveController.$inject = ['$scope', '$location', 'dataSource', 'dataCars', 'loadingIndicator', 'analytics'];
 ReserveController.resolve.dataCars.$inject = ['dataSource'];
 
 module.exports = ReserveController;

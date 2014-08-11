@@ -1,4 +1,4 @@
-function LoginController($scope, $http, $location, loadingIndicator, authUser, focus) {
+function LoginController($scope, $http, $location, loadingIndicator, authUser, focus, track) {
 
   $scope.email = '';
   $scope.password = '';
@@ -10,6 +10,7 @@ function LoginController($scope, $http, $location, loadingIndicator, authUser, f
     $http.post('/auth/local', {email: $scope.email, password: $scope.password}).then(function(response) {
       authUser.update(response.data);
       $scope.$root.$broadcast('auth');
+      track.user(authUser.id);
     }, function(err) {
       loadingIndicator.hide();
 
@@ -42,6 +43,6 @@ function LoginController($scope, $http, $location, loadingIndicator, authUser, f
   };
 }
 
-LoginController.$inject = ['$scope', '$http', '$location', 'loadingIndicator', 'authUser', 'focus'];
+LoginController.$inject = ['$scope', '$http', '$location', 'loadingIndicator', 'authUser', 'focus', 'analytics'];
 
 module.exports = LoginController;

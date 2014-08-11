@@ -1,6 +1,6 @@
 var DEFAULT_PAGE_TITLE = 'FleetManager';
 
-function AppController($scope, loadingIndicator, $location, authUser) {
+function AppController($scope, loadingIndicator, $location, authUser, track) {
   $scope.pageTitle = DEFAULT_PAGE_TITLE;
 
   // Update page title.
@@ -14,6 +14,8 @@ function AppController($scope, loadingIndicator, $location, authUser) {
       $scope.pageHeader = current.$$route.title || DEFAULT_PAGE_TITLE;
       $scope.showMenuButton = angular.isDefined(current.$$route.showMenuButton) ? current.$$route.showMenuButton : true;
     }
+
+    track.page($location.path());
   });
 
   $scope.$on('$routeChangeStart', loadingIndicator.show);
@@ -32,8 +34,12 @@ function AppController($scope, loadingIndicator, $location, authUser) {
 
     $location.path('/login');
   }
+
+  if (authUser.token) {
+    track.user(authUser.id);
+  }
 }
 
-AppController.$inject = ['$scope', 'loadingIndicator', '$location', 'authUser'];
+AppController.$inject = ['$scope', 'loadingIndicator', '$location', 'authUser', 'analytics'];
 
 module.exports = AppController;

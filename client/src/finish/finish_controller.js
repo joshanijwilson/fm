@@ -1,4 +1,4 @@
-function FinishController($scope, reservation, FileUploader, dataSource, loadingIndicator, $location) {
+function FinishController($scope, reservation, FileUploader, dataSource, loadingIndicator, $location, track) {
   $scope.reservation = reservation;
   $scope.tachometerState = null;
   $scope.fuelState = 50;
@@ -17,6 +17,7 @@ function FinishController($scope, reservation, FileUploader, dataSource, loading
     };
 
     dataSource.updateReservation(updatedReservation).then(function(newReservation) {
+      track.reservationFinished(reservation.id);
       // TODO(vojta): better to get just "redirect" service that understands routes (instead of hard-coded urls)
       $location.path('/finish/' + reservation.id + '/success');
     }, function(response) {
@@ -41,7 +42,7 @@ FinishController.resolve = {
 };
 
 
-FinishController.$inject = ['$scope', 'dataReservation', 'FileUploader', 'dataSource', 'loadingIndicator', '$location'];
+FinishController.$inject = ['$scope', 'dataReservation', 'FileUploader', 'dataSource', 'loadingIndicator', '$location', 'analytics'];
 FinishController.resolve.dataReservation.$inject = ['dataSource', '$route'];
 
 module.exports = FinishController;
