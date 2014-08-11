@@ -13,6 +13,16 @@ function Error404(msg) {
   this.message = msg;
 }
 
+function ForbiddenError(message) {
+  Error.call(this);
+
+  this.status = 403;
+  this.code = 'forbidden';
+  this.message = message || null;
+}
+
+ForbiddenError.prototype = Object.create(Error.prototype);
+
 
 function takeOneRow(rows) {
   if (rows.length === 0) {
@@ -96,11 +106,20 @@ exports.routes = {
       }
     },
 
-    // TODO(vojta): only allow user's reservation or if admin
     'DELETE': {
-      inject:          [DbQuery, PathParam('id')],
-      handler: function(dbQuery, id) {
-        return dbQuery('DELETE FROM reservations WHERE id = ?', id);
+      inject:          [DbQuery, PathParam('id'), AuthUser],
+      handler: function(dbQuery, id, user) {
+        return dbQuery('SELECT created_by FROM reservations WHERE id = ?', id).then(function(rows) {
+          if (!rows.length) {
+            throw new Error404('Record does not exist.');
+          }
+
+          if (user.is_admin || user.id === rows[0].created_by) {
+            return dbQuery('DELETE FROM reservations WHERE id = ?', id);
+          }
+
+          throw new ForbiddenError('Insufficient permissions.');
+        });
       }
     },
 
