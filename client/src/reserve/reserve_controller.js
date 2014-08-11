@@ -133,11 +133,11 @@ function ReserveController($scope, $location, dataSource, dataCars, loadingIndic
   };
 
   var updateCarsAvailability = function() {
-    console.time('updateCarsAvailability');
+    // console.time('updateCarsAvailability');
     angular.forEach(allCarOptions, function(car) {
       car.available = isCarAvailable(futureReservationsByCar[car.id], $scope.startDate, $scope.endDate);
     });
-    console.timeEnd('updateCarsAvailability');
+    // console.timeEnd('updateCarsAvailability');
   };
 
   $scope.startDateChanged = function() {

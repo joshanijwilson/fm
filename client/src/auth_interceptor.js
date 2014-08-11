@@ -11,8 +11,6 @@ module.exports = function AuthInterceptor(authUser, $q, $location, $rootScope, $
   var routeBeforeLogin = null;
 
   $rootScope.$on('$routeChangeStart', function(e, route) {
-    console.log('routeChangeStart', route.$$route.originalPath)
-
     if (route.$$route.originalPath === '/login') {
       return;
     }
