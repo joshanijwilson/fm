@@ -1,6 +1,11 @@
-function ExistingController($scope, reservations) {
-  $scope.reservations = reservations;
-
+function ExistingController($scope, reservations, authUser) {
+  if (authUser.is_admin) {
+    $scope.reservations = reservations;
+  } else {
+    $scope.reservations = reservations.filter(function(reservation) {
+      return reservation.created_by === authUser.id;
+    });
+  }
 }
 
 ExistingController.resolve = {
@@ -10,7 +15,7 @@ ExistingController.resolve = {
 };
 
 
-ExistingController.$inject = ['$scope', 'dataReservations'];
+ExistingController.$inject = ['$scope', 'dataReservations', 'authUser'];
 ExistingController.resolve.dataReservations.$inject = ['dataSource'];
 
 module.exports = ExistingController;
