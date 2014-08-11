@@ -10,6 +10,14 @@ function AuthUser(localStorage) {
   };
 
   this.loadFromLocalStorage();
+
+  // TODO(vojta): Remove once we know that all users are fine.
+  // During the change from localStorage.token -> localStorage.auth_user,
+  // some clients can possibly have invalid value in their localStorage.
+  // This forces login.
+  if (this.token && !this.id) {
+    this.token = null;
+  }
 };
 
 AuthUser.$inject = ['localStorage'];
