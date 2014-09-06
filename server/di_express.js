@@ -97,7 +97,7 @@ function registerRoutes(injector, app, routes) {
           requestInjector.getPromise(route.handler).then(function(value) {
             response.send(value);
           }, function(err) {
-            console.log(err);
+            console.error(err.stack || err);
             if (err.status) {
               response.status(err.status);
               response.send(err);
