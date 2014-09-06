@@ -132,8 +132,8 @@ exports.routes = {
     },
 
     'PUT': {
-      inject: [DbQuery, PathParam('id'), RequestBody, EmailScheduler],
-      handler: function(dbQuery, id, reservation, scheduleEmail) {
+      inject: [DbQuery, PathParam('id'), RequestBody, CheckUserHasPermissions, EmailScheduler],
+      handler: function(dbQuery, id, reservation, checkUserHasPermissions, scheduleEmail) {
         return dbQuery('SELECT created_by FROM reservations WHERE id = ?', id)
           .then(takeOneRow)
           .then(checkUserHasPermissions)
