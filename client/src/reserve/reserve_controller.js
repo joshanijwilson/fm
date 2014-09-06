@@ -166,8 +166,15 @@ function ReserveController($scope, $location, dataSource, dataCars, loadingIndic
 
   dataSource.getAllFutureReservations().then(function(reservations) {
     reservations.forEach(function(reservation) {
+      // Change the `reservation.end` date to +1 date,
+      // so that there is at least one day between reservations.
+      var reservationClone = {
+        start: reservation.start,
+        end: new Date(reservation.end.getTime() + ONE_DAY)
+      };
+
       futureReservationsByCar[reservation.car_id] = futureReservationsByCar[reservation.car_id] || [];
-      futureReservationsByCar[reservation.car_id].push(reservation);
+      futureReservationsByCar[reservation.car_id].push(reservationClone);
     });
 
     // Sort reservations by start date (bs-datepicker expects sorted ranges).
