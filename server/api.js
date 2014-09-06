@@ -137,7 +137,7 @@ exports.routes = {
         return dbQuery('SELECT created_by FROM reservations WHERE id = ?', id)
           .then(takeOneRow)
           .then(checkUserHasPermissions)
-          .then(function(reservation) {
+          .then(function() {
             if (reservation.finished_at === 'NOW') {
               reservation.finished_at = new Date();
             }
