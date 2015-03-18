@@ -29,6 +29,11 @@ function GoogleAnalytics($window) {
     ga('send', 'event', 'reservation', 'finished', null, id);
   };
 
+  this.error = function(message, stack) {
+    ga('send', 'exception', {'exDescription': message});
+    ga('send', 'event', 'JavaScript Error', message, stack, {'nonInteraction': 1});
+  };
+
   // Init GA client.
   ga('create', GOOGLE_ANALYTICS_ID, 'auto');
   console.log('ga', 'create', GOOGLE_ANALYTICS_ID);

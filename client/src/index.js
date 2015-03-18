@@ -20,6 +20,8 @@ angular.module('fm', deps)
   .directive('phoneValidator',    require('./phone_validator_directive'))
   .directive('fancyFileInput',    require('./fancy_file_input_directive'))
   .filter('phoneNumber',          require('./phone_number_filter'))
+  // Override Angular services.
+  .service('$exceptionHandler',   require('./exception_handler'))
 ;
 
 angular.bootstrap(document, ['fm']);
