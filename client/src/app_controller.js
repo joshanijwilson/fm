@@ -1,4 +1,5 @@
 var DEFAULT_PAGE_TITLE = 'FleetManager';
+var DEFAULT_URL = '/';
 
 function AppController($scope, loadingIndicator, $location, authUser, track) {
   $scope.pageTitle = DEFAULT_PAGE_TITLE;
@@ -22,17 +23,11 @@ function AppController($scope, loadingIndicator, $location, authUser, track) {
   $scope.$on('$routeChangeSuccess', loadingIndicator.hide);
   $scope.$on('$routeChangeError', loadingIndicator.hide);
 
-  // Initial page.
   // Show login form if the user is not authenticated.
   var initiallyRequestedPath = $location.path();
 
   if (!authUser.token && initiallyRequestedPath !== '/login') {
-    var removeOnAuthListener = $scope.$on('auth', function() {
-      $location.path(initiallyRequestedPath);
-      removeOnAuthListener();
-    });
-
-    $location.path('/login');
+    $location.url('/login?redirect=' + (initiallyRequestedPath || DEFAULT_URL));
   }
 
   if (authUser.token) {

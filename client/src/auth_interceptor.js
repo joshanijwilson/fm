@@ -9,6 +9,7 @@ module.exports = function AuthInterceptor(authUser, $q, $location, $rootScope, $
   // Route that was active before navigating to /login page.
   // We will navigate to it after successfull authentication.
   var routeBeforeLogin = null;
+  var routeChangeInProgress = false;
 
   $rootScope.$on('$routeChangeStart', function(e, route) {
     if (route.$$route.originalPath === '/login') {
@@ -21,6 +22,23 @@ module.exports = function AuthInterceptor(authUser, $q, $location, $rootScope, $
     requestsToRepeat = [];
 
     routeBeforeLogin = route;
+    routeChangeInProgress = true;
+  });
+
+  $rootScope.$on('$routeChangeSuccess', function(e, route) {
+    if (route.$$route.originalPath === '/login') {
+      return;
+    }
+
+    routeChangeInProgress = false;
+  });
+
+  $rootScope.$on('$routeChangeError', function(e, route) {
+    if (route.$$route.originalPath === '/login') {
+      return;
+    }
+
+    routeChangeInProgress = false;
   });
 
   $rootScope.$on('auth', function() {
@@ -28,20 +46,35 @@ module.exports = function AuthInterceptor(authUser, $q, $location, $rootScope, $
     $http = $http || $injector.get('$http');
     $route = $route || $injector.get('$route');
 
-    // Patch the original route (before login), so that $route finishes the route change.
-    // I know. This is insane.
-    if (routeBeforeLogin) {
-      $route.current = routeBeforeLogin;
-    }
+    var redirectUrlAfterLogin = $location.search()['redirect'];
 
+    // Repeat the requests that failed due to 401.
     requestsToRepeat.forEach(function(req) {
-      console.log('Repeating', req.config.method, req.config.url);
       $http(req.config).then(function(response) {
         req.deferred.resolve(response);
       }, function(error) {
         req.deferred.reject(error);
       })
     });
+
+    // TODO: remove /login and /<pathBeforeLogin from the url history.
+    if (routeChangeInProgress) {
+      // Requests were intercepted during a route change.
+      // Patch the original route (before login), so that $route finishes the original $routeChange.
+      // I know. This is insane.
+      // TODO: Fix the url (it will be /login instead of the url before login).
+      $route.current = routeBeforeLogin;
+    } else if (redirectUrlAfterLogin) {
+      // User navigated to /login.
+      $location.url(redirectUrlAfterLogin);
+    } else {
+      // Requests were intercepted outside a route change.
+      // Somebody else will do the redirect.
+      // TODO: Revert to the url before login.
+      // This is hard as simple navigating to that url is not enough.
+      // We need to bring back the original state, including the controller,
+      // so that the code that initiated the intercepted requests can safely execute.
+    }
   })
 
   this.request = function(config) {
