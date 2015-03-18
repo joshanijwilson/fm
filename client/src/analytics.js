@@ -8,6 +8,7 @@ function GoogleAnalytics($window) {
   };
 
   this.user = function(id) {
+    console.log('ga', 'user', id);
     ga('set', 'userId', id);
   };
 
@@ -16,6 +17,7 @@ function GoogleAnalytics($window) {
   };
 
   this.loginFailed = function(error, email) {
+    console.log('ga', 'login failed', error);
     ga('send', 'event', 'user', 'loginFailed', error, email);
   };
 
@@ -29,6 +31,7 @@ function GoogleAnalytics($window) {
 
   // Init GA client.
   ga('create', GOOGLE_ANALYTICS_ID, 'auto');
+  console.log('ga', 'create', GOOGLE_ANALYTICS_ID);
 }
 
 GoogleAnalytics.$inject = ['$window'];
