@@ -26,5 +26,22 @@
     "enabled": true,
     "from": "Fleet Manager <fleetmanager.volvo@gmail.com>",
     "to": "vojta.jina@gmail.com"
+  },
+
+  "calendarEvents": {
+    "calendarId": "fleetmanager.volvo@gmail.com",
+    "auth": {
+      "token": {
+        "access_token": null,
+        "token_type": null,
+        "refresh_token": null,
+        "expiry_date": null
+      },
+      "secret": {
+        "client_secret": null,
+        "redirect_uris": [],
+        "client_id": null
+      }
+    }
   }
 }

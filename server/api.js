@@ -10,6 +10,8 @@ var PathParam = diExpress.PathParam;
 var auth = require('./auth');
 var AuthUser = auth.AuthenticatedUser;
 
+var Calendar = require('./calendar');
+
 
 function Error404(msg) {
   this.status = 404;
@@ -77,15 +79,15 @@ exports.routes = {
     },
 
     'POST': {
-      inject:          [DbQuery, RequestBody, AuthUser, EmailScheduler],
-      handler: function(dbQuery, reservation, user, scheduleEmail) {
+      inject:          [DbQuery, RequestBody, AuthUser, EmailScheduler, Calendar],
+      handler: function(dbQuery, reservation, user, scheduleEmail, calendar) {
         reservation.created_by = user.id;
 
         function insertReservation(reservation) {
           return dbQuery('INSERT INTO reservations SET ?, created_at = NOW(), updated_at = NOW()', reservation).then(function(result) {
             scheduleGeneratingPdfForReservation(dbQuery, result.insertId).done();
             scheduleEmail.reservationCreated(result.insertId);
-
+            calendar.reservationCreated(result.insertId).done();
             return {
               id:result.insertId
             };
