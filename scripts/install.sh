@@ -5,9 +5,6 @@
 
 PROJECT_DIR=$(cd "$(dirname $(dirname "${BASH_SOURCE[0]}" ))" && pwd)
 
-echo $PROJECT_DIR
-exit 0
-
 # Install all NPM packages.
 for location in $PROJECT_DIR/*; do
   if [ -e "$location/package.json" ]; then
