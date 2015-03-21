@@ -88,16 +88,16 @@ function getReservationProtocolFields(reservation, car, customer) {
 
     // Reason
     // Vyzkouseni pred koupi
-    'untitled25': reservation.reason === 1 ? 'Yes' : 'No',
+    'untitled25': reservation.reason === 1 ? 'Yes' : null,
 
     // Testovani za ucelem zverejneni vysledku testovani
-    'untitled26':  reservation.reason === 2 ? 'Yes' : 'No',
+    'untitled26':  reservation.reason === 2 ? 'Yes' : null,
 
     // Nahradni vozidlo
-    'untitled27':  reservation.reason === 3 ? 'Yes' : 'No',
+    'untitled27':  reservation.reason === 3 ? 'Yes' : null,
 
     // Sluzebni vozidlo, jina zapujcka
-    'untitled28':  reservation.reason === 4 ? 'Yes' : 'No',
+    'untitled28':  reservation.reason === 4 ? 'Yes' : null,
 
     // Dlohodoba (od-do)
     // 'untitled29': 'Yes',
