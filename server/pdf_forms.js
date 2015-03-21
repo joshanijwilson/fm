@@ -68,13 +68,13 @@ function getReservationProtocolFields(reservation, car, customer) {
     'untitled13': moment(reservation.start).format('D.M.YY'),
 
     // Hodina predani (start)
-    // 'untitled14': null,
+    'untitled14': '10:00',
 
     // Datum vraceni
     'untitled15': moment(reservation.end).format('D.M.YY'),
 
     // Hodina vraceni
-    // 'untitled16': null,
+    'untitled16': '12:00',
 
     // Tachometr (start)
     // 'untitled17': null,
