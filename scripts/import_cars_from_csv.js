@@ -42,6 +42,7 @@ var parser = parse({delimiter: ',', columns: COLUMNS}, function(err, cars) {
       car.spz = car.spz.replace(/\s/, '').substr(0, 7);
       car.vin = car.vin && car.vin.trim() || 0;
       car.equipment = equipmentMap[car.equipment] || 0;
+      car.is_active = 1;
       delete car.model;
       delete car.undefined;
 
@@ -104,40 +105,46 @@ var parser = parse({delimiter: ',', columns: COLUMNS}, function(err, cars) {
         carIdForSpz[row.spz] = row.id;
       });
 
-      // Insert models that don't exist yet.
-      var pending = 0;
-
-      cars.forEach(function(car) {
-        car.model = car.model.trim();
-        if (normalizeModels[car.model]) {
-          car.model = normalizeModels[car.model];
+      pool.query('UPDATE cars SET is_active = 0', function(err, rows) {
+        if (err) {
+          console.error('Failed to deactivate old cars.');
         }
 
-        if (!modelIdFor[car.model]) {
-          pending++;
-          modelIdFor[car.model] = true;
+        // Insert models that don't exist yet.
+        var pending = 0;
 
-          console.log('Inserting new car model ' + car.model);
-          pool.query('INSERT INTO car_models SET ?', {name: car.model}, function(err, result) {
-            if (err) {
-              console.error('Failed to insert new car model ' + car.model);
-              console.error(err);
-              throw err;
-            }
+        cars.forEach(function(car) {
+          car.model = car.model.trim();
+          if (normalizeModels[car.model]) {
+            car.model = normalizeModels[car.model];
+          }
 
-            modelIdFor[car.model] = result.insertId;
-            pending--;
+          if (!modelIdFor[car.model]) {
+            pending++;
+            modelIdFor[car.model] = true;
 
-            if (pending === 0) {
-              insertCars(cars);
-            }
-          });
+            console.log('Inserting new car model ' + car.model);
+            pool.query('INSERT INTO car_models SET ?', {name: car.model}, function(err, result) {
+              if (err) {
+                console.error('Failed to insert new car model ' + car.model);
+                console.error(err);
+                throw err;
+              }
+
+              modelIdFor[car.model] = result.insertId;
+              pending--;
+
+              if (pending === 0) {
+                insertCars(cars);
+              }
+            });
+          }
+        });
+
+        if (pending === 0) {
+          insertCars(cars);
         }
       });
-
-      if (pending === 0) {
-        insertCars(cars);
-      }
     });
   });
 });
