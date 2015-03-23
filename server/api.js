@@ -158,7 +158,7 @@ exports.routes = {
     'GET': {
       inject: [DbQuery],
       handler: function(dbQuery) {
-        return dbQuery('SELECT cars.*, car_models.name AS model_name FROM cars LEFT JOIN car_models ON cars.model_id = car_models.id');
+        return dbQuery('SELECT cars.*, car_models.name AS model_name FROM cars LEFT JOIN car_models ON cars.model_id = car_models.id WHERE cars.is_active = 1');
       }
     }
   }
