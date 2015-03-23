@@ -30,57 +30,115 @@ var parser = parse({delimiter: ',', columns: COLUMNS}, function(err, cars) {
     'R-Design': 4
   };
 
-  // Insert models.
+  var carIdForSpz = Object.create(null);
   var modelIdFor = Object.create(null);
-  var pending = 0;
-  cars.forEach(function(car) {
-    car.model = car.model.trim();
-    if (normalizeModels[car.model]) {
-      car.model = normalizeModels[car.model];
+
+  function insertCars(cars) {
+    var pending = 0;
+
+    cars.forEach(function(car) {
+      car.model_id = modelIdFor[car.model];
+      car.engine_displacement = car.engine_displacement && parseInt(car.engine_displacement, 10) || 0;
+      car.spz = car.spz.replace(/\s/, '').substr(0, 7);
+      car.vin = car.vin && car.vin.trim() || 0;
+      car.equipment = equipmentMap[car.equipment] || 0;
+      delete car.model;
+      delete car.undefined;
+
+      // Car already exists in the DB, update.
+      if (car.spz && carIdForSpz[car.spz]) {
+        console.log('Updating existing car ' + car.name + ' (' + carIdForSpz[car.spz] + ')');
+        pool.query('UPDATE cars SET ? WHERE id = ?', [car, carIdForSpz[car.spz]], function(err, result) {
+          if (err) {
+            console.erro('Failed to update car ' + car.name + ' (' + car.id + ')');
+            console.error(car);
+            console.error(err);
+          }
+          pending--;
+
+          if (pending === 0) {
+            console.log('DONE');
+            process.exit();
+          }
+        });
+      } else {
+        console.log('Inserting new car ' + car.name);
+        pool.query('INSERT INTO cars SET ?', car, function(err, result) {
+          if (err) {
+            console.error('Failed to insert new car ' + car.name);
+            console.error(car);
+            console.error(err);
+          }
+          pending--;
+
+          if (pending === 0) {
+            console.log('DONE')
+            process.exit();
+          }
+
+        });
+        pending++;
+      }
+    });
+  }
+
+  // Load existing models.
+  pool.query('SELECT id,name FROM car_models', function(err, rows) {
+    if (err) {
+      console.error(err);
+      throw err;
     }
 
-    if (!modelIdFor[car.model]) {
-      pending++;
-      modelIdFor[car.model] = true;
+    rows.forEach(function(row) {
+      modelIdFor[row.name] = row.id;
+    });
 
-      // TODO(vojta): insert if not exist
-      pool.query('INSERT INTO car_models SET ?', {name: car.model}, function(err, result) {
-        if (err) {
-          throw err;
+    // Load existing cars.
+    pool.query('SELECT id,spz FROM cars', function(err, rows) {
+      if (err) {
+        console.error(err);
+        throw err;
+      }
+
+      rows.forEach(function(row) {
+        carIdForSpz[row.spz] = row.id;
+      });
+
+      // Insert models that don't exist yet.
+      var pending = 0;
+
+      cars.forEach(function(car) {
+        car.model = car.model.trim();
+        if (normalizeModels[car.model]) {
+          car.model = normalizeModels[car.model];
         }
 
-        modelIdFor[car.model] = result.insertId;
-        pending--;
+        if (!modelIdFor[car.model]) {
+          pending++;
+          modelIdFor[car.model] = true;
 
-        if (pending === 0) {
-          // Insert all cars.
-          cars.forEach(function(car) {
-            car.model_id = modelIdFor[car.model];
-            car.engine_displacement = car.engine_displacement && parseInt(car.engine_displacement, 10) || 0;
-            car.spz = car.spz.replace(/\s/, '').substr(0, 7);
-            car.vin = car.vin && car.vin.trim() || 0;
-            car.equipment = equipmentMap[car.equipment] || 0;
-            delete car.model;
-            delete car.undefined;
+          console.log('Inserting new car model ' + car.model);
+          pool.query('INSERT INTO car_models SET ?', {name: car.model}, function(err, result) {
+            if (err) {
+              console.error('Failed to insert new car model ' + car.model);
+              console.error(err);
+              throw err;
+            }
 
-            pool.query('INSERT INTO cars SET ?', car, function(err, result) {
-              if (err) {
-                console.log(car);
-                throw err;
-              }
-              pending--;
+            modelIdFor[car.model] = result.insertId;
+            pending--;
 
-              if (pending === 0) {
-                console.log('DONE')
-                process.exit();
-              }
-
-            });
-            pending++;
+            if (pending === 0) {
+              insertCars(cars);
+            }
           });
         }
       });
-    }
+
+      if (pending === 0) {
+        insertCars(cars);
+      }
+    });
   });
 });
 
