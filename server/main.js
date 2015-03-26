@@ -18,6 +18,9 @@ app.get('/storage/reservations/:id-:document.pdf', function(req, res, next) {
   send(req, '/' + req.params.id + '-' + req.params.document + '.pdf', {root: __dirname + '/../storage/reservations'}).pipe(res);
 });
 
+app.get('/storage/cars/:spz.jpg', function(req, res, next) {
+  send(req, req.url, {root: process.cwd()}).pipe(res);
+});
 
 // STORAGE - uploads.
 var fs = require('fs');

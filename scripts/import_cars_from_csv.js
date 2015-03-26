@@ -37,12 +37,15 @@ var parser = parse({delimiter: ',', columns: COLUMNS}, function(err, cars) {
     var pending = 0;
 
     cars.forEach(function(car) {
+      pending++;
+
       car.model_id = modelIdFor[car.model];
       car.engine_displacement = car.engine_displacement && parseInt(car.engine_displacement, 10) || 0;
       car.spz = car.spz.replace(/\s/, '').substr(0, 7);
       car.vin = car.vin && car.vin.trim() || 0;
       car.equipment = equipmentMap[car.equipment] || 0;
       car.is_active = 1;
+      car.photo_url = '/storage/cars/' + car.spz.toLowerCase() + '.jpg';
       delete car.model;
       delete car.undefined;
 
@@ -78,7 +81,6 @@ var parser = parse({delimiter: ',', columns: COLUMNS}, function(err, cars) {
           }
 
         });
-        pending++;
       }
     });
   }
