@@ -7,7 +7,7 @@
   <div class="form-group">
     <div ng-repeat="car in carOptions" ng-click="selectCar(car)"
          ng-class="{'selected': selectedCar === car, 'not-available': !car.available}" class="car-option">
-      <img ng-src="./cars/{{pictureFor(car.model_name)}}" alt="{{car.name}}">
+      <img ng-src="{{car.photo_url}}" alt="{{car.name}}">
       <div class="car-label">
         <strong>{{car.name}} ({{car.model_year}})</strong>, {{car.equipment}}, {{car.transmission}}
       </div>

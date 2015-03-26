@@ -83,10 +83,6 @@ function ReserveController($scope, $location, dataSource, dataCars, loadingIndic
     }
   };
 
-  $scope.pictureFor = function(modelName) {
-    return modelName.toLowerCase().replace(/\s/g, '_') + '_600.jpg';
-  };
-
   $scope.submitReservation = function() {
     var customerNames = $scope.customer.name.split(' ');
     var customer = {
