@@ -13,7 +13,7 @@
   },
 
   "smtpTransport": {
-    "service": "Gmail",
+    "service": "gmail",
     "auth": {
       "user": null,
       "pass": null

@@ -3,7 +3,7 @@ var config = require('../config').forCurrentEnvironment();
 var q = require('q');
 
 // Create reusable transport method (opens pool of SMTP connections).
-var smtpTransport = nodemailer.createTransport('SMTP', config.smtpTransport);
+var smtpTransport = nodemailer.createTransport(config.smtpTransport);
 
 function SendEmail() {
   return sendEmail;
@@ -74,9 +74,8 @@ function EmailScheduler(dbQuery, sendEmail) {
         config.emailNotifications.from, config.emailNotifications.to,
         emailTemplates.reservationCreated.subject.render(replacements),
         emailTemplates.reservationCreated.message.render(replacements),
-        // TODO(vojta): filename, path in nodemailer 1.x
         // TODO(vojta): extract the storage paths into "storage" module.
-        [{fileName: 'Protokol.pdf', filePath: __dirname + '/../storage/reservations/' + reservationId + '-protocol.pdf'}]
+        [{filename: 'Protokol.pdf', path: __dirname + '/../storage/reservations/' + reservationId + '-protocol.pdf'}]
       );
     });
   };
