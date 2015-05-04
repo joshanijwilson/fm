@@ -145,9 +145,7 @@ exports.routes = {
               reservation.finished_at = new Date();
             }
 
-            return dbQuery('UPDATE reservations SET ? WHERE id = ?', [reservation, id]).then(function() {
-              scheduleEmail.reservationFinished(id);
-            });
+            return dbQuery('UPDATE reservations SET ? WHERE id = ?', [reservation, id]);
         });
       }
     }
