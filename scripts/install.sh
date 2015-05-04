@@ -39,3 +39,7 @@ gulp build build.min
 # Create storage directories.
 cd $PROJECT_DIR/storage
 mkdir reservations
+
+cd $PROJECT_DIR
+echo "De-coding prod config..."
+./scripts/decode_prod_config.sh
