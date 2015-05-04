@@ -21,11 +21,11 @@ bower install
 
 # Install DB.
 cd $PROJECT_DIR
-mysqladmin -u root -p create fleet_manager
+mysqladmin -u root create fleet_manager
 ./db/node_modules/db-migrate/bin/db-migrate --config db/config.js --migrations-dir db/migrations/ up
 
 # Insert cars from csv.
-node scripts/import_cars_from_csv.js scripts/cars_filtered.csv
+node scripts/import_cars_from_csv.js scripts/cars_new.csv
 
 
 # Build PDF generator.
