@@ -141,6 +141,7 @@ exports.routes = {
           .then(takeOneRow)
           .then(checkUserHasPermissions)
           .then(function() {
+            // TODO(vojta): only admin can finish
             if (reservation.finished_at === 'NOW') {
               reservation.finished_at = new Date();
               reservation.finished_by = user.id;
