@@ -85,8 +85,9 @@ exports.routes = {
 
         function insertReservation(reservation) {
           return dbQuery('INSERT INTO reservations SET ?, created_at = NOW(), updated_at = NOW()', reservation).then(function(result) {
-            scheduleGeneratingPdfForReservation(dbQuery, result.insertId).done();
-            scheduleEmail.reservationCreated(result.insertId);
+            scheduleGeneratingPdfForReservation(dbQuery, result.insertId).then(function() {
+              scheduleEmail.reservationCreated(result.insertId).done();
+            }).done();
             calendar.reservationCreated(result.insertId).done();
             return {
               id:result.insertId

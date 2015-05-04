@@ -9,7 +9,7 @@ function SendEmail() {
   return sendEmail;
 }
 
-function sendEmail(from, to, subject, message) {
+function sendEmail(from, to, subject, message, attachments) {
   console.log('sending email', from, to, subject, message);
 
   var deferred = q.defer();
@@ -17,8 +17,9 @@ function sendEmail(from, to, subject, message) {
     from: from,
     to: to,
     subject: subject,
-    text: message
+    text: message,
     // html: '<b>Hello world ✔</b>' // html body
+    attachments: attachments
   };
 
   smtpTransport.sendMail(mailOptions, function(error, response) {
@@ -72,7 +73,10 @@ function EmailScheduler(dbQuery, sendEmail) {
       return sendEmail(
         config.emailNotifications.from, config.emailNotifications.to,
         emailTemplates.reservationCreated.subject.render(replacements),
-        emailTemplates.reservationCreated.message.render(replacements)
+        emailTemplates.reservationCreated.message.render(replacements),
+        // TODO(vojta): filename, path in nodemailer 1.x
+        // TODO(vojta): extract the storage paths into "storage" module.
+        [{fileName: 'Protokol.pdf', filePath: __dirname + '/../storage/reservations/' + reservationId + '-protocol.pdf'}]
       );
     });
   };
@@ -100,7 +104,8 @@ function EmailScheduler(dbQuery, sendEmail) {
       return sendEmail(
         config.emailNotifications.from, config.emailNotifications.to,
         emailTemplates.reservationFinished.subject.render(replacements),
-        emailTemplates.reservationFinished.message.render(replacements)
+        emailTemplates.reservationFinished.message.render(replacements),
+        []
       );
     });
   };
