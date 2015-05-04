@@ -12,7 +12,9 @@ function FinishController($scope, reservation, dataSource, loadingIndicator, $lo
     var updatedReservation = {
       id: reservation.id,
       finished_at: 'NOW',
-      tachometer_end: $scope.tachometerState
+      tachometer_end: $scope.tachometerState,
+      protocol_doc_returned: $scope.protocolReturned,
+      survey_doc_returned: $scope.surveyReturned
     };
 
     dataSource.updateReservation(updatedReservation).then(function(newReservation) {
