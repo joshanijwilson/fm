@@ -3,7 +3,7 @@ function FinishController($scope, reservation, dataSource, loadingIndicator, $lo
 
   $scope.protocolReturned = false;
   $scope.surveyReturned = false;
-  $scope.tachometerState = null;
+  $scope.tachometerState = reservation.tachometer_end;
   $scope.note = null;
 
   $scope.finishReservation = function() {
