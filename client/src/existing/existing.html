@@ -7,7 +7,7 @@
     <a ng-href="tel:{{reservation.customer.phone}}" ng-show="reservation.customer.phone">
       <span class="glyphicon glyphicon-earphone"></span>{{reservation.customer.phone | phoneNumber}}</a><br>
     Zarezervováno: {{reservation.created_at | date:short}}</p>
-    <a ng-href="#/finish/{{reservation.id}}" class="btn btn-default">ukončit</a>
+    <a ng-show="showFinish" ng-href="#/finish/{{reservation.id}}" class="btn btn-default">ukončit</a>
   </li>
 </ul>
 
