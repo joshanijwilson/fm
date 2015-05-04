@@ -1,5 +1,6 @@
 var google = require('googleapis');
 var moment = require('moment');
+var q = require('q');
 
 var diExpress = require('./di_express');
 var inject = diExpress.inject;
@@ -21,6 +22,10 @@ function Calendar(dbQuery) {
   oauth2Client.setCredentials(token);
 
   this.reservationCreated = function(reservationId) {
+    if (!config.calendarEvents.enabled) {
+      return q();
+    }
+
     return dbQuery({sql: 'SELECT reservations.start, reservations.end, reservations.created_at, cars.name, users.first_name, users.last_name, customers.first_name, customers.last_name FROM reservations LEFT JOIN cars ON reservations.car_id = cars.id LEFT JOIN customers ON reservations.customer_id = customers.id LEFT JOIN users ON reservations.created_by = users.id WHERE reservations.id = ?', values: [reservationId], nestTables: true}).then(function(rows) {
       var row = rows[0];
       var reservation = row.reservations;

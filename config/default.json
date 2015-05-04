@@ -29,6 +29,7 @@
   },
 
   "calendarEvents": {
+    "enabled": true,
     "calendarId": "fleetmanager.volvo@gmail.com",
     "auth": {
       "token": {
