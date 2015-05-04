@@ -1,7 +1,12 @@
 {
   "name": "fleet-manager-config",
   "version": "0.0.0",
-  "description": "",
+  "private": true,
+  "description": "Fleet Manager - configuration",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/joshanijwilson/fm"
+  },
   "main": "index.js",
   "dependencies": {
     "node.extend": "~1.0.10"
