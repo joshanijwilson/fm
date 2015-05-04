@@ -14,7 +14,8 @@ function FinishController($scope, reservation, dataSource, loadingIndicator, $lo
       finished_at: 'NOW',
       tachometer_end: $scope.tachometerState,
       protocol_doc_returned: $scope.protocolReturned,
-      survey_doc_returned: $scope.surveyReturned
+      survey_doc_returned: $scope.surveyReturned,
+      finished_note: $scope.note
     };
 
     dataSource.updateReservation(updatedReservation).then(function(newReservation) {
