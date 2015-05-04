@@ -36,3 +36,6 @@ gradle fatJar
 cd $PROJECT_DIR/client
 gulp build build.min
 
+# Create storage directories.
+cd $PROJECT_DIR/storage
+mkdir reservations
