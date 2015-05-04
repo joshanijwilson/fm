@@ -135,14 +135,15 @@ exports.routes = {
     },
 
     'PUT': {
-      inject: [DbQuery, PathParam('id'), RequestBody, CheckUserHasPermissions, EmailScheduler],
-      handler: function(dbQuery, id, reservation, checkUserHasPermissions, scheduleEmail) {
+      inject: [DbQuery, PathParam('id'), RequestBody, CheckUserHasPermissions, EmailScheduler, AuthUser],
+      handler: function(dbQuery, id, reservation, checkUserHasPermissions, scheduleEmail, user) {
         return dbQuery('SELECT created_by FROM reservations WHERE id = ?', id)
           .then(takeOneRow)
           .then(checkUserHasPermissions)
           .then(function() {
             if (reservation.finished_at === 'NOW') {
               reservation.finished_at = new Date();
+              reservation.finished_by = user.id;
             }
 
             return dbQuery('UPDATE reservations SET ? WHERE id = ?', [reservation, id]);
