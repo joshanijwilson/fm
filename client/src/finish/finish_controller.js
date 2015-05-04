@@ -1,7 +1,10 @@
-function FinishController($scope, reservation, FileUploader, dataSource, loadingIndicator, $location, track) {
+function FinishController($scope, reservation, dataSource, loadingIndicator, $location, track) {
   $scope.reservation = reservation;
+
+  $scope.protocolReturned = false;
+  $scope.surveyReturned = false;
   $scope.tachometerState = null;
-  $scope.fuelState = 50;
+  $scope.note = null;
 
   $scope.finishReservation = function() {
     loadingIndicator.show();
@@ -9,11 +12,7 @@ function FinishController($scope, reservation, FileUploader, dataSource, loading
     var updatedReservation = {
       id: reservation.id,
       finished_at: 'NOW',
-      tachometer_end: $scope.tachometerState,
-      fuel_end: $scope.fuelState,
-      identity_doc_url: $scope.identityDocumentUrl,
-      protocol_doc_url: $scope.protocolDocumentUrl,
-      survey_doc_url:  $scope.surveyDocumentUrl
+      tachometer_end: $scope.tachometerState
     };
 
     dataSource.updateReservation(updatedReservation).then(function(newReservation) {
@@ -27,12 +26,8 @@ function FinishController($scope, reservation, FileUploader, dataSource, loading
   };
 
   $scope.isValid = function() {
-    return $scope.form.$valid && $scope.identityDocumentUrl && $scope.protocolDocumentUrl && $scope.surveyDocumentUrl;
+    return $scope.form.$valid;
   };
-
-  $scope.identityDocumentUrl = null;
-  $scope.protocolDocumentUrl = null;
-  $scope.surveyDocumentUrl = null;
 }
 
 FinishController.resolve = {
@@ -42,7 +37,7 @@ FinishController.resolve = {
 };
 
 
-FinishController.$inject = ['$scope', 'dataReservation', 'FileUploader', 'dataSource', 'loadingIndicator', '$location', 'analytics'];
+FinishController.$inject = ['$scope', 'dataReservation', 'dataSource', 'loadingIndicator', '$location', 'analytics'];
 FinishController.resolve.dataReservation.$inject = ['dataSource', '$route'];
 
 module.exports = FinishController;

@@ -7,6 +7,20 @@
 </p>
 
 <form name="form" novalidate>
+  <div class="checkbox">
+    <label>
+      <input ng-model="protocolReturned" type="checkbox">
+      Protokol odevzdán
+    </label>
+  </div>
+
+  <div class="checkbox">
+    <label>
+      <input ng-model="surveyReturned" type="checkbox">
+      Dotazník odevzdán
+    </label>
+  </div>
+
   <div class="form-group has-feedback" error-class-for="form.tachometerState">
     <label for="tachometer-input">Stav tachometru</label>
     <input ng-model="tachometerState" inputmode="numeric" required class="form-control" min="0" type="number" name="tachometerState" id="tachometer-input" mark-dirty-on-blur>
@@ -14,31 +28,8 @@
   </div>
 
   <div class="form-group">
-    <label for="fuel-input">Stav palivoměru</label>
-    <slider ng-model="fuelState" min="0" max="100" step="10">
-  </div>
-
-  <div class="form-group">
-    <label for="identity-file">Doklad totožnosti</label>
-    <span class="help-block">Zde prosím nahrajte naskenovaný doklad totožnosti řidiče, tj. řidičský nebo občanský průkaz.</span>
-
-    <fancy-file-input url="identityDocumentUrl" data-id="identity-file"></fancy-file-input>
-  </div>
-
-  <div class="form-group">
-    <label for="protocol-file">Vyplněný protokol</label>
-    <span class="help-block">Zde prosím nahrajte vyplněný a podepsaný předávací protokol.<br>
-    Předvyplněný protokol můžete stáhnout <a ng-href="/storage/reservations/{{reservation.id}}-protocol.pdf" download="protocol.pdf">zde</a>.</span>
-
-    <fancy-file-input url="protocolDocumentUrl" data-id="protocol-file"></fancy-file-input>
-  </div>
-
-  <div class="form-group">
-    <label for="survey-file">Vyplněný dotazník</label>
-    <span class="help-block">Zde prosím nahrajte vyplněný dotazník spokojenosti.<br>
-    Předvyplněný dotazník můžete stáhnout <a ng-href="/storage/reservations/{{reservation.id}}-survey.pdf" download="survey.pdf">zde</a>.</span>
-
-    <fancy-file-input url="surveyDocumentUrl" data-id="survey-file"></fancy-file-input>
+    <label for="note-input">Poznámka (nepovinné)</label>
+    <textarea ng-model="note" class="form-control" rows="3" id="note-input" placeholder="Poznámka k rezervaci..."></textarea>
   </div>
 
   <button ng-click="finishReservation()" ng-disabled="!isValid()" type="submit" class="btn btn-primary btn-lg">Ukončit</button>
