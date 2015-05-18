@@ -108,9 +108,39 @@ function EmailScheduler(dbQuery, sendEmail) {
       );
     });
   };
+
+  this.reservationReminder = function(reservationId) {
+    // TODO(vojta): move to send() instead?
+    if (!config.emailNotifications.enabled) {
+      return q();
+    }
+
+    return dbQuery({sql: 'SELECT reservations.start, reservations.end, reservations.reason, cars.name, users.first_name, users.last_name, users.email, customers.first_name, customers.last_name FROM reservations LEFT JOIN cars ON reservations.car_id = cars.id LEFT JOIN customers ON reservations.customer_id = customers.id LEFT JOIN users ON reservations.created_by = users.id WHERE reservations.id = ?', values: [reservationId], nestTables: true}).then(function(rows) {
+      var row = rows[0];
+      var replacements = {
+        reservation: row.reservations,
+        car: row.cars,
+        user: row.users,
+        customer: row.customers
+      };
+
+      replacements.reservation.start = moment(replacements.reservation.start).format('D.M.YYYY');
+      replacements.reservation.end = moment(replacements.reservation.end).format('D.M.YYYY');
+      replacements.reservation.reason = REASON_OPTIONS[replacements.reservation.reason];
+
+
+      return sendEmail(
+        config.emailNotifications.from, replacements.user.email,
+        emailTemplates.reservationReminder.subject.render(replacements),
+        emailTemplates.reservationReminder.message.render(replacements),
+        [{filename: 'Dotaznik.pdf', path: __dirname + '/../storage/reservations/' + reservationId + '-survey.pdf'}]
+      );
+    });
+  };
 }
 
 module.exports = EmailScheduler;
+EmailScheduler.SendEmail = SendEmail;
 
 // TODO(vojta): close the connection pool.
 //smtpTransport.close();

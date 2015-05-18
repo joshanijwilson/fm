@@ -14,5 +14,6 @@ function loadEmailTemplate(name) {
 
 module.exports = {
   reservationCreated: loadEmailTemplate('reservation_created.md'),
-  reservationFinished: loadEmailTemplate('reservation_finished.md')
+  reservationFinished: loadEmailTemplate('reservation_finished.md'),
+  reservationReminder: loadEmailTemplate('reservation_reminder.md')
 };
