@@ -12,7 +12,7 @@ function ReservationReminder(dbQuery, emailScheduler) {
   this.sendReminders = function() {
     var tomorrowDate = moment(Date.now()).add(1, 'day').format('YYYY-MM-DD');
 
-    return dbQuery('SELECT id FROM reservations WHERE end = ?', [tomorrowDate]).then(function(rows) {
+    return dbQuery('SELECT id FROM reservations WHERE end = ? AND finished_at IS NULL', [tomorrowDate]).then(function(rows) {
       console.log('rows', rows, tomorrowDate);
       return q.all(rows.map(function(row) {
         return emailScheduler.reservationReminder(row.id);

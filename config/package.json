@@ -9,7 +9,9 @@
   },
   "main": "index.js",
   "dependencies": {
-    "node.extend": "~1.0.10"
+    "deasync": "^0.1.0",
+    "node.extend": "~1.0.10",
+    "request": "^2.55.0"
   },
   "devDependencies": {},
   "scripts": {

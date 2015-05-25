@@ -17,6 +17,7 @@ function cleanDB(done) {
   var spec = this;
   var query = 'DELETE FROM attachments;' +
               'DELETE FROM reservations;' +
+              'ALTER TABLE reservations AUTO_INCREMENT = 1;' +
               'DELETE FROM users;' +
               'DELETE FROM dealerships;' +
               '';
@@ -114,8 +115,12 @@ describe('send_reminders', function() {
 
         // TODO: do not depend on cars data outside of this test
         expect(subject).toBe('Rezervace V40 CC T5 AWD končí');
+        expect(subject).toBe('Rezervace V40 CC T5 AWD končí');
         expect(message).toBe('Dobrý den,\n\n' +
-                             'Vaše rezervace V40 CC T5 AWD končí zítra.\n');
+                             'Vaše rezervace V40 CC T5 AWD končí zítra.\n\n' +
+                             'Přihlaste se prosím a zadejte stav tachometru na adrese:\n' +
+                             'http://localhost/#/complete/2\n\n' +
+                             'Děkujeme.\n');
       });
     }).done(function() {
       pool.end();

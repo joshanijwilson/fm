@@ -124,10 +124,11 @@ function EmailScheduler(dbQuery, sendEmail) {
         customer: row.customers
       };
 
+      // NOTE(vojta): this depends on client routes, can we make it less fragile?
+      replacements.complete_link = 'http://' + config.publicHostname + (config.port === 80 ? '' : ':' + config.port) + '/#/complete/' + reservationId;
       replacements.reservation.start = moment(replacements.reservation.start).format('D.M.YYYY');
       replacements.reservation.end = moment(replacements.reservation.end).format('D.M.YYYY');
       replacements.reservation.reason = REASON_OPTIONS[replacements.reservation.reason];
-
 
       return sendEmail(
         config.emailNotifications.from, replacements.user.email,

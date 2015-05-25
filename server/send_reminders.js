@@ -10,6 +10,7 @@ var pool = mysql.createPool(config.mysql);
 
 var diExpress = require('./di_express');
 var DbQuery = diExpress.DbQuery;
+var DbPool = diExpress.DbPool;
 
 function endPool() {
   pool.end();

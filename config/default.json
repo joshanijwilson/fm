@@ -1,5 +1,6 @@
 {
   "port": 80,
+  "publicHostname": null,
   "clientWebRoot": "./client/",
   "clientIndex": "index.html",
 
