@@ -58,7 +58,7 @@ exports.routes = {
             return {
               id: user.id,
               is_admin: !!user.is_admin,
-              token: jwt.sign({id: user.id}, config.authSecret, { expiresInMinutes: 60*24*7 })
+              token: jwt.sign({id: user.id, is_admin: !!user.is_admin}, config.authSecret, { expiresInMinutes: 60*24*7 })
             };
           };
 
