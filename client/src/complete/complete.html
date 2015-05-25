@@ -1,0 +1,16 @@
+<h4 class="list-group-item-heading">{{reservation.car.name}} ({{reservation.start | date}} - {{reservation.end | date}})</h4>
+
+<form name="form" novalidate>
+  <div class="form-group has-feedback" error-class-for="form.tachometerState">
+    <label for="tachometer-input">Stav tachometru</label>
+    <input ng-model="tachometerState" inputmode="numeric" required class="form-control" min="0" type="number" name="tachometerState" id="tachometer-input" mark-dirty-on-blur>
+    <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+  </div>
+
+  <div class="form-group">
+    <label for="note-input">Poznámka (nepovinné)</label>
+    <textarea ng-model="note" class="form-control" rows="3" id="note-input" placeholder="Poznámka k rezervaci..."></textarea>
+  </div>
+
+  <button ng-click="completeReservation()" ng-disabled="!isValid()" type="submit" class="btn btn-primary btn-lg">Ukončit</button>
+</form>

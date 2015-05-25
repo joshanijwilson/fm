@@ -25,6 +25,10 @@ function GoogleAnalytics($window) {
     ga('send', 'event', 'reservation', 'created', null, id);
   };
 
+  this.reservationCompleted = function(id) {
+    ga('send', 'event', 'reservation', 'completed', null, id);
+  };
+
   this.reservationFinished = function(id) {
     ga('send', 'event', 'reservation', 'finished', null, id);
   };
