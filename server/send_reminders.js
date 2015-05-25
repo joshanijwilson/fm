@@ -20,4 +20,5 @@ var injector = new di.Injector([
   diExpress.bind(DbPool).toValue(pool)
 ]);
 
+console.log(new Date(), 'Checking reservations...');
 injector.get(ReservationReminder).sendReminders().done(endPool, endPool);
