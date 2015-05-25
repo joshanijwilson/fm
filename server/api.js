@@ -141,8 +141,11 @@ exports.routes = {
           .then(takeOneRow)
           .then(checkUserHasPermissions)
           .then(function() {
-            // TODO(vojta): only admin can finish
             if (reservation.finished_at === 'NOW') {
+              if (!user.is_admin) {
+                throw new ForbiddenError('Insufficient permissions.');
+              }
+
               reservation.finished_at = new Date();
               reservation.finished_by = user.id;
             }
