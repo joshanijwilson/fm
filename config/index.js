@@ -17,8 +17,15 @@ var syncHttpGet = deasync(function(url, done) {
   });
 });
 
+var cache = Object.create(null);
+
 exports.forCurrentEnvironment = function() {
   var env = process.env.FM_ENV || 'prod';
+
+  if (cache[env]) {
+    return cache[env];
+  }
+
   var envConfig = require('./' + env + '_env');
   var config = extend(true, {}, defaultConfig, envConfig);
 
@@ -27,6 +34,8 @@ exports.forCurrentEnvironment = function() {
     // If public hostname not set, get it from Amazon EC2 meta-data service.
     config.publicHostname = syncHttpGet('http://169.254.169.254/latest/meta-data/public-hostname');
   }
+
+  cache[env] = config;
 
   return config;
 };
