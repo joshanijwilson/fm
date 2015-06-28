@@ -32,5 +32,5 @@
     <textarea ng-model="note" class="form-control" rows="3" id="note-input" placeholder="Poznámka k rezervaci..."></textarea>
   </div>
 
-  <button ng-click="finishReservation()" ng-disabled="!isValid()" type="submit" class="btn btn-primary btn-lg">Ukončit</button>
+  <button ng-click="finishReservation()" ng-disabled="!isValid()" type="submit" class="btn btn-primary btn-lg btn-finish">{{isFinished() && "Ukončit" || "Uložit"}}</button>
 </form>

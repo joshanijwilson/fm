@@ -11,7 +11,7 @@ function FinishController($scope, reservation, dataSource, loadingIndicator, $lo
 
     var updatedReservation = {
       id: reservation.id,
-      finished_at: 'NOW',
+      finished_at: $scope.isFinished() ? 'NOW' : null,
       tachometer_end: $scope.tachometerState,
       protocol_doc_returned: $scope.protocolReturned,
       survey_doc_returned: $scope.surveyReturned,
@@ -30,6 +30,10 @@ function FinishController($scope, reservation, dataSource, loadingIndicator, $lo
 
   $scope.isValid = function() {
     return $scope.form.$valid;
+  };
+
+  $scope.isFinished = function() {
+    return $scope.protocolReturned && $scope.surveyReturned && $scope.tachometerState;
   };
 }
 
