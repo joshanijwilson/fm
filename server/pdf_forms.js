@@ -35,7 +35,7 @@ function getSurveyFields(car) {
 }
 
 // Mapping values from model to reservation-protocol-empty.pdf
-function getReservationProtocolFields(reservation, car, customer) {
+function getReservationProtocolFields(reservation, car, dealer) {
   return {
     // Typ vozidla.
     'untitled3': car.name,
@@ -53,16 +53,16 @@ function getReservationProtocolFields(reservation, car, customer) {
     // 'untitled8': null,
 
     // Name
-    'untitled9': customer.first_name + ' ' + customer.last_name,
+    'untitled9': dealer.first_name + ' ' + dealer.last_name,
 
     // Phone
-    'untitled10': customer.phone || '',
+    'untitled10': dealer.phone || '',
 
     // Company
-    'untitled11': customer.company || '',
+    'untitled11': dealer.dealership_name || '',
 
     // Address
-    'untitled12': customer.address || '',
+    'untitled12': '',
 
     // Datum predani (start)
     'untitled13': moment(reservation.start).format('D.M.YY'),
@@ -163,15 +163,16 @@ function generateSurvey(reservation, car) {
 
 
 exports.scheduleGeneratingPdfForReservation = function(query, id) {
-  return query({sql: 'SELECT * FROM reservations LEFT JOIN customers ON reservations.customer_id = customers.id LEFT JOIN cars ON reservations.car_id = cars.id LEFT JOIN car_models ON cars.model_id = car_models.id WHERE reservations.id = ?', values: id, nestTables: true}).then(function(rows) {
+  return query({sql: 'SELECT * FROM reservations LEFT JOIN customers ON reservations.customer_id = customers.id LEFT JOIN cars ON reservations.car_id = cars.id LEFT JOIN car_models ON cars.model_id = car_models.id LEFT JOIN users ON reservations.created_by = users.id LEFT JOIN dealerships ON users.dealership_id = dealerships.id WHERE reservations.id = ?', values: id, nestTables: true}).then(function(rows) {
     var result = rows[0];
 
     // console.log('RESULT', result)
     result.cars.model_name = result.car_models.name;
+    result.users.dealership_name = result.dealerships.name;
 
     console.log('GENERATING');
     return q.all([
-      generateProtocol(result.reservations, result.cars, result.customers),
+      generateProtocol(result.reservations, result.cars, result.users),
       generateSurvey(result.reservations, result.cars)
     ]);
   }, function() {
