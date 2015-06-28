@@ -3,9 +3,9 @@
 <ul class="list-group">
   <li ng-repeat="reservation in reservations" href="#" class="list-group-item">
     <h4 class="list-group-item-heading">{{reservation.start | date}} - {{reservation.end | date}}, {{reservation.car.name}}</h4>
-    <p class="list-group-item-text">{{reservation.customer.first_name}} {{reservation.customer.last_name}}
-    <a ng-href="tel:{{reservation.customer.phone}}" ng-show="reservation.customer.phone">
-      <span class="glyphicon glyphicon-earphone"></span>{{reservation.customer.phone | phoneNumber}}</a><br>
+    <p class="list-group-item-text">{{formatName(reservation.contact)}}
+    <a ng-href="tel:{{reservation.contact.phone}}" ng-show="reservation.contact.phone">
+      <span class="glyphicon glyphicon-earphone"></span>{{reservation.contact.phone | phoneNumber}}</a><br>
     Zarezervováno: {{reservation.created_at | date:short}}</p>
     <a ng-show="showFinish" ng-href="#/finish/{{reservation.id}}" class="btn btn-default">ukončit</a>
   </li>

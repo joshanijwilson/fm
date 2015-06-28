@@ -49,11 +49,14 @@ function formatReservationDates(reservation) {
   return reservation;
 }
 
-function mergeCustomerAndCarIntoReservation(row) {
-  row.reservations.car = row.cars;
-  row.reservations.customer = row.customers;
+function mergeCustomerAndUserAndCarIntoReservation(row) {
+  var reservation = row.reservations;
+  reservation.car = row.cars;
+  reservation.customer = row.customers;
+  reservation.user = row.users;
+  reservation.user.dealership_name = row.dealerships.name;
 
-  return row.reservations;
+  return reservation;
 }
 
 inject(CheckUserHasPermissions, AuthUser);
@@ -72,8 +75,8 @@ exports.routes = {
     'GET': {
       inject:          [DbQuery],
       handler: function(dbQuery) {
-        return dbQuery({sql: 'SELECT * FROM reservations LEFT JOIN customers ON reservations.customer_id = customers.id LEFT JOIN cars ON reservations.car_id = cars.id WHERE reservations.finished_at IS NULL ORDER BY reservations.created_at DESC', nestTables: true}).then(function(rows) {
-          return rows.map(mergeCustomerAndCarIntoReservation).map(formatReservationDates);
+        return dbQuery({sql: 'SELECT * FROM reservations LEFT JOIN customers ON reservations.customer_id = customers.id LEFT JOIN cars ON reservations.car_id = cars.id LEFT JOIN users ON reservations.created_by = users.id LEFT JOIN dealerships ON users.dealership_id = dealerships.id WHERE reservations.finished_at IS NULL ORDER BY reservations.created_at DESC', nestTables: true}).then(function(rows) {
+          return rows.map(mergeCustomerAndUserAndCarIntoReservation).map(formatReservationDates);
         });
       }
     },
@@ -115,9 +118,9 @@ exports.routes = {
     'GET': {
       inject:          [DbQuery, PathParam('id')],
       handler: function(dbQuery, id) {
-        return dbQuery({sql: 'SELECT * FROM reservations LEFT JOIN cars ON reservations.car_id = cars.id LEFT JOIN customers ON reservations.customer_id = customers.id WHERE reservations.id = ?', nestTables: true, values: id})
+        return dbQuery({sql: 'SELECT * FROM reservations LEFT JOIN cars ON reservations.car_id = cars.id LEFT JOIN customers ON reservations.customer_id = customers.id LEFT JOIN users ON reservations.created_by = users.id LEFT JOIN dealerships ON users.dealership_id = dealerships.id WHERE reservations.id = ?', nestTables: true, values: id})
           .then(takeOneRow)
-          .then(mergeCustomerAndCarIntoReservation)
+          .then(mergeCustomerAndUserAndCarIntoReservation)
           .then(formatReservationDates);
       }
     },
