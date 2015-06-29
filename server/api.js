@@ -74,8 +74,8 @@ exports.routes = {
   '/reservations': {
 
     'GET': {
-      inject:          [DbQuery, PathParams],
-      handler: function(dbQuery, params) {
+      inject:          [DbQuery, PathParams, AuthUser],
+      handler: function(dbQuery, params, authUser) {
         var criteria = [];
 
         if (params.car_id) {
@@ -84,8 +84,10 @@ exports.routes = {
         if (params.finished_at === 'null') {
           criteria.push('reservations.finished_at IS NULL');
         }
+        if (!authUser.is_admin) {
+          criteria.push('reservations.created_by = ' + authUser.id);
+        }
 
-        // TODO: unless admin, show only reservations created by the user.
         return dbQuery({sql: 'SELECT * FROM reservations LEFT JOIN customers ON reservations.customer_id = customers.id LEFT JOIN cars ON reservations.car_id = cars.id LEFT JOIN users ON reservations.created_by = users.id LEFT JOIN dealerships ON users.dealership_id = dealerships.id WHERE ' + criteria.join(' AND ') + ' ORDER BY reservations.created_at DESC', nestTables: true}).then(function(rows) {
           return rows.map(mergeCustomerAndUserAndCarIntoReservation).map(formatReservationDates);
         });
