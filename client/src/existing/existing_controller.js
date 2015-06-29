@@ -2,22 +2,39 @@ function ExistingController($scope, reservations, authUser) {
   if (authUser.is_admin) {
     // Admin can see all pending reservations.
     // The contact is the dealer.
-    $scope.reservations = reservations.map(function(reservation) {
+    reservations = reservations.map(function(reservation) {
       reservation.contact = reservation.user;
       return reservation;
     });
-    $scope.showFinish = true;
   } else {
     // Non-admin users (dealears) can only see their reservations.
     // The contact is the customer (the driver).
-    $scope.reservations = reservations.filter(function(reservation) {
+    reservations = reservations.filter(function(reservation) {
       return reservation.created_by === authUser.id;
     }).map(function(reservation) {
       reservation.contact = reservation.customer;
       return reservation;
     });
-    $scope.showFinish = false;
   }
+
+  $scope.reservations = reservations.map(function(reservation) {
+    var missing = [];
+    if (!reservation.protocol_doc_returned) {
+      missing.push('předávací protokol');
+    }
+    if (!reservation.survey_doc_returned) {
+      missing.push('dotazník');
+    }
+    if (!reservation.tachometer_end) {
+      missing.push('stav tachometru');
+    }
+    reservation.missing = missing.join(', ');
+
+    reservation.showCompleteButton = reservation.created_by === authUser.id && !reservation.tachometer_end;
+    reservation.showFinishButton = authUser.is_admin;
+
+    return reservation;
+  })
 
   $scope.formatName = function(contact) {
     if (contact.dealership_name) {

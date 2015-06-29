@@ -6,8 +6,11 @@
     <p class="list-group-item-text">{{formatName(reservation.contact)}}
     <a ng-href="tel:{{reservation.contact.phone}}" ng-show="reservation.contact.phone">
       <span class="glyphicon glyphicon-earphone"></span>{{reservation.contact.phone | phoneNumber}}</a><br>
-    Zarezervováno: {{reservation.created_at | date:short}}</p>
-    <a ng-show="showFinish" ng-href="#/finish/{{reservation.id}}" class="btn btn-default">ukončit</a>
+    Zarezervováno: {{reservation.created_at | date:short}}<br>
+    Chybí: {{reservation.missing}}
+    </p>
+    <a ng-show="reservation.showFinishButton" ng-href="#/finish/{{reservation.id}}" class="btn btn-default">ukončit</a>
+    <a ng-show="reservation.showCompleteButton" ng-href="#/complete/{{reservation.id}}" class="btn btn-default">zadat stav tachometru</a>
   </li>
 </ul>
 
