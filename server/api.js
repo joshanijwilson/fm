@@ -75,6 +75,7 @@ exports.routes = {
     'GET': {
       inject:          [DbQuery],
       handler: function(dbQuery) {
+        // TODO: unless admin, show only reservations created by the user.
         return dbQuery({sql: 'SELECT * FROM reservations LEFT JOIN customers ON reservations.customer_id = customers.id LEFT JOIN cars ON reservations.car_id = cars.id LEFT JOIN users ON reservations.created_by = users.id LEFT JOIN dealerships ON users.dealership_id = dealerships.id WHERE reservations.finished_at IS NULL ORDER BY reservations.created_at DESC', nestTables: true}).then(function(rows) {
           return rows.map(mergeCustomerAndUserAndCarIntoReservation).map(formatReservationDates);
         });
