@@ -33,8 +33,8 @@ function Calendar(dbQuery) {
       var user = row.users;
       var event = {
         id: 'reservation' + reservationId,
-        start: {date: moment(reservation.start).format('YYYY-MM-DD')},
-        end:{date: moment(reservation.end).format('YYYY-MM-DD')},
+        start: {dateTime: moment(reservation.start).format('YYYY-MM-DD') + 'T10:00:00', timeZone: 'Europe/Prague'},
+        end: {dateTime: moment(reservation.end).format('YYYY-MM-DD') + 'T12:00:00', timeZone: 'Europe/Prague'},
         summary: row.cars.name,
         description: 'Dealer: ' + user.first_name + ' ' + user.last_name + '\n' +
                      'Zákazník: ' + customer.first_name + ' ' + customer.last_name + '\n' +
