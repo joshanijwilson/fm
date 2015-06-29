@@ -1,0 +1,11 @@
+<ul class="list-group">
+  <li ng-repeat="car in cars" href="#" class="list-group-item">
+    <a ng-href="#/cars/{{car.id}}">
+      <h4 class="list-group-item-heading">{{car.spz}} ({{car.name}})</h4>
+    </a>
+  </li>
+</ul>
+
+<div ng-show="!cars.length">
+  Žádná auta.
+</div>

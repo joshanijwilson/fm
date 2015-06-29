@@ -30,6 +30,22 @@ function bind(token) {
   }
 }
 
+// Shallow merge, without mutating the original objects.
+// Only own properties (ignores prototypes).
+// Does not handle if both objects define the same property.
+function merge(obj1, obj2) {
+  function _merge(dst, src) {
+    for (var key in src) {
+      if (Object.hasOwnProperty.call(src, key)) {
+        dst[key] = src[key];
+      }
+    }
+    return dst;
+  }
+
+  return _merge(_merge(Object.create(null), obj1), obj2);
+}
+
 
 function Request() {}
 function Response() {}
@@ -67,7 +83,7 @@ function RequestBody(request) {
 
 inject(PathParams, Request);
 function PathParams(request) {
-  return request.params;
+  return merge(request.query, request.params);
 }
 
 function PathParam(paramName) {

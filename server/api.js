@@ -6,6 +6,7 @@ var inject = diExpress.inject;
 var DbQuery = diExpress.DbQuery;
 var RequestBody = diExpress.RequestBody;
 var PathParam = diExpress.PathParam;
+var PathParams = diExpress.PathParams;
 
 var auth = require('./auth');
 var AuthUser = auth.AuthenticatedUser;
@@ -73,10 +74,19 @@ exports.routes = {
   '/reservations': {
 
     'GET': {
-      inject:          [DbQuery],
-      handler: function(dbQuery) {
+      inject:          [DbQuery, PathParams],
+      handler: function(dbQuery, params) {
+        var criteria = [];
+
+        if (params.car_id) {
+          criteria.push('reservations.car_id = ' + parseInt(params.car_id));
+        }
+        if (params.finished_at === 'null') {
+          criteria.push('reservations.finished_at IS NULL');
+        }
+
         // TODO: unless admin, show only reservations created by the user.
-        return dbQuery({sql: 'SELECT * FROM reservations LEFT JOIN customers ON reservations.customer_id = customers.id LEFT JOIN cars ON reservations.car_id = cars.id LEFT JOIN users ON reservations.created_by = users.id LEFT JOIN dealerships ON users.dealership_id = dealerships.id WHERE reservations.finished_at IS NULL ORDER BY reservations.created_at DESC', nestTables: true}).then(function(rows) {
+        return dbQuery({sql: 'SELECT * FROM reservations LEFT JOIN customers ON reservations.customer_id = customers.id LEFT JOIN cars ON reservations.car_id = cars.id LEFT JOIN users ON reservations.created_by = users.id LEFT JOIN dealerships ON users.dealership_id = dealerships.id WHERE ' + criteria.join(' AND ') + ' ORDER BY reservations.created_at DESC', nestTables: true}).then(function(rows) {
           return rows.map(mergeCustomerAndUserAndCarIntoReservation).map(formatReservationDates);
         });
       }

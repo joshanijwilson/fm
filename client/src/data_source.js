@@ -26,17 +26,28 @@ function formatDateToString(date) {
   return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 }
 
+function findById(collection, id) {
+  for (var i = 0, ii = collection.length; i < ii; i++) {
+    if (collection[i].id === id) return collection[i];
+  }
+  return null;
+}
+
+function deserializeReservation(reservation) {
+  reservation.start = parseDate(reservation.start);
+  reservation.end = parseDate(reservation.end);
+  return reservation;
+}
+
+function deserializeReservations(reservations) {
+  return reservations.map(deserializeReservation);
+}
+
 
 function DataSource($http) {
 
   this.getAllReservations = function() {
-    return $http.get(API_URL + 'reservations').then(dataFromResponse).then(function(reservations) {
-      reservations.forEach(function(reservation) {
-        reservation.start = parseDate(reservation.start);
-        reservation.end = parseDate(reservation.end);
-      });
-      return reservations;
-    });
+    return $http.get(API_URL + 'reservations?finished_at=null').then(dataFromResponse).then(deserializeReservations);
   };
 
   this.getAllFutureReservations = function() {
@@ -48,6 +59,10 @@ function DataSource($http) {
       });
     });
   };
+
+  this.getReservationsByCarId = function(id) {
+    return $http.get(API_URL + 'reservations?car_id=' + id).then(dataFromResponse).then(deserializeReservations);
+  }
 
   this.createReservation = function(reservation) {
     reservation.start = formatDateToString(reservation.start);
@@ -65,12 +80,7 @@ function DataSource($http) {
   };
 
   this.getReservation = function(id) {
-    return $http.get(API_URL + 'reservations/' + id).then(dataFromResponse).then(function(reservation) {
-      reservation.start = parseDate(reservation.start);
-      reservation.end = parseDate(reservation.end);
-
-      return reservation;
-    });
+    return $http.get(API_URL + 'reservations/' + id).then(dataFromResponse).then(deserializeReservation);
   };
 
   this.getAllCars = function() {
@@ -81,6 +91,12 @@ function DataSource($http) {
       });
 
       return cars;
+    });
+  };
+
+  this.getCarById = function(id) {
+    return this.getAllCars().then(function(cars) {
+      return findById(cars, id);
     });
   };
 };
