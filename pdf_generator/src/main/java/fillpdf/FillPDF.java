@@ -7,6 +7,8 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
+import org.apache.pdfbox.cos.COSString;
+import org.apache.pdfbox.cos.COSName;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -56,13 +58,16 @@ public class FillPDF {
     PDAcroForm acroForm = catalog.getAcroForm();
 
     PDField field;
+    String value;
     for (Map.Entry<String, String> entry : fields.entrySet()) {
       field = acroForm.getField(entry.getKey());
 
       if (field == null) {
         System.out.println("No field '" + entry.getKey() + "' in this document!");
       } else {
-        field.setValue(entry.getValue());
+        value = entry.getValue() != null ? entry.getValue() : "";
+        // This COSString crazy dance is here to make UTF8 characters (like Czech diacritics) work.
+        field.getDictionary().setItem(COSName.V, new COSString(value));
       }
     }
 
