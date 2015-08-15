@@ -68,8 +68,31 @@ var injector = new di.Injector([
 var router = new express.Router();
 diExpress.registerRoutes(injector, router, api.routes);
 
+function decodeBase64(base64String) {
+  return new Buffer(base64String, 'base64').toString('ascii');
+}
+
+function jwtTokenFromHeaders(headers) {
+  if (headers.authorization && headers.authorization.split(' ')[0] === 'Bearer') {
+    return headers.authorization.split(' ')[1];
+  }
+  return null;
+}
+
+function jwtTokenFromQueryString(query) {
+  if (query && query.auth) {
+    return decodeBase64(query.auth);
+  }
+  return null;
+}
+
 var jwt = require('express-jwt');
-app.use('/api/v1', jwt({secret: config.authSecret}));
+app.use('/api/v1', jwt({
+  secret: config.authSecret,
+  getToken: function getJwtToken(req) {
+    return jwtTokenFromHeaders(req.headers) || jwtTokenFromQueryString(req.query);
+  }
+}));
 app.use('/api/v1', router);
 
 
