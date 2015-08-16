@@ -7,12 +7,15 @@ var DbQuery = diExpress.DbQuery;
 var RequestBody = diExpress.RequestBody;
 var PathParam = diExpress.PathParam;
 var PathParams = diExpress.PathParams;
+var Request = diExpress.Request;
+var Response = diExpress.Response;
 
 var auth = require('./auth');
 var AuthUser = auth.AuthenticatedUser;
 
 var Calendar = require('./calendar');
 
+var CarBooks = require('./car_books');
 
 function Error404(msg) {
   this.status = 404;
@@ -179,6 +182,23 @@ exports.routes = {
       inject: [DbQuery],
       handler: function(dbQuery) {
         return dbQuery('SELECT cars.*, car_models.name AS model_name FROM cars LEFT JOIN car_models ON cars.model_id = car_models.id WHERE cars.is_active = 1');
+      }
+    }
+  },
+
+
+  '/cars/:id/book-:year.xls': {
+    'GET': {
+      inject: [CarBooks, PathParam('id'), PathParam('year'), Request, Response],
+      handler: function(carBooks, carId, year, request, response) {
+        var send = require('send');
+        return carBooks.bookFor(carId, year).then(function(path) {
+          // TODO: move this into di_express.js?
+          send(request, path).on('error', function(err) {
+            console.error('send err', err);
+          }).pipe(response);
+          return null;
+        });
       }
     }
   }
