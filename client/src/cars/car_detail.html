@@ -1,5 +1,5 @@
+<a ng-href="/api/v1/cars/{{car.id}}/book-2015.xls?auth={{authToken}}" download="knihajizd-{{car.spz}}-2015.xls">Stáhnout knihu jízd</a>
 <ul class="list-group">
-
   <li ng-repeat="reservation in reservations" href="#" class="list-group-item">
     <h4 class="list-group-item-heading">{{reservation.start | date}} - {{reservation.end | date}}</h4>
     <p class="list-group-item-text">{{reservation.user.first_name}} {{reservation.user.last_name}} ({{reservation.user.dealership_name}})

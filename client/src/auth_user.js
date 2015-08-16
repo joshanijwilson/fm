@@ -1,11 +1,15 @@
+var base64 = window.btoa;
+
 function AuthUser(localStorage) {
 
   this.loadFromLocalStorage = function() {
     angular.extend(this, localStorage.get('auth_user'));
+    this.urlToken = btoa(this.token);
   };
 
   this.update = function(user) {
     angular.extend(this, user);
+    this.urlToken = btoa(this.token);
     localStorage.set('auth_user', user);
   };
 

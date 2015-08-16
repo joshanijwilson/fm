@@ -4,7 +4,7 @@ function byStartDateAscending(a, b) {
   return 0;
 }
 
-function CarDetailController($scope, car, reservations, setPageTitleTo) {
+function CarDetailController($scope, car, reservations, setPageTitleTo, authUser) {
   setPageTitleTo(car.spz + ' (' + car.name + ')');
 
   // We realy on reservations to be sorted when computing the distance for each reservation,
@@ -24,6 +24,7 @@ function CarDetailController($scope, car, reservations, setPageTitleTo) {
 
   $scope.car = car;
   $scope.reservations = reservations;
+  $scope.authToken = authUser.urlToken;
 
   $scope.formatDistance = function(distance) {
     if (distance === null) return 'chybí';
@@ -41,7 +42,7 @@ CarDetailController.resolve = {
 };
 
 
-CarDetailController.$inject = ['$scope', 'dataCar', 'dataReservations', 'pageTitle'];
+CarDetailController.$inject = ['$scope', 'dataCar', 'dataReservations', 'pageTitle', 'authUser'];
 CarDetailController.resolve.dataCar.$inject = ['dataSource', '$route'];
 CarDetailController.resolve.dataReservations.$inject = ['dataSource', '$route'];
 
